@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tatawwa3.Application\Tatawwa3.Application.csproj" />
-    <ProjectReference Include="..\Tatawwa3.Domain\Tatawwa3.Domain.csproj" />
+    <Folder Include="Repositorirs\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositorirs\" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tatawwa3.Domain\Tatawwa3.Domain.csproj" />
   </ItemGroup>
 
 </Project>

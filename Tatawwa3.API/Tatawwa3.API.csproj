@@ -27,8 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tatawwa3.Application\Tatawwa3.Application.csproj" />
+    <ProjectReference Include="..\Tatawwa3.Domain\Tatawwa3.Domain.csproj" />
     <ProjectReference Include="..\Tatawwa3.Infrastructure\Tatawwa3.Infrastructure.csproj" />
-    <ProjectReference Include="..\Tatawwa3.Persistence\Tatawwa3.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
