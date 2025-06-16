@@ -10,14 +10,4 @@
     <ProjectReference Include="..\Tatawwa3.Domain\Tatawwa3.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\Volunteer\Comands\" />
-    <Folder Include="CQRS\Volunteer\Handlers\" />
-    <Folder Include="CQRS\Volunteer\Queries\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Dtos\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MiddleWares\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Tatawwa3.Application\Tatawwa3.Application.csproj" />
     <ProjectReference Include="..\Tatawwa3.Domain\Tatawwa3.Domain.csproj" />
     <ProjectReference Include="..\Tatawwa3.Infrastructure\Tatawwa3.Infrastructure.csproj" />
