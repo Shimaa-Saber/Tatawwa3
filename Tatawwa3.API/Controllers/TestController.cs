@@ -5,7 +5,11 @@ namespace Tatawwa3.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class TestController : ControllerBase
     {
+        
+            [HttpGet]
+            public IActionResult Get() => Ok("API is working ✅");
+        
     }
 }
