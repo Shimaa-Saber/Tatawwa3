@@ -11,11 +11,11 @@ using Tatawwa3.Domain.Entities;
 
 namespace Tatawwa3.Infrastructure.Data
 {
-    public class Tatawwa3DbContext:IdentityDbContext<ApplicationUser,ApplicationRole,string>
+    public class Tatawwa3DbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public Tatawwa3DbContext(DbContextOptions<Tatawwa3DbContext> options) : base(options) { }
 
-      
+
         public DbSet<VolunteerProfile> VolunteerProfiles { get; set; }
         public DbSet<OrganizationProfile> OrganizationProfiles { get; set; }
         public DbSet<Team> Teams { get; set; }
@@ -28,6 +28,29 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<Achievement> Achievements { get; set; }
         public DbSet<VolunteerAchievement> VolunteerAchievements { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        
+
+    
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationUser>()
+           .HasOne(u => u.OrganizationProfile)
+           .WithOne(o => o.User)
+           .HasForeignKey<OrganizationProfile>(o => o.UserID)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(u => u.VolunteerProfile)
+                .WithOne(v => v.User)
+                .HasForeignKey<VolunteerProfile>(v => v.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
+
 
     }
 }
