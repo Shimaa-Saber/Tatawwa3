@@ -9,9 +9,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class VolunteerOpportunity
+    public class VolunteerOpportunity: BaseModel
     {
-        public string ID { get; set; }
+    
         [ForeignKey("Organization")]
         public string OrganizationID { get; set; }
         [ForeignKey("Category")]

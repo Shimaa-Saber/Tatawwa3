@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Tatawwa3.Domain.Entities;
+using Tatawwa3.Domain.Interfaces;
+using Tatawwa3.Infrastructure.Data;
+
+namespace Tatawwa3.Infrastructure.Repositorirs
+{
+    public class GenericRepository<T> : IGeneric<T> where T : BaseModel
+    {
+        private readonly Tatawwa3DbContext _tatawwa3DbContext;
+        public GenericRepository(Tatawwa3DbContext tatawwa3DbContext)
+        {
+            _tatawwa3DbContext = tatawwa3DbContext;
+        }
+
+        public void Add(T category)
+        {
+            _tatawwa3DbContext.Set<T>().Add(category);
+        }
+
+        public void UpdatebyId(string id, T newentity)
+        {
+            var entity = GetByID(id);
+            if (entity is not null)
+            {
+                _tatawwa3DbContext.Set<T>().Update(newentity);
+            }
+        }
+
+        public void Remove(string id)
+        {
+            var entity = GetByID(id);
+            if (entity is not null)
+            {
+                entity.IsDeleted = true;
+                UpdateByEntity(entity);
+            }
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return _tatawwa3DbContext.Set<T>().
+                    Where(e => e.IsDeleted == false);
+        }
+
+        public IQueryable<T> Get(Expression<Func<T, bool>> expression)
+        {
+            return _tatawwa3DbContext.Set<T>().Where(expression);
+        }
+
+        public T GetByID(string id)
+        {
+
+            return Get(e => e.Id == id && e.IsDeleted == false).FirstOrDefault();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _tatawwa3DbContext.SaveChangesAsync();
+        }
+
+        public void UpdateByEntity(T entity)
+        {
+            _tatawwa3DbContext.Set<T>().Update(entity);
+        }
+    }
+}

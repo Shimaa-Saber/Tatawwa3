@@ -9,9 +9,9 @@ using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class Team
+    public class Team: BaseModel
     {
-        public string ID { get; set; }
+
         [ForeignKey("OrganizationProfile")]
         public string OrganizationID { get; set; }
         public string Name { get; set; }

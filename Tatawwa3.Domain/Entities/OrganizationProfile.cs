@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class OrganizationProfile
+    public class OrganizationProfile: BaseModel
     {
-        public string ID { get; set; }
+       
         [ForeignKey("User")]
         public string UserID { get; set; }
         public string OrganizationName { get; set; }

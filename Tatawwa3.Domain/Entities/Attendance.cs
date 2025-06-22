@@ -8,9 +8,9 @@ using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class Attendance
+    public class Attendance: BaseModel
     {
-        public string ID { get; set; }
+      
 
         [ForeignKey("Participation")]
         public string ParticipationID { get; set; }

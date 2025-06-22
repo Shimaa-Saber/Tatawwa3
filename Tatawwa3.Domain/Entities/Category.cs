@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class Category
+    public class Category: BaseModel
     {
-        public string ID { get; set; }
+    
         public string Name { get; set; }
         public string Description { get; set; }
         public string Icon { get; set; }

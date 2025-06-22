@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class Certificate
+    public class Certificate: BaseModel
     {
-        public string ID { get; set; }
+     
 
         [ForeignKey("Participation")]
         public string ParticipationID { get; set; }

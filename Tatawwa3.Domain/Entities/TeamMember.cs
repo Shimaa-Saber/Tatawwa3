@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class TeamMember
+    public class TeamMember: BaseModel
     {
-        public string ID { get; set; }
+      
         [ForeignKey("Team")]
         public string TeamID { get; set; }
 

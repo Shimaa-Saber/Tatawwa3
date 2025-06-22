@@ -7,9 +7,9 @@ using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.Domain.Entities
 {
-    public class Participation
+    public class Participation : BaseModel
     {
-        public string ID { get; set; }
+  
         public string ApplicationID { get; set; }
         public float TotalAttendedHours { get; set; }
         public DateTime FirstCheckIn { get; set; }
