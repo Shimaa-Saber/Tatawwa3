@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tatawwa3.Application.CQRS.Volunteer.Queries
+namespace Tatawwa3.Application
 {
-    internal class Class1
+    public interface IApplicationMarker
     {
     }
 }

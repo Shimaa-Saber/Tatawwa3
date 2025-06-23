@@ -13,7 +13,7 @@ namespace Tatawwa3.Domain.Entities
     
         [ForeignKey("User")]
         public string UserID { get; set; }
-        public string Skills { get; set; } 
+        public string? Skills { get; set; } 
         public string Interests { get; set; } 
         public float TotalHours { get; set; }
         public float Rating { get; set; }
