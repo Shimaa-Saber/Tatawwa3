@@ -23,6 +23,7 @@ namespace Tatawwa3.Domain.Entities
         public DateTime EndDate { get; set; }
         public int RequiredVolunteers { get; set; }
         public OpportunityStatus Status { get; set; }
+        public string? Image { get; set; }
 
         public OrganizationProfile? Organization { get; set; }
         public Category? Category { get; set; }
