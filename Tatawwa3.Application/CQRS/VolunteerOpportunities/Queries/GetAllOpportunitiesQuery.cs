@@ -7,7 +7,7 @@ using MediatR;
 
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 
-namespace Tatawwa3.Application.CQRS.VolunteerOpportunity.Queries
+namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries
 {
   public  class GetAllOpportunitiesQuery: IRequest<List<GetAllOpportunitiesDto>>
     {

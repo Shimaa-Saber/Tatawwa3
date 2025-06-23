@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 
-namespace Tatawwa3.Application.CQRS.VolunteerOpportunity.Queries
+namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries
 {
     public class GetCategoryOpportunitiesQuery: IRequest<List<GetAllOpportunitiesDto>>
     {

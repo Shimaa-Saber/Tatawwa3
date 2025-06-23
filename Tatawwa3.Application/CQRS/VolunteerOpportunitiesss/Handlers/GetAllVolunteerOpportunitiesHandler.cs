@@ -13,7 +13,7 @@ using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Repositorirs;
 
 
-namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
+namespace Tatawwa3.Application.CQRS.VolunteerOpportunitiesss.Handlers
 {
     public class GetAllVolunteerOpportunitiesHandler:IRequestHandler<GetAllVolunteerOpportunitiesQuery, List<VolunteerOpportunityVM>>
     {

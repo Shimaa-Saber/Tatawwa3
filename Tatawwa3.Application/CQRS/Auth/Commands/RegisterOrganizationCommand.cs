@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using Tatawwa3.Application.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.Auth.Commands
 {
-    public class RegisterOrganizationCommand: IRequest
+    public class RegisterOrganizationCommand : IRequest<Unit>
     {
         public RegisterOrganizationDto Dto { get; }
 
@@ -19,7 +20,7 @@ namespace Tatawwa3.Application.CQRS.Auth.Commands
         }
     }
 
-    public class RegisterOrganizationHandler : IRequestHandler<RegisterOrganizationCommand>
+    public class RegisterOrganizationHandler : IRequestHandler<RegisterOrganizationCommand, Unit>
     {
         private readonly IAuthService _authService;
 
@@ -28,10 +29,10 @@ namespace Tatawwa3.Application.CQRS.Auth.Commands
             _authService = authService;
         }
 
-        public async Task Handle(RegisterOrganizationCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RegisterOrganizationCommand request, CancellationToken cancellationToken)
         {
             await _authService.RegisterOrganizationAsync(request.Dto);
-           
+            return Unit.Value;
         }
     }
 

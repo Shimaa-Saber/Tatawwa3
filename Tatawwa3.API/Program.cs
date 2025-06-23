@@ -46,12 +46,6 @@ builder.Services.AddScoped(typeof(GenericRepository<>)); // لو بتستخدم�
 
 builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
 
-//builder.Services.AddMediatR(opts=>opts.RegisterServicesFromAssembly(typeof(Program).Assembly));
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(CreateTeamCommandHandler).Assembly));
-
-builder.Services.AddControllers()
-    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTeamCommandValidator>());
 
 
 builder.Services.AddScoped<IAuthService, AuthService>();

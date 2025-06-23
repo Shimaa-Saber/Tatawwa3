@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tatawwa3.Application.CQRS.VolunteerOpportunity.Queries;
+using Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 using Tatawwa3.Domain.Interfaces;
 
-namespace Tatawwa3.Application.CQRS.VolunteerOpportunity.Handlers
+namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
 {
     internal class GetLocationOpportunitiesQueryHandler : IRequestHandler<GetLocationOpportunitiesQuery, List<GetAllOpportunitiesDto>>
     {

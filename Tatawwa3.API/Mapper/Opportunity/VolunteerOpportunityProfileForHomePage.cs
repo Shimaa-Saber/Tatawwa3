@@ -9,9 +9,9 @@ using Tatawwa3.Domain.Entities;
 
 namespace Tatawwa3.Application.MappingProfiles
 {
-    public class VolunteerOpportunityProfile:Profile
+    public class VolunteerOpportunityProfileForHomePage:Profile
     {
-        public VolunteerOpportunityProfile()
+        public VolunteerOpportunityProfileForHomePage()
         {
             CreateMap<VolunteerOpportunity, VolunteerOpportunityVM>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))

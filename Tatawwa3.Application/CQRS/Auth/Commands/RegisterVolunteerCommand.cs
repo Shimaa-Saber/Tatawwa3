@@ -9,7 +9,7 @@ using Tatawwa3.Application.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.Auth.Commands
 {
-    public class RegisterVolunteerCommand:IRequest
+    public class RegisterVolunteerCommand : IRequest<Unit>
     {
         public RegisterVolunteerDto Dto { get; set; }
 
@@ -19,7 +19,7 @@ namespace Tatawwa3.Application.CQRS.Auth.Commands
         }
     }
 
-    public class RegisterVolunteerHandler : IRequestHandler<RegisterVolunteerCommand>
+    public class RegisterVolunteerHandler : IRequestHandler<RegisterVolunteerCommand, Unit>
     {
         private readonly IAuthService _AuthService;
 
@@ -28,10 +28,10 @@ namespace Tatawwa3.Application.CQRS.Auth.Commands
             _AuthService = AuthService;
         }
 
-        public async Task Handle(RegisterVolunteerCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RegisterVolunteerCommand request, CancellationToken cancellationToken)
         {
             await _AuthService.RegisterVolunteerAsync(request.Dto);
-           
+            return Unit.Value;
         }
     }
 
