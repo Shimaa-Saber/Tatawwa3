@@ -8,6 +8,7 @@ namespace Tatawwa3.Domain.Enums
 {
     public enum TeamStatus
     {
+        Pending,
         Active,
         Inactive
     }

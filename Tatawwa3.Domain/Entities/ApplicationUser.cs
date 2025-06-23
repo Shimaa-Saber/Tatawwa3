@@ -11,7 +11,7 @@ namespace Tatawwa3.Domain.Entities
 {
     public class ApplicationUser: IdentityUser
     {
-        public string NationalID { get; set; }
+        public string? NationalID { get; set; }
       
         public string City { get; set; }
         public DateTime CreatedAt { get; set; }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tatawwa3.Domain.Entities;
 
 namespace Tatawwa3.Application.Interfaces
 {
-    internal class @interface
+    public interface ITokenService
     {
+        Task<string> GenerateTokenAsync(ApplicationUser user);
     }
 }
