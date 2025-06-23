@@ -7,14 +7,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+
+using Tatawwa3.Application.CQRS.Team.Commands;
+using Tatawwa3.Application.CQRS.Team.Handlers;
+using Tatawwa3.Application.MappingProfiles;
+
 using System.Text;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.Application;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.Services;
-using Tatawwa3.Domain.Entities;
-using Tatawwa3.Infrastructure.Data;
 
+using Tatawwa3.Domain.Entities;
+using Tatawwa3.Domain.Interfaces;
+using Tatawwa3.Infrastructure.Data;
+using Tatawwa3.Infrastructure.Repositorirs;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Tatawwa3.Application.CQRS.teams.Validators;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,8 +33,23 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(GenericRepository<>)); // لو بتستخدمه مباشر
+
+builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
+
+//builder.Services.AddMediatR(opts=>opts.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(CreateTeamCommandHandler).Assembly));
+
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTeamCommandValidator>());
+
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+
 
 
 builder.Services.AddDbContext<Tatawwa3DbContext>(options =>
