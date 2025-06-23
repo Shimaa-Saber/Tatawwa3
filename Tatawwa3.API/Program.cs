@@ -23,6 +23,7 @@ builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(GenericRepository<>)); // لو بتستخدمه مباشر
 
 builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
+
 //builder.Services.AddMediatR(opts=>opts.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateTeamCommandHandler).Assembly));
