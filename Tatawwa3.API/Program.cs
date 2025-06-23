@@ -2,7 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Tatawwa3.Domain.Entities;
+using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
+using Tatawwa3.Infrastructure.Repositorirs;
+using AutoMapper;
+using Tatawwa3.Application;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +26,15 @@ builder.Services.AddDbContext<Tatawwa3DbContext>(options =>
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
         .LogTo(log => Debug.WriteLine(log), LogLevel.Information)
 );
+
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(Tatawwa3.Application.AssemblyReference).Assembly));
+
+builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
+
+builder.Services.AddScoped<IOpportunity, OpportunityRepository>();
+
+
 
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
