@@ -1,9 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using FleetTrackerSystem.Infrastructure.Seeder;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+
 using Tatawwa3.Application.CQRS.Team.Commands;
 using Tatawwa3.Application.CQRS.Team.Handlers;
 using Tatawwa3.Application.MappingProfiles;
+
+using System.Text;
+using Tatawwa3.API.Mapper.AuthMapper;
+using Tatawwa3.Application;
+using Tatawwa3.Application.Interfaces;
+using Tatawwa3.Application.Services;
+
 using Tatawwa3.Domain.Entities;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
@@ -19,6 +33,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(GenericRepository<>)); // لو بتستخدمه مباشر
 
@@ -30,6 +45,10 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTeamCommandValidator>());
+
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 
 
@@ -55,8 +74,64 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<VolunteerRegMapper>();
+    cfg.AddProfile<OrganizatonRegMapper>();
+
+});
+
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+    };
+});
+
+
+MapperService.Mapper = config.CreateMapper();
+//builder.Services.AddMediatR(typeof(IApplicationMarker).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+
+    // Replace the problematic line with the correct configuration for MediatR
+   
+    var roleManager = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<ApplicationRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<ApplicationUser>>();
+    await RoleSeed.SeedAsync(roleManager);
+   // await UserSeeder.SeedAsync(userManager);
+}
+
+
+
+
+
+
+
+
+
 app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
