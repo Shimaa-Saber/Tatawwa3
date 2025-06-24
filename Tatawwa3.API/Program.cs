@@ -68,6 +68,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
 
 builder.Services.AddScoped<IOpportunity, OpportunityRepository>();
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 
 
 

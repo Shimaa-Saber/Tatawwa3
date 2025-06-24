@@ -28,6 +28,7 @@ namespace Tatawwa3.Domain.Entities
         public OrganizationProfile? Organization { get; set; }
         public Category? Category { get; set; }
         public ICollection<Application> ?Applications { get; set; }
+        public ICollection<Skills>? RequiredSkills { get; set; }
 
     }
 }
