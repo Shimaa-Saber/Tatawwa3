@@ -36,11 +36,13 @@ namespace Tatawwa3.Application.Services
         {
 
             var team = await _tatawwa3DbContext.Teams
+           .Include(t => t.Category)            
+           .Include(t => t.Organization)        
            .Include(t => t.Members)
            .ThenInclude(m => m.Volunteer)
-            .ThenInclude(v => v.User)
-           .Include(t => t.Opportunities)
-            .FirstOrDefaultAsync(t => t.Id == teamId);
+               .ThenInclude(v => v.User)
+       .Include(t => t.Opportunities)
+       .FirstOrDefaultAsync(t => t.Id == teamId);
 
             if (team == null)
                 throw new Exception("Team not found");
