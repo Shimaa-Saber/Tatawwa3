@@ -16,7 +16,7 @@ namespace Tatawwa3.Application.MappingProfiles
     {
         public TeamProfile()
         {
-            CreateMap<CreateTeamDto, Team>();
+            CreateMap<Team, GetTeamaDto>();
 
             CreateMap<Team, TeamDetailsDto>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))

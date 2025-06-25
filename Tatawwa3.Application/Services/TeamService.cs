@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
@@ -19,17 +21,30 @@ namespace Tatawwa3.Application.Services
         private readonly IGeneric<Team> _teamRepo;
         private readonly IGeneric<JoinRequest> _joinRequestRepo;
         private readonly Tatawwa3DbContext _tatawwa3DbContext;
+        private readonly ITeamRepository _teamRepository;
+        private readonly IMapper _mapper;
 
         public TeamService(
             IGeneric<Team> teamRepo,
             IGeneric<JoinRequest> joinRequestRepo,
-            Tatawwa3DbContext tatawwa3DbContext
+            Tatawwa3DbContext tatawwa3DbContext,
+            ITeamRepository teamRepository,
+            IMapper mapper
 
         )
         {
             _teamRepo = teamRepo;
             _joinRequestRepo = joinRequestRepo;
             _tatawwa3DbContext = tatawwa3DbContext;
+            _teamRepository = teamRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<List<GetTeamaDto>> GetAllTeamsAsync()
+        {
+            var query = _teamRepository.GetAllTeams()
+              .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+            return await query.ToListAsync();
         }
 
         public async Task<TeamDetailsDto> GetTeamDetailsAsync(string teamId)

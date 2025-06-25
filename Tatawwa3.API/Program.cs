@@ -43,6 +43,7 @@ builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITeamService,TeamService>();
 
 
 
@@ -162,7 +163,7 @@ MapperService.Mapper = config.CreateMapper();
 //builder.Services.AddMediatR(typeof(IApplicationMarker).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
 builder.Services.AddScoped<IVolunteerOpportunityService, VolunteerOpportunityService>();
-
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
 
 var app = builder.Build();
