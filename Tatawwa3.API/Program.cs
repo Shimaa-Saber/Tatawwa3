@@ -71,6 +71,11 @@ builder.Services.AddScoped<IOpportunity, OpportunityRepository>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+
+
 
 
 
