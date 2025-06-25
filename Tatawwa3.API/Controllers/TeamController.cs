@@ -41,5 +41,12 @@ namespace Tatawwa3.API.Controllers
             var result = await _mediator.Send(new GetTeamsByCityQuery(city));
             return Ok(result);
         }
+
+        [HttpGet("by-name")]
+        public async Task<IActionResult> GetTeamsByName([FromQuery] string name)
+        {
+            var result = await _mediator.Send(new GetTeamsByNameQuery(name));
+            return Ok(result);
+        }
     }
 }

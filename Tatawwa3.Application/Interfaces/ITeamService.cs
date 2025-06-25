@@ -15,5 +15,7 @@ namespace Tatawwa3.Application.Interfaces
         Task<List<GetTeamaDto>> GetAllTeamsAsync();
 
         Task<List<GetTeamaDto>> GetTeamsByCityAsync(string city);
+
+        Task<List<GetTeamaDto>> GetTeamsByNameAsync(string name);
     }
 }

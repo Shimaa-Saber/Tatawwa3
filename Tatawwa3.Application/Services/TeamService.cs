@@ -87,5 +87,13 @@ namespace Tatawwa3.Application.Services
             _joinRequestRepo.Add(newRequest);
             await _joinRequestRepo.SaveChangesAsync();
         }
+        public async Task<List<GetTeamaDto>> GetTeamsByNameAsync(string name)
+        {
+            var query = _teamRepository.GetAllTeams()
+                .Where(t => t.Name.Contains(name)) 
+                .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+
+            return await query.ToListAsync();
+        }
     }
 }
