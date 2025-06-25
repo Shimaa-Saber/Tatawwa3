@@ -11,6 +11,17 @@ namespace Tatawwa3.Application.Interfaces
     {
         Task RegisterVolunteerAsync(RegisterVolunteerDto dto);
         Task RegisterOrganizationAsync(RegisterOrganizationDto dto);
+        Task ForgetPasswordAsync(ForgotPasswordDto dto);
+
+        Task<bool> VerifyOtpAsync(VerifyOtpDto dto);
+
+        Task<bool> ResetPasswordAsync(ResetPasswordDto dto);
+
+        Task<bool> ChangePasswordAsync(ChangePasswordDto dto, string userId);
+
+        //public Task<string> GenerateOTPCode(string Email);
+        //public Task<string> VerifyOTPCode(string email, string code);
+        //public Task<string> ResetPassword(string email, string password);
 
     }
 }
