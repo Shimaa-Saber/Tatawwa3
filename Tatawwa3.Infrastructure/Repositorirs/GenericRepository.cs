@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -68,5 +70,22 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             _tatawwa3DbContext.Set<T>().Update(entity);
         }
+
+        public IQueryable<T> GetWithIncludes(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _tatawwa3DbContext.Set<T>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return query.Where(e => !e.IsDeleted);
+        }
+
+        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _tatawwa3DbContext.Set<T>().FirstOrDefaultAsync(predicate);
+        }
+
+
     }
 }

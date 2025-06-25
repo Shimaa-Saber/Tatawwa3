@@ -16,6 +16,9 @@ namespace Tatawwa3.Domain.Interfaces
         T GetByID(string id);
         IQueryable<T> GetAll();
         IQueryable<T> Get(Expression<Func<T, bool>> expression);
+        IQueryable<T> GetWithIncludes(params Expression<Func<T, object>>[] includes);
+
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
         Task<int> SaveChangesAsync();
     }

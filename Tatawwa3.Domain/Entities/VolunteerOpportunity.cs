@@ -16,7 +16,10 @@ namespace Tatawwa3.Domain.Entities
         public string OrganizationID { get; set; }
         [ForeignKey("Category")]
         public string CategoryID { get; set; }
+        [ForeignKey("Team")]
+        public string? TeamId { get; set; }
         public string Title { get; set; }
+
         public string Description { get; set; }
         public string Location { get; set; }
         public DateTime StartDate { get; set; }
@@ -27,6 +30,7 @@ namespace Tatawwa3.Domain.Entities
 
         public OrganizationProfile? Organization { get; set; }
         public Category? Category { get; set; }
+        public Team ?Team { get; set; }
         public ICollection<Application> ?Applications { get; set; }
 
     }
