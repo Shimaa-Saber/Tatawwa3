@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tatawwa3.Application.CQRS.Team.Commands;
+using Tatawwa3.Application.Dtos.Teams;
 namespace Tatawwa3.API.Controllers
 {
     [Route("api/[controller]")]
@@ -14,15 +15,15 @@ namespace Tatawwa3.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateTeam([FromBody] CreateTeamCommand command)
+        [HttpPost("CreateTeam")]
+        public async Task<IActionResult> CreateTeam([FromBody] CreateTeamDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            var command =new CreateTeamCommand(dto);
+             await _mediator.Send(command);
 
-            var teamId = await _mediator.Send(command);
-
-            return Ok(new { TeamId = teamId });
+            return Ok();
         }
     }
 }

@@ -31,6 +31,8 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<JoinRequest> JoinRequests { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
 
 
 

@@ -13,7 +13,7 @@ namespace Tatawwa3.Domain.Entities
     {
 
         [ForeignKey("OrganizationProfile")]
-        public string OrganizationID { get; set; }
+        public string? OrganizationID { get; set; }
         [ForeignKey("Category")]
         public string? CategoryId { get; set; }
         public string Name { get; set; }

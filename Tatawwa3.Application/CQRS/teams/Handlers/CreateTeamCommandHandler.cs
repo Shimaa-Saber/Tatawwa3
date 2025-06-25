@@ -14,21 +14,21 @@ using Tatawwa3.Infrastructure.Repositorirs;
 
 namespace Tatawwa3.Application.CQRS.Team.Handlers
 {
-    public class CreateTeamCommandHandler:IRequestHandler<CreateTeamCommand, string>
+    public class CreateTeamCommandHandler:IRequestHandler<CreateTeamCommand, Unit>
     {
         
-        private readonly GenericRepository<Tatawwa3.Domain.Entities.Team> _teamRepository;
+        private readonly IGeneric<Tatawwa3.Domain.Entities.Team> _teamRepository;
         private readonly IMapper _mapper;
 
-        public CreateTeamCommandHandler(GenericRepository<Tatawwa3.Domain.Entities.Team> teamRepository, IMapper mapper)
+        public CreateTeamCommandHandler(IGeneric<Tatawwa3.Domain.Entities.Team> teamRepository, IMapper mapper)
         {
             _teamRepository = teamRepository;
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
         {
-            var team = _mapper.Map<Tatawwa3.Domain.Entities.Team>(request);
+            var team = _mapper.Map<Tatawwa3.Domain.Entities.Team>(request.Dto);
 
             team.Status = TeamStatus.Pending;
             team.CreationDate = DateTime.UtcNow;
@@ -37,7 +37,7 @@ namespace Tatawwa3.Application.CQRS.Team.Handlers
             _teamRepository.Add(team);
             await _teamRepository.SaveChangesAsync();
 
-            return team.Id;
+            return Unit.Value;
         }
 
 

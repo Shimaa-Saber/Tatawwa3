@@ -17,7 +17,6 @@ using Tatawwa3.Application;
 using Tatawwa3.Application;
 using Tatawwa3.Application.CQRS.Team.Commands;
 using Tatawwa3.Application.CQRS.Team.Handlers;
-using Tatawwa3.Application.CQRS.teams.Validators;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.MappingProfiles;
 using Tatawwa3.Application.Services;
@@ -162,6 +161,9 @@ builder.Services.AddSwaggerGen(swagger =>
 MapperService.Mapper = config.CreateMapper();
 //builder.Services.AddMediatR(typeof(IApplicationMarker).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
+builder.Services.AddScoped<IVolunteerOpportunityService, VolunteerOpportunityService>();
+
+
 
 var app = builder.Build();
 
