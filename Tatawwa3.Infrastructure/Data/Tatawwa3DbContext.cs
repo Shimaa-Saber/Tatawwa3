@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Domain.Entities;
+using Tatawwa3.Domain.Entities.MailSetting;
 using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.Infrastructure.Data
@@ -30,6 +31,9 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<VolunteerAchievement> VolunteerAchievements { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<JoinRequest> JoinRequests { get; set; }
+
+        public DbSet<PasswordResetToken> passwordResetTokens { get; set; }
+
 
 
 
