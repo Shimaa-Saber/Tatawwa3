@@ -95,5 +95,13 @@ namespace Tatawwa3.Application.Services
 
             return await query.ToListAsync();
         }
+        public async Task<List<GetTeamaDto>> GetTeamsByCategoryAsync(string categoryName)
+        {
+            var teams = _teamRepository.GetAllTeams()
+                .Where(t => t.Category != null && t.Category.Name == categoryName)
+                .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+
+            return await teams.ToListAsync();
+        }
     }
 }

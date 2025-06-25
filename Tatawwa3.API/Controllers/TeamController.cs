@@ -48,5 +48,16 @@ namespace Tatawwa3.API.Controllers
             var result = await _mediator.Send(new GetTeamsByNameQuery(name));
             return Ok(result);
         }
+
+        [HttpGet("by-category")]
+        public async Task<IActionResult> GetTeamsByCategory([FromQuery] string category)
+        {
+            if (string.IsNullOrWhiteSpace(category))
+                return BadRequest("Category is required.");
+
+            var query = new GetTeamsByCategoryQuery(category);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }
