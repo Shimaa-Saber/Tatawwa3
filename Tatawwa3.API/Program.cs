@@ -1,36 +1,30 @@
 ﻿using AutoMapper;
+using AutoMapper;
 using FleetTrackerSystem.Infrastructure.Seeder;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Diagnostics;
-
-using Tatawwa3.Application.CQRS.Team.Commands;
-using Tatawwa3.Application.CQRS.Team.Handlers;
-using Tatawwa3.Application.MappingProfiles;
-
 using System.Text;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.Application;
+using Tatawwa3.Application;
+using Tatawwa3.Application.CQRS.Team.Commands;
+using Tatawwa3.Application.CQRS.Team.Handlers;
+using Tatawwa3.Application.CQRS.teams.Validators;
 using Tatawwa3.Application.Interfaces;
+using Tatawwa3.Application.MappingProfiles;
 using Tatawwa3.Application.Services;
-
 using Tatawwa3.Domain.Entities;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Tatawwa3.Infrastructure.Repositorirs;
-
-using AutoMapper;
-using Tatawwa3.Application;
-
-
-
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Tatawwa3.Application.CQRS.teams.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,7 +62,13 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
 
 builder.Services.AddScoped<IOpportunity, OpportunityRepository>();
+
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+
+builder.Services.AddScoped<ITeamService, TeamService>();
+
+
+
 
 
 
@@ -92,6 +92,8 @@ var config = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile<VolunteerRegMapper>();
     cfg.AddProfile<OrganizatonRegMapper>();
+    cfg.AddProfile<TeamProfile>();
+
 
 });
 
@@ -117,6 +119,45 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+builder.Services.AddSwaggerGen(swagger =>
+{
+    //This is to generate the Default UI of Swagger Documentation    
+    swagger.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "ASP.NET 5 Web API",
+        Description = " ITI Projrcy",
+
+
+    });
+
+
+    // To Enable authorization using Swagger (JWT)    
+    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+    });
+    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                    new OpenApiSecurityScheme
+                    {
+                    Reference = new OpenApiReference
+                    {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                    }
+                    },
+                    new string[] {}
+                    }
+                    });
+});
+
 
 MapperService.Mapper = config.CreateMapper();
 //builder.Services.AddMediatR(typeof(IApplicationMarker).Assembly);
@@ -128,11 +169,11 @@ using (var scope = app.Services.CreateScope())
 {
 
     // Replace the problematic line with the correct configuration for MediatR
-   
+
     var roleManager = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<ApplicationRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<ApplicationUser>>();
     await RoleSeed.SeedAsync(roleManager);
-   // await UserSeeder.SeedAsync(userManager);
+    // await UserSeeder.SeedAsync(userManager);
 }
 
 

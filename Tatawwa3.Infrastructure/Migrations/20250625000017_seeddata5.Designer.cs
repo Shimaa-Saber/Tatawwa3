@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tatawwa3.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Tatawwa3.Infrastructure.Data;
 namespace Tatawwa3.Infrastructure.Migrations
 {
     [DbContext(typeof(Tatawwa3DbContext))]
-    partial class Tatawwa3DbContextModelSnapshot : ModelSnapshot
+    [Migration("20250625000017_seeddata5")]
+    partial class seeddata5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,17 +175,11 @@ namespace Tatawwa3.Infrastructure.Migrations
                     b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("AttachmentPath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("HasRequiredSkills")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -629,29 +626,6 @@ namespace Tatawwa3.Infrastructure.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.ToTable("Participations");
-                });
-
-            modelBuilder.Entity("Tatawwa3.Domain.Entities.Skills", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OpportunityID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OpportunityID");
-
-                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Tatawwa3.Domain.Entities.Team", b =>
@@ -1195,17 +1169,6 @@ namespace Tatawwa3.Infrastructure.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Tatawwa3.Domain.Entities.Skills", b =>
-                {
-                    b.HasOne("Tatawwa3.Domain.Entities.VolunteerOpportunity", "Opportunity")
-                        .WithMany("RequiredSkills")
-                        .HasForeignKey("OpportunityID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Opportunity");
-                });
-
             modelBuilder.Entity("Tatawwa3.Domain.Entities.Team", b =>
                 {
                     b.HasOne("Tatawwa3.Domain.Entities.Category", "Category")
@@ -1368,8 +1331,6 @@ namespace Tatawwa3.Infrastructure.Migrations
             modelBuilder.Entity("Tatawwa3.Domain.Entities.VolunteerOpportunity", b =>
                 {
                     b.Navigation("Applications");
-
-                    b.Navigation("RequiredSkills");
                 });
 #pragma warning restore 612, 618
         }

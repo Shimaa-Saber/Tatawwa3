@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CQRS\VolunteerOpportunities\Comands\**" />
+    <EmbeddedResource Remove="CQRS\VolunteerOpportunities\Comands\**" />
+    <None Remove="CQRS\VolunteerOpportunities\Comands\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 
     <PackageReference Include="AutoMapper.Collection" Version="11.0.0" />
     <PackageReference Include="FluentValidation" Version="8.1.0" />
@@ -29,10 +35,6 @@
   <ItemGroup>
     <Folder Include="CQRS\Auth\Queries\" />
 
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CQRS\VolunteerOpportunities\Comands\" />
   </ItemGroup>
 
   <ItemGroup>
