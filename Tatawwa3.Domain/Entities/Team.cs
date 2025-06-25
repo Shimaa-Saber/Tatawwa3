@@ -12,7 +12,7 @@ namespace Tatawwa3.Domain.Entities
     public class Team: BaseModel
     {
 
-        [ForeignKey("OrganizationProfile")]
+        [ForeignKey("Organization")]
         public string? OrganizationID { get; set; }
         [ForeignKey("Category")]
         public string? CategoryId { get; set; }

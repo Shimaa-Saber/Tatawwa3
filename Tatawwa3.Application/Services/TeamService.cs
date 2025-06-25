@@ -69,6 +69,15 @@ namespace Tatawwa3.Application.Services
             return dto;
         }
 
+        public async Task<List<GetTeamaDto>> GetTeamsByCityAsync(string city)
+        {
+            var teams = _teamRepository.GetAllTeams()
+        .Where(t => t.City == city)
+        .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+
+            return await teams.ToListAsync();
+        }
+
         public async Task SendJoinRequestAsync(JoinRequestDto dto, string volunteerId)
         {
             var newRequest = dto.Map<JoinRequest>();

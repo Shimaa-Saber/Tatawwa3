@@ -15,6 +15,7 @@ namespace Tatawwa3.Application.Dtos.Teams
         public string? OrganizationName { get; set; }
         public int? MaxMembers { get; set; }
         public string? City { get; set; }
-        
+        public string? CategoryName { get; set; }
+
     }
 }
