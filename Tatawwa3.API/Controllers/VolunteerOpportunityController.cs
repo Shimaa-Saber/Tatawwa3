@@ -48,5 +48,20 @@ namespace Tatawwa3.API.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOpportunityById(string id)
+        {
+            var query = new GetIdOpportunutyQuery(id);
+            var result = await mediator.Send(query);
+
+            //if (result == null)
+            //    return NotFound(); 
+
+            if (result == null)
+                return NotFound(new { message = "❌ الفرصة التطوعية غير موجودة." });
+
+            return Ok(result);
+        }
+
     }
 }

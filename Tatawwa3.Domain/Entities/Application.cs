@@ -22,5 +22,8 @@ namespace Tatawwa3.Domain.Entities
         public VolunteerOpportunity? Opportunity { get; set; }
         public VolunteerProfile? Volunteer { get; set; }
         public Participation? Participation { get; set; }
+        public bool HasRequiredSkills { get; set; }
+
+        public string? AttachmentPath { get; set; }
     }
 }
