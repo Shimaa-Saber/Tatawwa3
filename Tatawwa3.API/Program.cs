@@ -21,6 +21,7 @@ using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.MappingProfiles;
 using Tatawwa3.Application.Services;
 using Tatawwa3.Domain.Entities;
+using Tatawwa3.Domain.Entities.MailSetting;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Tatawwa3.Infrastructure.Repositorirs;
@@ -41,9 +42,16 @@ builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
 
 
 
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+
 builder.Services.AddScoped<ITeamService,TeamService>();
+
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Smtp"));
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
 
 
 
@@ -66,7 +74,16 @@ builder.Services.AddScoped<IOpportunity, OpportunityRepository>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 
 builder.Services.AddScoped<ITeamService, TeamService>();
+
 builder.Services.AddScoped<IRecommendedOpportunityService, RecommendedOpportunityService>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+
+
+
+
 
 
 

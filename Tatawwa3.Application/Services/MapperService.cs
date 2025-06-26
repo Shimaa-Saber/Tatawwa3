@@ -26,5 +26,12 @@ namespace Tatawwa3.Application.Services
         {
             return Mapper.Map<TDestination>(source);
         }
+
+        public static void Map<TSource, TDestination>(this TSource source, TDestination destination)
+        {
+            Mapper.Map(source, destination);
+        }
+        //دي عشان اخد source we destination
+
     }
 }

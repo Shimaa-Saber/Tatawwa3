@@ -27,6 +27,12 @@ namespace Tatawwa3.Domain.Entities
         public int RequiredVolunteers { get; set; }
         public OpportunityStatus Status { get; set; }
         public string? Image { get; set; }
+        public Gender? GenderRequirement { get; set; }
+        public string? Conditions { get; set; }
+        public bool? IsAttendanceTracked { get; set; }  
+        public bool? IsCertificateAvailable { get; set; }
+        public int? TotalHours { get; set; }
+
 
         public OrganizationProfile? Organization { get; set; }
         public Category? Category { get; set; }

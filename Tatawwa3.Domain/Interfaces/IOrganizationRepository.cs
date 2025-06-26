@@ -7,10 +7,7 @@ using Tatawwa3.Domain.Entities;
 
 namespace Tatawwa3.Domain.Interfaces
 {
-    public interface ITeamRepository:IGeneric<Team>
+   public interface IOrganizationRepository:IGeneric<OrganizationProfile>
     {
-
-        IQueryable<Team> GetAllTeams();
-
     }
 }
