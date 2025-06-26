@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries;
+using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 using Tatawwa3.Application.ViewModels;
 
 namespace Tatawwa3.API.Controllers
@@ -10,21 +11,20 @@ namespace Tatawwa3.API.Controllers
     [ApiController]
     public class HomePageController : ControllerBase
     {
-        public class VolunteerOpportunityController : ControllerBase
-        {
+        
             private readonly IMediator _mediator;
 
-            public VolunteerOpportunityController(IMediator mediator)
+            public HomePageController(IMediator mediator)
             {
                 _mediator = mediator;
             }
             [HttpGet("Opportunities")]
-            public async Task<ActionResult<List<VolunteerOpportunityVM>>> GetAll()
+            public async Task<ActionResult<List<OpportunityHomeDto>>> GetAll()
             {
                 var result = await _mediator.Send(new GetAllVolunteerOpportunitiesQuery());
                 return Ok(result);
             }
 
-        }
+        
     }
 }

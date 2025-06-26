@@ -38,5 +38,12 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .ToListAsync();
         }
 
+     
+        public IQueryable<VolunteerOpportunity> GetAllOpportunity()
+        {
+            return _context.VolunteerOpportunities.AsQueryable();
+        }
+
+       
     }
 }

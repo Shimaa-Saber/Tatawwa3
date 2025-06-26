@@ -12,5 +12,7 @@ namespace Tatawwa3.Domain.Interfaces
 
         Task<List<VolunteerOpportunity>> GetByLocation(string location);
         Task<List<VolunteerOpportunity>> GetByCategoryName(string categoryName);
+
+        public IQueryable<VolunteerOpportunity> GetAllOpportunity();
     }
 }

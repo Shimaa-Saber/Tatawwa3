@@ -9,5 +9,8 @@ namespace Tatawwa3.Domain.Interfaces
 {
     public interface ITeamRepository:IGeneric<Team>
     {
+
+        IQueryable<Team> GetAllTeams();
+
     }
 }

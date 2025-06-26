@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 //using Tatawwa3.Domain.Enums.Team;
 namespace Tatawwa3.Domain.Enums
 {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    //[JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TeamJoinPermission
     {
         Anyone=0,              

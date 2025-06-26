@@ -7,6 +7,8 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries;
+using Tatawwa3.Application.Dtos.VolunteerOpportunity;
+using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.ViewModels;
 using Tatawwa3.Domain.Entities;
 using Tatawwa3.Domain.Interfaces;
@@ -15,26 +17,18 @@ using Tatawwa3.Infrastructure.Repositorirs;
 
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunitiesss.Handlers
 {
-    public class GetAllVolunteerOpportunitiesHandler:IRequestHandler<GetAllVolunteerOpportunitiesQuery, List<VolunteerOpportunityVM>>
+    public class GetAllVolunteerOpportunitiesHandler : IRequestHandler<GetAllVolunteerOpportunitiesQuery, List<OpportunityHomeDto>>
     {
-        private readonly IGeneric<VolunteerOpportunity> _repository;
-        private readonly IMapper _mapper;
-    public GetAllVolunteerOpportunitiesHandler(IGeneric<VolunteerOpportunity> repository,
-            IMapper mapper)
+        private readonly IVolunteerOpportunityService _opportunityService;
+
+        public GetAllVolunteerOpportunitiesHandler(IVolunteerOpportunityService opportunityService)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _opportunityService = opportunityService;
         }
 
-        public async Task<List<VolunteerOpportunityVM>> Handle(GetAllVolunteerOpportunitiesQuery request, CancellationToken cancellationToken)
+        public async Task<List<OpportunityHomeDto>> Handle(GetAllVolunteerOpportunitiesQuery request, CancellationToken cancellationToken)
         {
-            var opportunities = await _repository.GetAll()
-                .Include(o => o.Category)
-                .Include(o => o.Organization)
-                .ToListAsync();
-
-            return _mapper.Map<List<VolunteerOpportunityVM>>(opportunities);
+            return await _opportunityService.GetAllOpportunitiesAsync();
         }
-
     }
 }
