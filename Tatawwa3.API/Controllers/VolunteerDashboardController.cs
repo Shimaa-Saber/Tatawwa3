@@ -21,5 +21,15 @@ namespace Tatawwa3.API.Controllers
             var result = await _mediator.Send(new GetVolunteerDashboardQuery(volunteerId));
             return Ok(result);
         }
+       
+        
+
+            [HttpGet("recommended")]
+            public async Task<IActionResult> GetRecommended([FromQuery] string volunteerId)
+            {
+                var result = await _mediator.Send(new GetRecommendedOpportunitiesQuery(volunteerId));
+                return Ok(result);
+            }
+        }
     }
-}
+

@@ -19,7 +19,8 @@ namespace Tatawwa3.Domain.Entities
         public float Rating { get; set; }
         public bool IsVerified { get; set; }
 
-      
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
         public ApplicationUser? User { get; set; }
     }
 }

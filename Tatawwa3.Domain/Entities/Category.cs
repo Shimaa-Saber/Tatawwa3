@@ -14,5 +14,6 @@ namespace Tatawwa3.Domain.Entities
         public string Icon { get; set; }
 
         public ICollection<VolunteerOpportunity>? Opportunities { get; set; }
+        public ICollection<VolunteerProfile> VolunteerProfiles { get; set; }
     }
 }
