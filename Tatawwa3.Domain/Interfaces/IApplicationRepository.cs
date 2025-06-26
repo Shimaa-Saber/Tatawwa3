@@ -9,6 +9,6 @@ namespace Tatawwa3.Domain.Interfaces
 {
     public interface IApplicationRepository:IGeneric<Application>
     {
-        
+        IQueryable<Application> GetApplicationsByVolunteerId(string volunteerId);
     }
 }
