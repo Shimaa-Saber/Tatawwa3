@@ -36,6 +36,7 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<PasswordResetToken> passwordResetTokens { get; set; }
+        public DbSet<VolunteerInvitation> VolunteerInvitations {  get; set; }
 
 
 
