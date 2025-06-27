@@ -11,6 +11,7 @@ namespace Tatawwa3.Domain.Entities
 {
     public class ApplicationUser: IdentityUser
     {
+        public string ?FullName { get; set; }
         public string? NationalID { get; set; }
       
         public string City { get; set; }
@@ -21,5 +22,6 @@ namespace Tatawwa3.Domain.Entities
        
         public VolunteerProfile? VolunteerProfile { get; set; }
         public OrganizationProfile? OrganizationProfile { get; set; }
+     
     }
 }

@@ -47,6 +47,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddScoped<ITeamService,TeamService>();
+builder.Services.AddScoped<IApplicationService,VolunteerMangmentService>();
+
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Smtp"));
 builder.Services.AddScoped<IEmailService, EmailService>();
