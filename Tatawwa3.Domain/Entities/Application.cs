@@ -13,9 +13,10 @@ namespace Tatawwa3.Domain.Entities
        
         [ForeignKey("Opportunity")]
         public string OpportunityID { get; set; }
-        [ForeignKey("VolunteerProfile")]
+        [ForeignKey("Volunteer")]
         public string VolunteerID { get; set; }
         public ApplicationStatus Status { get; set; }
+        public string? Note { get; set; }
         public DateTime ApplicationDate { get; set; }
         public string MotivationLetter { get; set; }
 
@@ -25,5 +26,6 @@ namespace Tatawwa3.Domain.Entities
         public bool HasRequiredSkills { get; set; }
 
         public string? AttachmentPath { get; set; }
+        
     }
 }

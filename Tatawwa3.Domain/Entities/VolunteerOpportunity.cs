@@ -39,6 +39,7 @@ namespace Tatawwa3.Domain.Entities
         public Team ?Team { get; set; }
         public ICollection<Application> ?Applications { get; set; }
         public ICollection<Skills>? RequiredSkills { get; set; }
+        public ICollection<Review> Reviews { get; set; }
 
     }
 }

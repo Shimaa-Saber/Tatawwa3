@@ -11,5 +11,12 @@ namespace Tatawwa3.Application.Interfaces
     {
         Task<TeamDetailsDto> GetTeamDetailsAsync(string teamId);
         Task SendJoinRequestAsync(JoinRequestDto dto, string volunteerId);
+
+        Task<List<GetTeamaDto>> GetAllTeamsAsync();
+
+        Task<List<GetTeamaDto>> GetTeamsByCityAsync(string city);
+
+        Task<List<GetTeamaDto>> GetTeamsByNameAsync(string name);
+        Task<List<GetTeamaDto>> GetTeamsByCategoryAsync(string categoryName);
     }
 }

@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediatR;
+using Tatawwa3.Application.Dtos.Teams;
 using Tatawwa3.Application.ViewModels;
 using Tatawwa3.Domain.Entities;
-
+using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries
 {
-    public class GetAllVolunteerOpportunitiesQuery : IRequest<List<VolunteerOpportunityVM>>
+    public class GetAllVolunteerOpportunitiesQuery : IRequest<List<OpportunityHomeDto>>
     {
-       //لو حبيت بعدين اعمل فلترة 
-        //public string? City { get; set; }
-        //public DateTime? FromDate { get; set; }
+       
     }
 }

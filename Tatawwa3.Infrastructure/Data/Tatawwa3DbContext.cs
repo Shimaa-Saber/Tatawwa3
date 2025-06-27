@@ -32,8 +32,12 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<JoinRequest> JoinRequests { get; set; }
 
+
+        public DbSet<Review> Reviews { get; set; }
+
         public DbSet<PasswordResetToken> passwordResetTokens { get; set; }
         public DbSet<VolunteerInvitation> VolunteerInvitations {  get; set; }
+
 
 
 

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
@@ -19,28 +21,43 @@ namespace Tatawwa3.Application.Services
         private readonly IGeneric<Team> _teamRepo;
         private readonly IGeneric<JoinRequest> _joinRequestRepo;
         private readonly Tatawwa3DbContext _tatawwa3DbContext;
+        private readonly ITeamRepository _teamRepository;
+        private readonly IMapper _mapper;
 
         public TeamService(
             IGeneric<Team> teamRepo,
             IGeneric<JoinRequest> joinRequestRepo,
-            Tatawwa3DbContext tatawwa3DbContext
+            Tatawwa3DbContext tatawwa3DbContext,
+            ITeamRepository teamRepository,
+            IMapper mapper
 
         )
         {
             _teamRepo = teamRepo;
             _joinRequestRepo = joinRequestRepo;
             _tatawwa3DbContext = tatawwa3DbContext;
+            _teamRepository = teamRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<List<GetTeamaDto>> GetAllTeamsAsync()
+        {
+            var query = _teamRepository.GetAllTeams()
+              .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+            return await query.ToListAsync();
         }
 
         public async Task<TeamDetailsDto> GetTeamDetailsAsync(string teamId)
         {
 
             var team = await _tatawwa3DbContext.Teams
+           .Include(t => t.Category)            
+           .Include(t => t.Organization)        
            .Include(t => t.Members)
            .ThenInclude(m => m.Volunteer)
-            .ThenInclude(v => v.User)
-           .Include(t => t.Opportunities)
-            .FirstOrDefaultAsync(t => t.Id == teamId);
+               .ThenInclude(v => v.User)
+       .Include(t => t.Opportunities)
+       .FirstOrDefaultAsync(t => t.Id == teamId);
 
             if (team == null)
                 throw new Exception("Team not found");
@@ -54,6 +71,15 @@ namespace Tatawwa3.Application.Services
             return dto;
         }
 
+        public async Task<List<GetTeamaDto>> GetTeamsByCityAsync(string city)
+        {
+            var teams = _teamRepository.GetAllTeams()
+        .Where(t => t.City == city)
+        .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+
+            return await teams.ToListAsync();
+        }
+
         public async Task SendJoinRequestAsync(JoinRequestDto dto, string volunteerId)
         {
             var newRequest = dto.Map<JoinRequest>();
@@ -62,6 +88,22 @@ namespace Tatawwa3.Application.Services
 
             _joinRequestRepo.Add(newRequest);
             await _joinRequestRepo.SaveChangesAsync();
+        }
+        public async Task<List<GetTeamaDto>> GetTeamsByNameAsync(string name)
+        {
+            var query = _teamRepository.GetAllTeams()
+                .Where(t => t.Name.Contains(name)) 
+                .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+
+            return await query.ToListAsync();
+        }
+        public async Task<List<GetTeamaDto>> GetTeamsByCategoryAsync(string categoryName)
+        {
+            var teams = _teamRepository.GetAllTeams()
+                .Where(t => t.Category != null && t.Category.Name == categoryName)
+                .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
+
+            return await teams.ToListAsync();
         }
     }
 }

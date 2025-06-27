@@ -18,7 +18,6 @@ using Tatawwa3.Application;
 using Tatawwa3.Application;
 using Tatawwa3.Application.CQRS.Team.Commands;
 using Tatawwa3.Application.CQRS.Team.Handlers;
-using Tatawwa3.Application.CQRS.teams.Validators;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.MappingProfiles;
 using Tatawwa3.Application.Services;
@@ -47,8 +46,14 @@ builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.AddScoped<ITeamService,TeamService>();
+builder.Services.AddScoped<IApplicationService,VolunteerMangmentService>();
+
+
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Smtp"));
 builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 
 
@@ -72,11 +77,15 @@ builder.Services.AddScoped<IOpportunity, OpportunityRepository>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 
 builder.Services.AddScoped<ITeamService, TeamService>();
+
+builder.Services.AddScoped<IRecommendedOpportunityService, RecommendedOpportunityService>();
+
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
 builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
 builder.Services.AddScoped<IVolunteerInvitationReprosatry, VolunteerInvitationReprosatry>();
+
 
 
 
@@ -185,6 +194,11 @@ builder.Services.AddSwaggerGen(swagger =>
 MapperService.Mapper = config.CreateMapper();
 //builder.Services.AddMediatR(typeof(IApplicationMarker).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
+builder.Services.AddScoped<IVolunteerOpportunityService, VolunteerOpportunityService>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+
 
 var app = builder.Build();
 

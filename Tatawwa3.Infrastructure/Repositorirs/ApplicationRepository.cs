@@ -9,10 +9,18 @@ using Tatawwa3.Infrastructure.Data;
 
 namespace Tatawwa3.Infrastructure.Repositorirs
 {
-    public class ApplicationRepository:GenericRepository<Application>, IApplicationRepository
+    public class ApplicationRepository : GenericRepository<Application>, IApplicationRepository
     {
+        private readonly Tatawwa3DbContext _context;
         public ApplicationRepository(Tatawwa3DbContext context) : base(context)
         {
+            _context = context;
+        }
+
+        public IQueryable<Application> GetApplicationsByVolunteerId(string volunteerId)
+        {
+       
+            return _context.Applications.Where(a => a.Id == volunteerId).AsQueryable();
         }
     }
 }
