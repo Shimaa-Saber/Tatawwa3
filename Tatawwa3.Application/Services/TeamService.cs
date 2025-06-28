@@ -51,8 +51,8 @@ namespace Tatawwa3.Application.Services
         {
 
             var team = await _tatawwa3DbContext.Teams
-           .Include(t => t.Category)            
-           .Include(t => t.Organization)        
+           .Include(t => t.Category)
+           .Include(t => t.Organization)
            .Include(t => t.Members)
            .ThenInclude(m => m.Volunteer)
                .ThenInclude(v => v.User)
@@ -92,7 +92,7 @@ namespace Tatawwa3.Application.Services
         public async Task<List<GetTeamaDto>> GetTeamsByNameAsync(string name)
         {
             var query = _teamRepository.GetAllTeams()
-                .Where(t => t.Name.Contains(name)) 
+                .Where(t => t.Name.Contains(name))
                 .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
 
             return await query.ToListAsync();
@@ -105,5 +105,44 @@ namespace Tatawwa3.Application.Services
 
             return await teams.ToListAsync();
         }
+
+        public async Task DEleteVolunteerTeamAsync(string Teamid)
+        {
+            var opportunities = _tatawwa3DbContext.VolunteerOpportunities.Where(O => O.TeamId == Teamid);
+            _tatawwa3DbContext.VolunteerOpportunities.RemoveRange(opportunities);
+
+
+            // حذف أعضاء الفريق المرتبطين
+            var members = _tatawwa3DbContext.TeamMembers
+                .Where(m => m.TeamID == Teamid);
+            _tatawwa3DbContext.TeamMembers.RemoveRange(members);
+
+
+            var team = await GetTeamByIdAsync(Teamid);
+            _tatawwa3DbContext.Teams.Remove(team);
+
+            await _tatawwa3DbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateTeamAsync(UpdateTeamDto updateTeam, string teamId)
+        {
+            var team = await GetTeamByIdAsync(teamId);
+            _mapper.Map<UpdateTeamDto>(team);
+
+            _teamRepo.UpdateByEntity(team);
+
+        }
+
+        public async Task<Team> GetTeamByIdAsync(string teamId)
+        {
+            var team = await _tatawwa3DbContext.Teams.FindAsync(teamId);
+
+            if (team == null)
+                throw new Exception("Team not found");
+
+            return team;
+        }
+
+       
     }
 }
