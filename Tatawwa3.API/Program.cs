@@ -38,7 +38,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(GenericRepository<>)); // لو بتستخدمه مباشر
+builder.Services.AddScoped(typeof(GenericRepository<>)); 
 
 builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
 
@@ -203,7 +203,7 @@ builder.Services.AddScoped<IVolunteerOpportunityService, VolunteerOpportunitySer
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
-
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 var app = builder.Build();
 

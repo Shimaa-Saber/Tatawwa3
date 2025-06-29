@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.Dtos.Teams;
+using Tatawwa3.Domain.Entities;
 
 namespace Tatawwa3.Application.Interfaces
 {
@@ -18,5 +19,17 @@ namespace Tatawwa3.Application.Interfaces
 
         Task<List<GetTeamaDto>> GetTeamsByNameAsync(string name);
         Task<List<GetTeamaDto>> GetTeamsByCategoryAsync(string categoryName);
+      
+        Task  DEleteVolunteerTeamAsync(string Teamid);
+        Task UpdateTeamAsync(UpdateTeamDto updateTeam,string teamId);
+
+        Task<Team> GetTeamByIdAsync(string teamId);
+
+    
+
+      
+
+
+
     }
 }
