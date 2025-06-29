@@ -86,6 +86,14 @@ namespace Tatawwa3.Infrastructure.Repositorirs
             return await _tatawwa3DbContext.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
+        public Task<int> CountAsync()
+        {
+            return _tatawwa3DbContext.Set<T>().CountAsync();
+        }
 
+        public Task<int> CountAsync(Expression<Func<T, bool>> predicate)
+        {
+            return _tatawwa3DbContext.Set<T>().CountAsync(predicate);
+        }
     }
 }

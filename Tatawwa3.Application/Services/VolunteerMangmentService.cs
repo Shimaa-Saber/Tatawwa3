@@ -44,6 +44,7 @@ namespace Tatawwa3.Application.Services
                 return false;
 
             application.Status = ApplicationStatus.Accepted;
+            _context.Applications.Update(application);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -55,6 +56,8 @@ namespace Tatawwa3.Application.Services
                 return false;
 
             application.Status = ApplicationStatus.Rejected;
+
+            _context.Applications.Update(application);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -102,10 +105,15 @@ namespace Tatawwa3.Application.Services
 
         public async Task<List<ApplicationDto>> GetApplicationsByStatusAsync(string status)
         {
+            if (!Enum.TryParse<ApplicationStatus>(status, true, out var statusEnum))
+            {
+                return new List<ApplicationDto>(); 
+            }
+
             var apps = await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
-                .Where(a => a.Status.ToString().ToLower() == status.ToLower())
+                .Where(a => a.Status == statusEnum)
                 .Select(a => new ApplicationDto
                 {
                     VolunteerId = a.VolunteerID,
@@ -117,6 +125,7 @@ namespace Tatawwa3.Application.Services
 
             return apps;
         }
+
         public async Task<List<ApplicationDto>> GetApplicationsByDateAsync(DateTime date)
         {
             return await _context.Applications

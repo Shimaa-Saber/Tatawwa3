@@ -13,11 +13,20 @@ namespace Tatawwa3.Domain.Entities
 
         [ForeignKey("Participation")]
         public string ParticipationID { get; set; }
-        public string CertificateNumber { get; set; }
-        public DateTime IssueDate { get; set; }
-        public float TotalHours { get; set; }
+
+        [ForeignKey("Volunteer")]
+        public string VolunteerID { get; set; }
+        public string? CertificateNumber { get; set; }
+        public string Title { get; set; }                     
+        public string Issuer { get; set; }                   
+        public DateTime IssueDate { get; set; }                
+        public float TotalHours { get; set; }                  
+        public string ?FileUrl { get; set; }
+        
+       
         public bool IsVerified { get; set; }
-        public string VerificationCode { get; set; }
+        public string? VerificationCode { get; set; }
+        public VolunteerProfile ?Volunteer { get; set; }
 
         public Participation ?Participation { get; set; }
     }

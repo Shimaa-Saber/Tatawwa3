@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
+using Tatawwa3.API.Mapper.Volunteer;
 using Tatawwa3.Application;
 using Tatawwa3.Application;
 using Tatawwa3.Application.CQRS.Team.Commands;
@@ -37,7 +38,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(GenericRepository<>)); // لو بتستخدمه مباشر
+builder.Services.AddScoped(typeof(GenericRepository<>)); 
 
 builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
 
@@ -46,6 +47,9 @@ builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IVolunteerService, VolunteerService>();
+builder.Services.AddScoped<IPdfGenerator, PdfGenerator>();
+
 
 builder.Services.AddScoped<ITeamService,TeamService>();
 builder.Services.AddScoped<IApplicationService,VolunteerMangmentService>();
@@ -125,6 +129,7 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<VolunteerRegMapper>();
     cfg.AddProfile<OrganizatonRegMapper>();
     cfg.AddProfile<TeamProfile>();
+    cfg.AddProfile<RecommendedOpportunityProfile>();
 
 
 });
@@ -198,7 +203,7 @@ builder.Services.AddScoped<IVolunteerOpportunityService, VolunteerOpportunitySer
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
-
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 var app = builder.Build();
 

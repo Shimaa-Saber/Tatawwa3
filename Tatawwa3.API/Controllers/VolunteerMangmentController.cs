@@ -53,9 +53,9 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpGet("profile")]
-        public async Task<IActionResult> GetProfile()
+        public async Task<IActionResult> GetProfile(string userId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+           // var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized("User ID not found in token.");
 

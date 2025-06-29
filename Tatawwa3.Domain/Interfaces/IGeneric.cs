@@ -21,5 +21,8 @@ namespace Tatawwa3.Domain.Interfaces
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
         Task<int> SaveChangesAsync();
+
+        Task<int> CountAsync();
+        Task<int> CountAsync(Expression<Func<T, bool>> predicate);
     }
 }
