@@ -11,8 +11,17 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 {
 public class OrganizationRepository:GenericRepository<OrganizationProfile>, IOrganizationRepository
     {
+       
+            private readonly Tatawwa3DbContext _context;
+
         public OrganizationRepository(Tatawwa3DbContext context) : base(context)
         {
+            _context = context;
         }
+            public IQueryable<OrganizationProfile> GetAll()
+        {
+            return _context.OrganizationProfiles.AsQueryable();
+        }
+    
     }
 }

@@ -86,7 +86,8 @@ namespace Tatawwa3.Infrastructure.Data
                 UserID = orgUserId,
                 OrganizationName = "Seeded Org",
                 CommercialRegistration = "REG123456",
-                IsVerified = true
+                IsVerified = true,
+                City = "minya"
             });
 
 

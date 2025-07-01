@@ -39,7 +39,7 @@ builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(GenericRepository<>)); 
 
 builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
-
+builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 
 
 

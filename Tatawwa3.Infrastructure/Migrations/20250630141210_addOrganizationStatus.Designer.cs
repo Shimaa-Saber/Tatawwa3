@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tatawwa3.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Tatawwa3.Infrastructure.Data;
 namespace Tatawwa3.Infrastructure.Migrations
 {
     [DbContext(typeof(Tatawwa3DbContext))]
-    partial class Tatawwa3DbContextModelSnapshot : ModelSnapshot
+    [Migration("20250630141210_addOrganizationStatus")]
+    partial class addOrganizationStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,8 +326,8 @@ namespace Tatawwa3.Infrastructure.Migrations
                             Id = "org-user-1",
                             AccessFailedCount = 0,
                             City = "Cairo",
-                            ConcurrencyStamp = "c679f10f-6049-43b5-b4b6-ba6986765a9d",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(7769),
+                            ConcurrencyStamp = "8368406b-5902-47c9-b424-50d012e5275f",
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6584),
                             Email = "org@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -335,7 +338,7 @@ namespace Tatawwa3.Infrastructure.Migrations
                             PhoneNumber = "01000000000",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "76a9386c-16fd-4270-87f1-7578c1cc23a6",
+                            SecurityStamp = "e5787dad-f1dd-4b33-9cda-7b952713a5dd",
                             TwoFactorEnabled = false,
                             UserName = "org@example.com"
                         },
@@ -344,8 +347,8 @@ namespace Tatawwa3.Infrastructure.Migrations
                             Id = "vol-user-1",
                             AccessFailedCount = 0,
                             City = "Assiut",
-                            ConcurrencyStamp = "b13e63df-991a-49f4-851e-a5e091a36043",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(7893),
+                            ConcurrencyStamp = "7a617492-4210-4958-9e93-46bde47ec244",
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6689),
                             Email = "volunteer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -356,7 +359,7 @@ namespace Tatawwa3.Infrastructure.Migrations
                             PhoneNumber = "01111111111",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "a8aaa5f1-a5c7-4366-a3bf-b5cc661176c9",
+                            SecurityStamp = "8193ae8c-31b8-405b-b385-873f3afc5919",
                             TwoFactorEnabled = false,
                             UserName = "volunteer@example.com"
                         });
@@ -440,7 +443,7 @@ namespace Tatawwa3.Infrastructure.Migrations
                         new
                         {
                             Id = "cat-edu-1",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(7996),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6787),
                             Description = "Educational programs and initiatives",
                             Icon = "education.png",
                             IsDeleted = false,
@@ -568,10 +571,6 @@ namespace Tatawwa3.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CommercialRegistration")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -612,9 +611,8 @@ namespace Tatawwa3.Infrastructure.Migrations
                         new
                         {
                             Id = "org-profile-1",
-                            City = "minya",
                             CommercialRegistration = "REG123456",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(7843),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6642),
                             IsDeleted = false,
                             IsVerified = true,
                             OrganizationName = "Seeded Org",
@@ -784,8 +782,8 @@ namespace Tatawwa3.Infrastructure.Migrations
                             Id = "team-1",
                             CategoryId = "cat-edu-1",
                             City = "Cairo",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8045),
-                            CreationDate = new DateTime(2025, 6, 15, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8036),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6834),
+                            CreationDate = new DateTime(2025, 6, 15, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6823),
                             Description = "Team responsible for organizing educational initiatives.",
                             InternalNotes = "Priority team for large campaigns",
                             IsDeleted = false,
@@ -840,9 +838,9 @@ namespace Tatawwa3.Infrastructure.Migrations
                         new
                         {
                             Id = "member-1",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8079),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6869),
                             IsDeleted = false,
-                            JoinDate = new DateTime(2025, 6, 25, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8077),
+                            JoinDate = new DateTime(2025, 6, 25, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6868),
                             Role = "Leader",
                             TeamID = "team-1",
                             VolunteerID = "vol-user-1"
@@ -972,15 +970,15 @@ namespace Tatawwa3.Infrastructure.Migrations
                         {
                             Id = "opp-1",
                             CategoryID = "cat-edu-1",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8116),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6903),
                             Description = "Help young children learn basic English skills.",
-                            EndDate = new DateTime(2025, 8, 9, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8115),
+                            EndDate = new DateTime(2025, 8, 9, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6901),
                             Image = "english-teaching.png",
                             IsDeleted = false,
                             Location = "Cairo",
                             OrganizationID = "org-user-1",
                             RequiredVolunteers = 10,
-                            StartDate = new DateTime(2025, 7, 10, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8113),
+                            StartDate = new DateTime(2025, 7, 10, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6900),
                             Status = 1,
                             Title = "Teaching Kids English"
                         },
@@ -988,15 +986,15 @@ namespace Tatawwa3.Infrastructure.Migrations
                         {
                             Id = "opp-2",
                             CategoryID = "cat-edu-1",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8121),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6909),
                             Description = "Lead a reading club for teenagers.",
-                            EndDate = new DateTime(2025, 7, 25, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8119),
+                            EndDate = new DateTime(2025, 7, 25, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6907),
                             Image = "reading-club.png",
                             IsDeleted = false,
                             Location = "Assiut",
                             OrganizationID = "org-user-1",
                             RequiredVolunteers = 5,
-                            StartDate = new DateTime(2025, 7, 5, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8118),
+                            StartDate = new DateTime(2025, 7, 5, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6907),
                             Status = 1,
                             Title = "Reading Club Facilitator"
                         },
@@ -1004,15 +1002,15 @@ namespace Tatawwa3.Infrastructure.Migrations
                         {
                             Id = "opp-3",
                             CategoryID = "cat-1",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8124),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6912),
                             Description = "Teach basic coding to children in underserved communities.",
-                            EndDate = new DateTime(2025, 7, 20, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8123),
+                            EndDate = new DateTime(2025, 7, 20, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6911),
                             Image = "coding-kids.png",
                             IsDeleted = false,
                             Location = "Jeddah",
                             OrganizationID = "org-user-1",
                             RequiredVolunteers = 15,
-                            StartDate = new DateTime(2025, 7, 10, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(8122),
+                            StartDate = new DateTime(2025, 7, 10, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6910),
                             Status = 1,
                             TeamId = "team-1",
                             Title = "Coding for Kids"
@@ -1074,7 +1072,7 @@ namespace Tatawwa3.Infrastructure.Migrations
                         new
                         {
                             Id = "vol-user-1",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(7936),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6736),
                             Interests = "[\"Education\",\"Health\"]",
                             IsDeleted = false,
                             IsVerified = false,
@@ -1085,7 +1083,7 @@ namespace Tatawwa3.Infrastructure.Migrations
                         new
                         {
                             Id = "vol_prof2",
-                            CreatedAt = new DateTime(2025, 6, 30, 15, 23, 10, 322, DateTimeKind.Utc).AddTicks(7967),
+                            CreatedAt = new DateTime(2025, 6, 30, 14, 12, 6, 761, DateTimeKind.Utc).AddTicks(6762),
                             Interests = "[\"Education\",\"Health\"]",
                             IsDeleted = false,
                             IsVerified = false,

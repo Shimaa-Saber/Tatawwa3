@@ -9,5 +9,6 @@ namespace Tatawwa3.Domain.Interfaces
 {
    public interface IOrganizationRepository:IGeneric<OrganizationProfile>
     {
+        public IQueryable<OrganizationProfile> GetAll();
     }
 }
