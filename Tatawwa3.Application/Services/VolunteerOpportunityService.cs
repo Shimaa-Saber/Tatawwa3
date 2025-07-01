@@ -30,6 +30,8 @@ namespace Tatawwa3.Application.Services
                 .ProjectTo<OpportunityHomeDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
+
+
     }
 }
 
