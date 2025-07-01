@@ -16,6 +16,7 @@ namespace Tatawwa3.Domain.Entities
         public string UserID { get; set; }
         public string OrganizationName { get; set; }
         public string CommercialRegistration { get; set; }
+        public string? ProfilePictureUrl { get; set; }
 
 
         public OrganizationTypeEnum OrganizationType { get; set; }

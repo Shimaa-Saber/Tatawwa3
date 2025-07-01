@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ namespace Tatawwa3.Application.Dtos.AuthDtos
         public string City { get; set; }
         public string Password { get; set; }
         public string CommercialRegistration { get; set; }
-      
+
+        public IFormFile? ProfileImage { get; set; }
+
     }
 }
