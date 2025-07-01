@@ -35,7 +35,10 @@
 
   <ItemGroup>
     <Folder Include="CQRS\Auth\Queries\" />
+
+
     <Folder Include="CQRS\VolunteerAttendanceAndCert\Commands\" />
+
 
   </ItemGroup>
 
