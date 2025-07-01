@@ -41,7 +41,7 @@ builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(GenericRepository<>)); 
 
 builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
-
+builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 
 
 
@@ -57,6 +57,8 @@ builder.Services.AddScoped<IApplicationService,VolunteerMangmentService>();
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Smtp"));
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IVolunteerOpportunityRepository, VolunteerOpportunityRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 
