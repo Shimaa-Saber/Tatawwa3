@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Domain.Enums;
+
+
+
 namespace Tatawwa3.Domain.Entities
 {
     public class OrganizationProfile: BaseModel
@@ -16,7 +19,17 @@ namespace Tatawwa3.Domain.Entities
         public string UserID { get; set; }
         public string OrganizationName { get; set; }
         public string CommercialRegistration { get; set; }
+
         public string City { get; set; }
+
+
+
+        public OrganizationTypeEnum OrganizationType { get; set; }
+        public bool IsDeactivationRequested { get; set; } = false;
+
+
+
+
         public bool IsVerified { get; set; }
 
         public ApplicationUser? User { get; set; }

@@ -20,7 +20,7 @@ namespace Tatawwa3.API.Controllers
         {
             this.mediator = mediator;
         }
-        [HttpGet]
+        [HttpGet("Get All")]
 
         public async Task<IActionResult> GetallOpportunites()
         {
@@ -50,7 +50,7 @@ namespace Tatawwa3.API.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("Detailes{id}")]
         public async Task<IActionResult> GetOpportunityById(string id)
         {
             var query = new GetIdOpportunutyQuery(id);
@@ -65,7 +65,7 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Update{id}")]
         public async Task<IActionResult> UpdateOpportunity(string id, [FromBody] updateOportunityCommand command)
         {
             if (id != command.updateOportunuityDto.Id)
@@ -83,7 +83,7 @@ namespace Tatawwa3.API.Controllers
             });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Remove{id}")]
 
         public async Task<IActionResult> deleteOpportunity(string id)
         {
@@ -97,7 +97,7 @@ namespace Tatawwa3.API.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> AddOpportunity([FromBody] AddOpportunityCommand command)
         {
             if (!ModelState.IsValid)

@@ -22,6 +22,7 @@
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="QuestPDF" Version="2025.6.0-rc0" />
 
   </ItemGroup>
 
@@ -34,7 +35,10 @@
 
   <ItemGroup>
     <Folder Include="CQRS\Auth\Queries\" />
-    <Folder Include="CQRS\OrganizationProfile-1\command\" />
+
+
+    <Folder Include="CQRS\VolunteerAttendanceAndCert\Commands\" />
+
 
   </ItemGroup>
 

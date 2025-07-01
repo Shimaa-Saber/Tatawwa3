@@ -12,6 +12,7 @@ namespace Tatawwa3.Domain.Entities
     {
     
         [ForeignKey("User")]
+        
         public string UserID { get; set; }
         public string? Skills { get; set; } 
         public string Interests { get; set; } 
@@ -22,5 +23,10 @@ namespace Tatawwa3.Domain.Entities
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
         public ApplicationUser? User { get; set; }
+
+        public ICollection<Participation> ?Participations { get; set; }
+        public ICollection<Certificate>? Certificates { get; set; }
+
+
     }
 }

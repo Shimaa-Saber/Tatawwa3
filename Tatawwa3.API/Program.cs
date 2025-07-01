@@ -12,7 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
+using Tatawwa3.API.Mapper.Volunteer;
 using Tatawwa3.Application;
 using Tatawwa3.Application;
 using Tatawwa3.Application.CQRS.Team.Commands;
@@ -45,11 +47,18 @@ builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IVolunteerService, VolunteerService>();
+builder.Services.AddScoped<IPdfGenerator, PdfGenerator>();
+
 
 builder.Services.AddScoped<ITeamService,TeamService>();
+builder.Services.AddScoped<IApplicationService,VolunteerMangmentService>();
+
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Smtp"));
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IVolunteerOpportunityRepository, VolunteerOpportunityRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 
@@ -80,6 +89,11 @@ builder.Services.AddScoped<IRecommendedOpportunityService, RecommendedOpportunit
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
+builder.Services.AddScoped<IVolunteerInvitationReprosatry, VolunteerInvitationReprosatry>();
+builder.Services.AddScoped<ICertificateService, CertificateService>();
+
+
 
 
 
@@ -104,12 +118,21 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+////////عشان يحول enm to string
+
 
 var config = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile<VolunteerRegMapper>();
     cfg.AddProfile<OrganizatonRegMapper>();
     cfg.AddProfile<TeamProfile>();
+    cfg.AddProfile<RecommendedOpportunityProfile>();
 
 
 });

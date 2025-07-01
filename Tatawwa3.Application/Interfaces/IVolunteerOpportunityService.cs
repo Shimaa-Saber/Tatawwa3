@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tatawwa3.Application.CQRS.VolunteerMangement.Queries;
+using Tatawwa3.Application.Dtos.VolunteerMangement;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 using Tatawwa3.Domain.Interfaces;
 

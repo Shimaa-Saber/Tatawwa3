@@ -13,8 +13,10 @@ using Tatawwa3.Infrastructure.Data;
 namespace Tatawwa3.Infrastructure.Repositorirs
 {
     public class TeamRepository: GenericRepository<Team>, ITeamRepository
+
     {
         private readonly Tatawwa3DbContext _context;
+
 
         public TeamRepository(Tatawwa3DbContext context):base(context)
         {

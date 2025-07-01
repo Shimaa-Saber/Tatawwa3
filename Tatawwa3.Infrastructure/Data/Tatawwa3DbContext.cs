@@ -36,6 +36,7 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<PasswordResetToken> passwordResetTokens { get; set; }
+        public DbSet<VolunteerInvitation> VolunteerInvitations {  get; set; }
 
 
 
@@ -119,6 +120,15 @@ namespace Tatawwa3.Infrastructure.Data
                 IsVerified = false
             });
 
+            //modelBuilder.Entity<VolunteerProfile>().HasData(new VolunteerProfile
+            //{
+            //    Id ="Vol-profile2",
+            //    UserID = "1b5b5731-bcf1-4178-87ad-cf43dac0bbeb",
+            //    TotalHours = 6,
+            //    Rating = 9,
+            //    Interests = "[\"برمجة\",رسم\"\"]",
+            //    IsVerified = false
+            //});
             modelBuilder.Entity<VolunteerProfile>().HasData(new VolunteerProfile
             {
                 Id = "vol_prof2",
@@ -221,8 +231,167 @@ namespace Tatawwa3.Infrastructure.Data
                 CategoryID = "cat-1",
                 OrganizationID = "org-user-1",
                 TeamId = "team-1"
-            }
+            },
+             new VolunteerOpportunity
+             {
+                 Id = "opp-4",
+                 Title = "programing",
+                 Description = "Teach basic coding to adults in underserved communities.",
+                 Location = "Assiut",
+                 StartDate = DateTime.UtcNow.AddDays(10),
+                 EndDate = DateTime.UtcNow.AddDays(20),
+                 RequiredVolunteers = 15,
+                 Status = OpportunityStatus.Published,
+                 Image = "coding-kids.png",
+                 CreatedAt = DateTime.UtcNow,
+                 CategoryID = "cat-edu-1",
+                 OrganizationID = "org-user-1",
+                 TeamId = "cf0cf8e1-5a62-4315-9c90-3f8b727b8251"
+             }
         );
+
+     modelBuilder.Entity<Application>().HasData(
+    new Application
+    {
+        Id = "app-1",
+        OpportunityID = "opp-1",              
+        VolunteerID = "vol-user-1",          
+        Status = ApplicationStatus.Pending,
+        Note = "Looking forward to this opportunity.",
+        ApplicationDate = new DateTime(2025, 6, 1),
+        MotivationLetter = "I am passionate about helping children learn.",
+        HasRequiredSkills = true,
+        AttachmentPath = null,
+        CreatedAt = DateTime.UtcNow
+    },
+    new Application
+    {
+        Id = "app-2",
+        OpportunityID = "opp-2",
+        VolunteerID = "vol-user-1",
+        Status = ApplicationStatus.Accepted,
+        Note = "Excited to participate.",
+        ApplicationDate = new DateTime(2025, 6, 15),
+        MotivationLetter = "I have prior experience in similar events.",
+        HasRequiredSkills = true,
+        AttachmentPath = "attachments/volunteer_cv.pdf",
+        CreatedAt = DateTime.UtcNow
+    },
+
+    new Application
+    {
+        Id = "app-3",
+        OpportunityID = "opp-1",
+        VolunteerID = "vol_prof2",
+        Status = ApplicationStatus.Pending,
+        Note = "Excited to participate.",
+        ApplicationDate = new DateTime(2025, 6, 15),
+        MotivationLetter = "I have prior experience in similar events.",
+        HasRequiredSkills = true,
+        AttachmentPath = "attachments/volunteer_cv.pdf",
+        CreatedAt = DateTime.UtcNow
+    },
+     new Application
+     {
+         Id = "app-4",
+         OpportunityID = "opp-4",
+         VolunteerID = "vol_prof2",
+         Status = ApplicationStatus.Pending,
+         Note = "Excited to participate.",
+         ApplicationDate = new DateTime(2025, 6, 15),
+         MotivationLetter = "I have prior experience in similar events.",
+         HasRequiredSkills = true,
+         AttachmentPath = "attachments/volunteer_cv.pdf",
+         CreatedAt = DateTime.UtcNow
+     }
+);
+
+            modelBuilder.Entity<Participation>().HasData(
+           new Participation
+           {
+               Id = "participation-1",
+               ApplicationID = "app-1",
+               OpportunityId = "opp-1",
+               VolunteerID = "vol-user-1",
+               TotalAttendedHours = 12.5f,
+               FirstCheckIn = new DateTime(2025, 6, 10, 9, 0, 0),
+               LastCheckOut = new DateTime(2025, 6, 12, 17, 0, 0),
+               Status = ParticipationStatus.Completed,
+               CreatedAt = DateTime.UtcNow
+           },
+           new Participation
+           {
+               Id = "participation-2",
+               ApplicationID = "app-2",
+               OpportunityId = "opp-2",
+               VolunteerID = "vol-user-1",
+               TotalAttendedHours = 8.0f,
+               FirstCheckIn = new DateTime(2025, 6, 15, 10, 0, 0),
+               LastCheckOut = new DateTime(2025, 6, 15, 18, 0, 0),
+               Status = ParticipationStatus.Completed,
+               CreatedAt = DateTime.UtcNow
+           },
+           new Participation
+           {
+               Id = "participation-3",
+               ApplicationID = "app-3",
+               OpportunityId = "opp-1",
+               VolunteerID = "vol_prof2",
+               TotalAttendedHours = 12.5f,
+               FirstCheckIn = new DateTime(2025, 6, 10, 9, 0, 0),
+               LastCheckOut = new DateTime(2025, 6, 12, 17, 0, 0),
+               Status = ParticipationStatus.Completed,
+               CreatedAt = DateTime.UtcNow
+           },
+            new Participation
+            {
+                Id = "participation-4",
+                ApplicationID = "app-4",
+                OpportunityId = "opp-4",
+                VolunteerID = "vol_prof2",
+                TotalAttendedHours = 12.5f,
+                FirstCheckIn = new DateTime(2025, 6, 10, 9, 0, 0),
+                LastCheckOut = new DateTime(2025, 6, 12, 17, 0, 0),
+                Status = ParticipationStatus.Completed,
+                CreatedAt = DateTime.UtcNow
+            }
+       );
+
+    modelBuilder.Entity<Certificate>().HasData(
+    new Certificate
+    {
+        Id = "cert-1",
+        ParticipationID = "participation-1",
+        VolunteerID = "vol-user-1",
+        CertificateNumber = "CERT-2025-001",
+        Title = "Coding for Kids Participation",
+        Issuer = "Seeded Org",
+        IssueDate = new DateTime(2025, 6, 20),
+        TotalHours = 12.5f,
+        FileUrl = null,
+        IsVerified = true,
+        VerificationCode = "VERIF123",
+        CreatedAt = DateTime.UtcNow
+    },
+    new Certificate
+    {
+        Id = "cert-2",
+        ParticipationID = "participation-3",
+        VolunteerID = "vol_prof2",
+        CertificateNumber = "CERT-2025-001",
+        Title = "Coding for Kids Participation",
+        Issuer = "Seeded Org",
+        IssueDate = new DateTime(2025, 6, 20),
+        TotalHours = 12.5f,
+        FileUrl = null,
+        IsVerified = true,
+        VerificationCode = "VERIF123",
+        CreatedAt = DateTime.UtcNow
+    }
+);
+
+
+
 
 
 
