@@ -10,5 +10,7 @@ namespace Tatawwa3.Application.Dtos.Teams
     {
         public string FullName { get; set; }
         public string Role { get; set; }
+
+        public string image { get; set; }
     }
 }

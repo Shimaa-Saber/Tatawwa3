@@ -23,6 +23,8 @@ namespace Tatawwa3.Domain.Entities
         public string Description { get; set; }
         public TeamStatus Status { get; set; }
         public DateTime CreationDate { get; set; }
+
+        public string? TeamGoals { get; set; }
         public string? City { get; set; }
         public bool? IsLinkedToOpportunity { get; set; }
         public int? MaxMembers { get; set; }

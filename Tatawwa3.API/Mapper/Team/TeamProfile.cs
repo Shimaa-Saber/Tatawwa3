@@ -24,11 +24,13 @@ namespace Tatawwa3.Application.MappingProfiles
 
             CreateMap<Team, TeamDetailsDto>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-                .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName));
+                .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName))
+                .ForMember(dest => dest.TeamGoals, opt => opt.MapFrom(src => src.TeamGoals));
 
             CreateMap<TeamMember, MemberDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Volunteer.User.UserName))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()));
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Volunteer.User.FullName))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()))
+                .ForMember(dest => dest.image, opt => opt.MapFrom(src => src.Volunteer.ProfilePictureUrl));
 
             CreateMap<VolunteerOpportunity, OpportunityDto>();
 
