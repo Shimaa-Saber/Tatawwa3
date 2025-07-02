@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
 {
-    internal class DetailsOpportunityDto
+    public class DetailsOpportunityDto
     {
         public string? Image { get; set; }
 
@@ -15,6 +15,21 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
         public string Location { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int TotalHours { get; set; }
         public List<string> RequiredSkills { get; set; }
+
+
+
+        public string OrganizationName { get; set; }
+        public string? OrganizationEmail { get; set; }
+        public string? OrganizationPhone { get; set; }
+        public string? OrganizationType { get; set; }
+        public string? OrganizationImage { get; set; }
+        public string? OrganizationDescription { get; set; }
+
+
+
+        public int VolunteerCount { get; set; }
+        public DateTime Deadline { get; set; }
     }
 }

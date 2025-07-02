@@ -16,7 +16,13 @@ namespace Tatawwa3.Domain.Entities
         public string UserID { get; set; }
         public string OrganizationName { get; set; }
         public string CommercialRegistration { get; set; }
+        public string? Description { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? ProfileImage { get; set; }
+        public string? Email { get; set; }
 
+
+        public string? WebsiteUrl { get; set; }
 
         public OrganizationTypeEnum OrganizationType { get; set; }
         public bool IsDeactivationRequested { get; set; } = false;
