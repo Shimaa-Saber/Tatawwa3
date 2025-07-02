@@ -13,5 +13,7 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
         public string Location { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string OrganizationName { get; set; }
+        public string CategoryName { get; set; }
     }
 }

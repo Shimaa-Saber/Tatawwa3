@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
+using Tatawwa3.API.Mapper.Opportunity;
 using Tatawwa3.API.Mapper.Volunteer;
 using Tatawwa3.Application;
 using Tatawwa3.Application;
@@ -134,6 +135,7 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<OrganizatonRegMapper>();
     cfg.AddProfile<TeamProfile>();
     cfg.AddProfile<RecommendedOpportunityProfile>();
+    cfg.AddProfile<VolunteerOpportunityProfile>();///////انا الي ضايفه
 
 
 });

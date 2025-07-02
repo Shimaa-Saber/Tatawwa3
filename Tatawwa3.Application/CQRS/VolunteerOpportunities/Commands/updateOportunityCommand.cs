@@ -8,7 +8,7 @@ using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Commands
 {
-   public class updateOportunityCommand:IRequest<DetailsOpportunityDto>
+   public class updateOportunityCommand:IRequest<string>
     {
        public updateOportunuityDto updateOportunuityDto { get; set; }
     }

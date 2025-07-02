@@ -8,7 +8,11 @@ namespace Tatawwa3.API.Mapper.Opportunity
     public class VolunteerOpportunityProfile:Profile
     {
         public VolunteerOpportunityProfile()
+
         {
+            CreateMap<AddOpportunityDto, VolunteerOpportunity>()
+                 .ForMember(dest => dest.Id, opt => opt.Ignore()); 
+
             CreateMap<VolunteerOpportunity, GetAllOpportunitiesDto>();
             CreateMap<VolunteerOpportunity, searchDto>();
 

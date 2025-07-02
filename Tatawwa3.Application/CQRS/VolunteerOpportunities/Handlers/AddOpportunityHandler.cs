@@ -33,21 +33,18 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
             _organizationRepo = organizationRepo;
             _teamRepo = teamRepo;
         }
+        
+
         public async Task<DetailsOpportunityDto> Handle(AddOpportunityCommand request, CancellationToken cancellationToken)
         {
             var dto = request.AddOpportunityDto;
 
-            
-            var category = await _categoryRepo.FirstOrDefaultAsync(c => c.Name == dto.CategoryName);
-            if (category == null)
-                throw new Exception("الفئه دي كمان مش موجوده");
+            var category = await _categoryRepo.FirstOrDefaultAsync(c => c.Name == dto.CategoryName)
+                ?? throw new Exception("الفئه دي كمان مش موجوده");
 
-            
-            var organization = await _organizationRepo.FirstOrDefaultAsync(o => o.OrganizationName == dto.OrganizationName);
-            if (organization == null)
-                throw new Exception("الجهه الي اتكتبت مش موجوده");
+            var organization = await _organizationRepo.FirstOrDefaultAsync(o => o.OrganizationName == dto.OrganizationName)
+                ?? throw new Exception("الجهه الي اتكتبت مش موجوده");
 
-            
             DomainTeam? team = null;
             if (!string.IsNullOrWhiteSpace(dto.TeamName))
             {
@@ -61,19 +58,84 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
             }
 
             
+            string? savedImagePath = null;
+            if (dto.Image != null && dto.Image.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                Directory.CreateDirectory(uploadsFolder); // تأكد من وجود المجلد
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.Image.FileName);
+                var fullPath = Path.Combine(uploadsFolder, fileName);
+
+                using var stream = new FileStream(fullPath, FileMode.Create);
+                await dto.Image.CopyToAsync(stream, cancellationToken);
+
+                savedImagePath = Path.Combine("uploads", fileName);
+            }
+
+           
             var opportunity = dto.Map<VolunteerOpportunity>();
 
+            opportunity.Id = Guid.NewGuid().ToString();
             opportunity.CategoryID = category.Id;
             opportunity.OrganizationID = organization.Id;
             opportunity.TeamId = team?.Id;
             opportunity.Status = OpportunityStatus.Published;
+            opportunity.Image = savedImagePath; // هنا بنحط اللينك للمسار
+
+            opportunity.Organization = null;
+            opportunity.Category = null;
+            opportunity.Team = null;
 
             _opportunityRepo.Add(opportunity);
             await _opportunityRepo.SaveChangesAsync();
 
             return opportunity.Map<DetailsOpportunityDto>();
         }
+
+
+        //public async Task<DetailsOpportunityDto> Handle(AddOpportunityCommand request, CancellationToken cancellationToken)
+        //{
+        //    var dto = request.AddOpportunityDto;
+
+
+        //    var category = await _categoryRepo.FirstOrDefaultAsync(c => c.Name == dto.CategoryName);
+        //    if (category == null)
+        //        throw new Exception("الفئه دي كمان مش موجوده");
+
+
+        //    var organization = await _organizationRepo.FirstOrDefaultAsync(o => o.OrganizationName == dto.OrganizationName);
+        //    if (organization == null)
+        //        throw new Exception("الجهه الي اتكتبت مش موجوده");
+
+
+        //    DomainTeam? team = null;
+        //    if (!string.IsNullOrWhiteSpace(dto.TeamName))
+        //    {
+        //        team = await _teamRepo.FirstOrDefaultAsync(t => t.Name == dto.TeamName);
+        //        if (team == null)
+        //        {
+        //            team = new DomainTeam { Name = dto.TeamName };
+        //            _teamRepo.Add(team);
+        //            await _teamRepo.SaveChangesAsync();
+        //        }
+        //    }
+
+
+        //    var opportunity = dto.Map<VolunteerOpportunity>();
+
+        //    opportunity.CategoryID = category.Id;
+        //    opportunity.OrganizationID = organization.Id;
+        //    opportunity.TeamId = team?.Id;
+        //    opportunity.Status = OpportunityStatus.Published;
+
+        //    _opportunityRepo.Add(opportunity);
+        //    await _opportunityRepo.SaveChangesAsync();
+
+        //    return opportunity.Map<DetailsOpportunityDto>();
+        //}
+
     }
- }
+}
 
 

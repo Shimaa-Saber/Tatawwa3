@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,9 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public string? Image { get; set; }
+        //public string? Image { get; set; }
+        public IFormFile? Image { get; set; }
+
         public Gender? GenderRequirement { get; set; }
         public int RequiredVolunteers { get; set; }
         public string? Conditions { get; set; }
