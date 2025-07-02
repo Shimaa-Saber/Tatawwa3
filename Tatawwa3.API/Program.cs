@@ -205,7 +205,7 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
-
+builder.Services.AddScoped<IDashboardStatisticsService, DashboardStatisticsService>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
