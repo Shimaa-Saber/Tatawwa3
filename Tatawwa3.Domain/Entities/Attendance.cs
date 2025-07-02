@@ -14,6 +14,8 @@ namespace Tatawwa3.Domain.Entities
 
         [ForeignKey("Participation")]
         public string ParticipationID { get; set; }
+
+        public string? Comment { get; set; }
         public DateTime AttendanceDate { get; set; }
         public TimeSpan CheckInTime { get; set; }
         public TimeSpan CheckOutTime { get; set; }
@@ -21,5 +23,6 @@ namespace Tatawwa3.Domain.Entities
         public AttendanceStatus Status { get; set; }
 
         public Participation? Participation { get; set; }
+       
     }
 }

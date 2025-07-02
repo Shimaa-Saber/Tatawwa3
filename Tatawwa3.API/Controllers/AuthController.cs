@@ -19,14 +19,14 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpPost("register-volunteer")]
-        public async Task<IActionResult> RegisterVolunteer([FromBody] RegisterVolunteerDto dto)
+        public async Task<IActionResult> RegisterVolunteer([FromForm] RegisterVolunteerDto dto)
         {
             await _mediator.Send(new RegisterVolunteerCommand(dto));
             return Ok("Volunteer registered successfully.");
         }
 
         [HttpPost("register-organization")]
-        public async Task<IActionResult> RegisterOrganization(RegisterOrganizationDto dto)
+        public async Task<IActionResult> RegisterOrganization([FromForm] RegisterOrganizationDto dto)
         {
             await _mediator.Send(new RegisterOrganizationCommand(dto));
             return Ok(new { Message = "Organization registered successfully" });

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace Tatawwa3.Application.Dtos.AuthDtos
         [Required]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        public IFormFile? ProfileImage { get; set; }
 
         public List<string> Interests { get; set; } = new();
     }

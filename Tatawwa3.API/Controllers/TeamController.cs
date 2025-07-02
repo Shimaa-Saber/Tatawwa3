@@ -23,10 +23,12 @@ namespace Tatawwa3.API.Controllers
             _volunteerRepo = volunteerRepo;
         }
 
-        [HttpGet("Team-Detailes{id}")]
+        [HttpGet("{id}/Team-Detailes")]
         public async Task<ActionResult<TeamDetailsDto>> GetTeamDetails(string id)
         {
             var result = await _mediator.Send(new GetTeamDetailsQuery(id));
+            if (result == null)
+                return NotFound(new { message = "❌ هذا الفريق  غير موجودة." });
             return Ok(result);
         }
 

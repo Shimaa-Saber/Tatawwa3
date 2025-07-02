@@ -20,6 +20,9 @@ namespace Tatawwa3.Domain.Interfaces
 
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
+        IQueryable<T> GetQueryable(bool includeSoftDeleted = false);
+
+
         Task<int> SaveChangesAsync();
 
         Task<int> CountAsync();

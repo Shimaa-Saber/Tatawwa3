@@ -19,6 +19,7 @@ namespace Tatawwa3.Domain.Entities
         public float TotalHours { get; set; }
         public float Rating { get; set; }
         public bool IsVerified { get; set; }
+        public string? ProfilePictureUrl { get; set; }
 
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }

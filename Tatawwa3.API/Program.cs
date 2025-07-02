@@ -41,7 +41,7 @@ builder.Services.AddScoped(typeof(IGeneric<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(GenericRepository<>)); 
 
 builder.Services.AddAutoMapper(typeof(TeamProfile).Assembly);
-
+builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 
 
 
@@ -91,6 +91,8 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
 builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
 builder.Services.AddScoped<IVolunteerInvitationReprosatry, VolunteerInvitationReprosatry>();
+builder.Services.AddScoped<ICertificateService, CertificateService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 
 

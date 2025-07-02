@@ -48,6 +48,23 @@ namespace Tatawwa3.Application.Services
             volunteer.Id = user.Id;
             volunteer.UserID = user.Id;
 
+            if (dto.ProfileImage != null)
+            {
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "ProfileImages");
+                Directory.CreateDirectory(folderPath); // تأكد أن المجلد موجود
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(dto.ProfileImage.FileName)}";
+                var filePath = Path.Combine(folderPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ProfileImage.CopyToAsync(stream);
+                }
+
+                
+                volunteer.ProfilePictureUrl = fileName;
+            }
+
             _context.VolunteerProfiles.Add(volunteer);
             await _context.SaveChangesAsync();
         }
@@ -67,6 +84,25 @@ namespace Tatawwa3.Application.Services
             var profile = dto.Map<OrganizationProfile>();
             profile.UserID = user.Id;
             profile.Id = user.Id;
+
+            if (dto.ProfileImage != null)
+            {
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "ProfileImages");
+                Directory.CreateDirectory(folderPath); // تأكد أن المجلد موجود
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(dto.ProfileImage.FileName)}";
+                var filePath = Path.Combine(folderPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ProfileImage.CopyToAsync(stream);
+                }
+
+
+                profile.ProfilePictureUrl = fileName;
+            }
+
+
 
             _context.OrganizationProfiles.Add(profile);
             await _context.SaveChangesAsync();
