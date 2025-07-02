@@ -8,13 +8,14 @@ using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries
 {
-    public class GetLocationOpportunitiesQuery:IRequest<List<searchDto>>
+    public class SearchOpportunitiesByTitleQuery : IRequest<List<searchDto>>
     {
-        public string Location { get; set; }
+        public string Title { get; set; }
 
-        public GetLocationOpportunitiesQuery(string location)
+        public SearchOpportunitiesByTitleQuery(string title)
         {
-            Location = location;
+            Title = title;
         }
     }
+
 }

@@ -29,6 +29,14 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .ToListAsync();
         }
 
+        public async Task<List<VolunteerOpportunity>> SearchByTitleAsync(string title)
+        {
+            return await _context.VolunteerOpportunities
+                .Where(o => o.Title.Contains(title)) // يحتوي على الاسم
+                .ToListAsync();
+        }
+
+
 
         public async Task<List<VolunteerOpportunity>> GetByCategoryName(string categoryName)
         {
@@ -47,9 +55,11 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return _context.VolunteerOpportunities
                 .Include(o => o.Organization)
-                .Include(o => o.RequiredSkills)
+                
                 .Include(o => o.Applications)
                 .FirstOrDefault(o => o.Id == id);
+
+
         }
 
 
