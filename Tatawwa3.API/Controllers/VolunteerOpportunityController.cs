@@ -56,8 +56,7 @@ namespace Tatawwa3.API.Controllers
             var query = new GetIdOpportunutyQuery(id);
             var result = await mediator.Send(query);
 
-            //if (result == null)
-            //    return NotFound(); 
+           
 
             if (result == null)
                 return NotFound(new { message = "❌ الفرصة التطوعية غير موجودة." });
@@ -114,6 +113,16 @@ namespace Tatawwa3.API.Controllers
                 data = result
             });
         }
+
+        [HttpGet("SearchByTitle")]
+        public async Task<IActionResult> SearchByTitle([FromQuery] string title)
+        {
+            var query = new SearchOpportunitiesByTitleQuery(title);
+            var result = await mediator.Send(query);
+
+            return Ok(result);
+        }
+
 
 
 

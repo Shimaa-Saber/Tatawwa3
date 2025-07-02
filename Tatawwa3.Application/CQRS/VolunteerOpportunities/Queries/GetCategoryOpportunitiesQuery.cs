@@ -8,7 +8,7 @@ using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries
 {
-    public class GetCategoryOpportunitiesQuery: IRequest<List<GetAllOpportunitiesDto>>
+    public class GetCategoryOpportunitiesQuery: IRequest<List<searchDto>>
     {
         public string categoryname { get; set; }
 
