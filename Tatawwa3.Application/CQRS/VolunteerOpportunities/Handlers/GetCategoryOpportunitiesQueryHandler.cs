@@ -11,7 +11,7 @@ using Tatawwa3.Domain.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
 {
-    internal class GetCategoryOpportunitiesQueryHandler : IRequestHandler<GetCategoryOpportunitiesQuery, List<GetAllOpportunitiesDto>>
+    internal class GetCategoryOpportunitiesQueryHandler : IRequestHandler<GetCategoryOpportunitiesQuery, List<searchDto>>
     {
         protected IOpportunity opportunity;
         protected IMapper mapper;
@@ -20,10 +20,10 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
             this.opportunity = opportunity;
             this.mapper = mapper;
         }
-        public async Task<List<GetAllOpportunitiesDto>> Handle(GetCategoryOpportunitiesQuery request, CancellationToken cancellationToken)
+        public async Task<List<searchDto>> Handle(GetCategoryOpportunitiesQuery request, CancellationToken cancellationToken)
         {
             var opportunitiesLCategory = await opportunity.GetByLocation(request.categoryname);
-            return mapper.Map<List<GetAllOpportunitiesDto>>(opportunitiesLCategory);
+            return mapper.Map<List<searchDto>>(opportunitiesLCategory);
 
         }
     }

@@ -10,6 +10,8 @@ namespace Tatawwa3.API.Mapper.Opportunity
         public VolunteerOpportunityProfile()
         {
             CreateMap<VolunteerOpportunity, GetAllOpportunitiesDto>();
+            CreateMap<VolunteerOpportunity, searchDto>();
+
             //CreateMap<VolunteerOpportunity, DetailsOpportunityDto>();
             CreateMap<VolunteerOpportunity, DetailsOpportunityDto>()
          .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName))
@@ -19,7 +21,7 @@ namespace Tatawwa3.API.Mapper.Opportunity
          .ForMember(dest => dest.OrganizationImage, opt => opt.MapFrom(src => src.Organization.ProfileImage))
         
          .ForMember(dest => dest.OrganizationDescription, opt => opt.MapFrom(src => src.Organization.Description))
-         .ForMember(dest => dest.VolunteerCount, opt => opt.MapFrom(src => src.Applications.Count)) // أو src.Reviews.Count حسب المطلوب
+         .ForMember(dest => dest.VolunteerCount, opt => opt.MapFrom(src => src.Applications.Count))
          .ForMember(dest => dest.RequiredSkills, opt => opt.MapFrom(src => src.RequiredSkills.Select(s => s.Name).ToList()))
          .ForMember(dest => dest.Deadline, opt => opt.MapFrom(src => src.EndDate)); // استخدم EndDate كـ Deadline لو مفيش خاصية مستقلة
 
