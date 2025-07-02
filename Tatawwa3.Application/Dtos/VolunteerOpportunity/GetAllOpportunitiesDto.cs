@@ -8,6 +8,7 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
 {
     public  class GetAllOpportunitiesDto
     {
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Location { get; set; }
         public DateTime StartDate { get; set; }

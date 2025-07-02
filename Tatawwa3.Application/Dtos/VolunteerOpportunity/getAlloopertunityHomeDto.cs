@@ -9,11 +9,12 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
 {
     public class OpportunityHomeDto
     {
-        public string Id { get; set; } // لزر طلب الفرصة
-        public string Title { get; set; } // عنوان الفرصة
-        public string Description { get; set; } // وصف مختصر
-        public string Image { get; set; } // صورة الفرصة
-        public DateTime StartDate { get; set; } // تاريخ الفرصة
-        public int RatingCount { get; set; } // عدد التقييمات
+        public string Id { get; set; } 
+        public string Title { get; set; } 
+        public string Description { get; set; } 
+        public string Image { get; set; } 
+        public DateTime StartDate { get; set; }
+        public int RatingCount { get; set; }
+        public string Location { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Tatawwa3.Domain.Entities
     public class Team: BaseModel
     {
 
+   
+        public string Id { get; set; }
         [ForeignKey("Organization")]
         public string? OrganizationID { get; set; }
         [ForeignKey("Category")]
