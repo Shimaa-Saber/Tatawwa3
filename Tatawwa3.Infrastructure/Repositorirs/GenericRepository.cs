@@ -81,6 +81,13 @@ namespace Tatawwa3.Infrastructure.Repositorirs
             return query.Where(e => !e.IsDeleted);
         }
 
+        public IQueryable<T> GetQueryable(bool includeSoftDeleted = false)
+        {
+            var query = _tatawwa3DbContext.Set<T>().AsQueryable();
+            return includeSoftDeleted ? query : query.Where(e => !e.IsDeleted);
+        }
+
+
         public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return await _tatawwa3DbContext.Set<T>().FirstOrDefaultAsync(predicate);

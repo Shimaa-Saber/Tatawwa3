@@ -92,6 +92,7 @@ builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
 builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
 builder.Services.AddScoped<IVolunteerInvitationReprosatry, VolunteerInvitationReprosatry>();
 builder.Services.AddScoped<ICertificateService, CertificateService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 
 

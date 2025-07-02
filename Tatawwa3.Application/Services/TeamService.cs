@@ -60,7 +60,10 @@ namespace Tatawwa3.Application.Services
        .FirstOrDefaultAsync(t => t.Id == teamId);
 
             if (team == null)
-                throw new Exception("Team not found");
+            {
+                return null;
+            }
+             
 
             var dto = team.Map<TeamDetailsDto>();
             dto.TotalMembers = team.Members?.Count ?? 0;
@@ -112,7 +115,7 @@ namespace Tatawwa3.Application.Services
             _tatawwa3DbContext.VolunteerOpportunities.RemoveRange(opportunities);
 
 
-            // حذف أعضاء الفريق المرتبطين
+         
             var members = _tatawwa3DbContext.TeamMembers
                 .Where(m => m.TeamID == Teamid);
             _tatawwa3DbContext.TeamMembers.RemoveRange(members);
