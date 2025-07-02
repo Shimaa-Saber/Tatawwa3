@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Domain.Entities;
 
+
 namespace Tatawwa3.Domain.Interfaces
 {
     public interface IVolunteerOpportunityRepository : IGeneric<VolunteerOpportunity>
     {
         Task<int> CountActiveOpportunitiesAsync();
+
+        
+
     }
 }

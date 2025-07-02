@@ -97,7 +97,7 @@ namespace Tatawwa3.API.Controllers
         }
 
 
-        [HttpPost("Add")]
+        [HttpPost("apply opportunity")]
         public async Task<IActionResult> AddOpportunity([FromBody] AddOpportunityCommand command)
         {
             if (!ModelState.IsValid)

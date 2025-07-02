@@ -43,7 +43,15 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return _context.VolunteerOpportunities.AsQueryable();
         }
+        public VolunteerOpportunity? GetByIdWithIncludes(string id)
+        {
+            return _context.VolunteerOpportunities
+                .Include(o => o.Organization)
+                .Include(o => o.RequiredSkills)
+                .Include(o => o.Applications)
+                .FirstOrDefault(o => o.Id == id);
+        }
 
-       
+
     }
 }
