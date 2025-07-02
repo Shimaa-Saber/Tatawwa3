@@ -10,6 +10,7 @@ namespace Tatawwa3.Application.Dtos.Teams
 {
     public class GetTeamaDto
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string? OrganizationName { get; set; }

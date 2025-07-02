@@ -14,6 +14,7 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
         public string Description { get; set; } 
         public string Image { get; set; } 
         public DateTime StartDate { get; set; }
-        public int RatingCount { get; set; } 
+        public int RatingCount { get; set; }
+        public string Location { get; set; }
     }
 }
