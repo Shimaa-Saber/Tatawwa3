@@ -11,7 +11,8 @@ namespace Tatawwa3.Domain.Entities
 {
     public class VolunteerOpportunity: BaseModel
     {
-    
+        public string Id { get; set; }
+
         [ForeignKey("Organization")]
         public string OrganizationID { get; set; }
         [ForeignKey("Category")]
@@ -38,7 +39,7 @@ namespace Tatawwa3.Domain.Entities
         public Category? Category { get; set; }
         public Team ?Team { get; set; }
         public ICollection<Application> ?Applications { get; set; }
-        public ICollection<Skills>? RequiredSkills { get; set; }
+       public ICollection<Skilless>? RequiredSkills { get; set; }
         public ICollection<Review> Reviews { get; set; }
 
     }

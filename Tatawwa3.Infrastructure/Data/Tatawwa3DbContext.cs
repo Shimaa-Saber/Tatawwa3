@@ -37,6 +37,10 @@ namespace Tatawwa3.Infrastructure.Data
 
         public DbSet<PasswordResetToken> passwordResetTokens { get; set; }
         public DbSet<VolunteerInvitation> VolunteerInvitations {  get; set; }
+        public DbSet<Skills> Skills { get; set; }
+        public DbSet<Skilless> skillesses { get; set; }
+
+
 
 
 
@@ -155,7 +159,7 @@ namespace Tatawwa3.Infrastructure.Data
             modelBuilder.Entity<Team>().HasData(
             new Team
             {
-                Id = "team-1",
+               Id = "team-001",
                 OrganizationID = "org-profile-1",
                 CategoryId = "cat-edu-1",
                 Name = "Education Support Team",
