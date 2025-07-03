@@ -64,21 +64,38 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}/update")]
-        public async Task<IActionResult> UpdateOpportunity(string id, [FromBody] updateOportunityCommand command)
+
+        //[HttpPut("Update{id}")]
+        //public async Task<IActionResult> UpdateOpportunity(string id, [FromForm] updateOportunityCommand command)
+        //{
+        //    if (id != command.updateOportunuityDto.Id)
+        //        return BadRequest(new { message = " id doesnt exist." });
+
+        //    var result = await mediator.Send(command);
+
+        //    if (result == null)
+        //        return NotFound(new { message = " الفرصة التطوعية غير موجودة." });
+
+        //    return Ok(new
+        //    {
+        //        message = " تم تحديث الفرصة بنجاح.",
+        //        //data = result
+        //    });
+        //}
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateOpportunity(string id, [FromForm] updateOportunityCommand command)
+
+       
+
         {
-            if (id != command.updateOportunuityDto.Id)
-                return BadRequest(new { message = " id doesnt exist." });
+            // لو ID مش في الـDTO، نعينه هنا
+            command.updateOportunuityDto.Id = id;
 
             var result = await mediator.Send(command);
 
-            if (result == null)
-                return NotFound(new { message = " الفرصة التطوعية غير موجودة." });
-
             return Ok(new
             {
-                message = " تم تحديث الفرصة بنجاح.",
-                data = result
+                message = result
             });
         }
 
@@ -96,8 +113,11 @@ namespace Tatawwa3.API.Controllers
         }
 
 
-        [HttpPost("add")]
-        public async Task<IActionResult> AddOpportunity([FromBody] AddOpportunityCommand command)
+
+        [HttpPost("nshr forsa")]
+        public async Task<IActionResult> AddOpportunity([FromForm] AddOpportunityCommand command)
+
+       
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -107,11 +127,7 @@ namespace Tatawwa3.API.Controllers
             if (result == null)
                 return BadRequest("باظت و متعملتش");
 
-            return Ok(new
-            {
-                message = "الحمدلله قدر و لطف.",
-                data = result
-            });
+            return Ok("تم إضافة الفرصة بنجاح");
         }
 
         [HttpGet("SearchByTitle")]

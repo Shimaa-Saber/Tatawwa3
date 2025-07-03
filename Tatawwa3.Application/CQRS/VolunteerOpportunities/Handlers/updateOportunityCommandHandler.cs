@@ -8,29 +8,88 @@ using Tatawwa3.Application.CQRS.VolunteerOpportunities.Commands;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 using Tatawwa3.Application.Services;
 using Tatawwa3.Domain.Interfaces;
+using DomainTeam = Tatawwa3.Domain.Entities.Team;
+
 
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
 {
-    internal class updateOportunityCommandHandler : IRequestHandler<updateOportunityCommand, DetailsOpportunityDto>
+    internal class updateOportunityCommandHandler : IRequestHandler<updateOportunityCommand, string>
     {
-        protected IOpportunity opportunity;
+        private readonly IOpportunity _opportunityRepo;
+        private readonly ICategoryRepository _categoryRepo;
+        private readonly IOrganizationRepository _organizationRepo;
+        private readonly ITeamRepository _teamRepo;
 
-        public updateOportunityCommandHandler(IOpportunity opportunity)
+        public updateOportunityCommandHandler(
+            IOpportunity opportunityRepo,
+            ICategoryRepository categoryRepo,
+            IOrganizationRepository organizationRepo,
+            ITeamRepository teamRepo)
         {
-            this.opportunity = opportunity;
+            _opportunityRepo = opportunityRepo;
+            _categoryRepo = categoryRepo;
+            _organizationRepo = organizationRepo;
+            _teamRepo = teamRepo;
         }
-        public async Task<DetailsOpportunityDto> Handle(updateOportunityCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(updateOportunityCommand request, CancellationToken cancellationToken)
         {
-            var opp = opportunity.GetByID(request.updateOportunuityDto.Id);
-            if (opp == null)
-                return null;
+            var dto = request.updateOportunuityDto;
+            var opportunity =  _opportunityRepo.GetByID(dto.Id)
+                ?? throw new Exception("الفرصة غير موجودة");
 
-            request.updateOportunuityDto.Map(opp);
+            if (!string.IsNullOrEmpty(dto.Title)) opportunity.Title = dto.Title;
+            if (!string.IsNullOrEmpty(dto.Description)) opportunity.Description = dto.Description;
+            if (!string.IsNullOrEmpty(dto.Location)) opportunity.Location = dto.Location;
+            if (dto.StartDate.HasValue) opportunity.StartDate = dto.StartDate.Value;
+            if (dto.EndDate.HasValue) opportunity.EndDate = dto.EndDate.Value;
+            if (dto.RequiredVolunteers.HasValue) opportunity.RequiredVolunteers = dto.RequiredVolunteers.Value;
+            if (dto.Conditions != null) opportunity.Conditions = dto.Conditions;
+            if (dto.IsAttendanceTracked.HasValue) opportunity.IsAttendanceTracked = dto.IsAttendanceTracked;
+            if (dto.IsCertificateAvailable.HasValue) opportunity.IsCertificateAvailable = dto.IsCertificateAvailable;
+            if (dto.TotalHours.HasValue) opportunity.TotalHours = dto.TotalHours;
+            if (dto.GenderRequirement.HasValue) opportunity.GenderRequirement = dto.GenderRequirement;
 
-            opportunity.UpdateByEntity(opp);
-            await opportunity.SaveChangesAsync();
+            if (dto.Image != null && dto.Image.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                Directory.CreateDirectory(uploadsFolder);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.Image.FileName);
+                var fullPath = Path.Combine(uploadsFolder, fileName);
+                using var stream = new FileStream(fullPath, FileMode.Create);
+                await dto.Image.CopyToAsync(stream, cancellationToken);
+                opportunity.Image = Path.Combine("uploads", fileName);
+            }
 
-            return opp.Map<DetailsOpportunityDto>();
+            if (!string.IsNullOrWhiteSpace(dto.CategoryName))
+            {
+                var category = await _categoryRepo.FirstOrDefaultAsync(c => c.Name == dto.CategoryName)
+                    ?? throw new Exception("الفئة غير موجودة");
+                opportunity.CategoryID = category.Id;
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.OrganizationName))
+            {
+                var organization = await _organizationRepo.FirstOrDefaultAsync(o => o.OrganizationName == dto.OrganizationName)
+                    ?? throw new Exception("الجهة غير موجودة");
+                opportunity.OrganizationID = organization.Id;
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.TeamName))
+            {
+                var team = await _teamRepo.FirstOrDefaultAsync(t => t.Name == dto.TeamName);
+                if (team == null)
+                {
+                    team = new DomainTeam { Name = dto.TeamName };
+                    _teamRepo.Add(team);
+                    await _teamRepo.SaveChangesAsync();
+                }
+                opportunity.TeamId = team.Id;
+            }
+            _opportunityRepo.UpdateByEntity(opportunity);
+
+
+            await _opportunityRepo.SaveChangesAsync();
+            return "تم تحديث الفرصة بنجاح";
 
         }
     }
