@@ -29,6 +29,14 @@ namespace Tatawwa3.API.Controllers
             return Ok(res);
         }
 
+        [HttpGet("Allllocations")]
+        public async Task<IActionResult> GetAllLocations()
+        {
+            var result = await mediator.Send(new GetAllLocationsQuery());
+            return Ok(result);
+        }
+
+
         [HttpGet("bylocation")]
 
         public async Task<IActionResult> GetOpportunityLocation(string location)
