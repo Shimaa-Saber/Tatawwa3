@@ -76,6 +76,14 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("team-names")]
+        public async Task<IActionResult> GetTeamNames()
+        {
+            var result = await _mediator.Send(new GetAllTeamNamesQuery());
+            return Ok(result);
+        }
+
+
 
 
         [Authorize]

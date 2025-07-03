@@ -52,6 +52,16 @@ public class OrganizationRepository:GenericRepository<OrganizationProfile>, IOrg
             return await query.ToListAsync();
         }
 
+        public async Task<List<string>> GetAllOrganizationNamesAsync()
+        {
+            return await _context.OrganizationProfiles
+                                 .Where(o => !string.IsNullOrEmpty(o.OrganizationName))
+                                 .Select(o => o.OrganizationName)
+                                 .Distinct()
+                                 .ToListAsync();
+        }
+
+
 
     }
 }

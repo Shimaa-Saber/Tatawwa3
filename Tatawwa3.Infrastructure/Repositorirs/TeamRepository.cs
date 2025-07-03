@@ -26,7 +26,20 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return _context.Teams.AsQueryable();
        }
-       
+
+        public List<string> GetAllTeamNames()
+        {
+            return _context.Teams
+                           .Where(t => !string.IsNullOrEmpty(t.Name))
+                           .Select(t => t.Name)
+                           .Distinct()
+                           .ToList();
+        }
+
+
+
+
+
 
 
     }
