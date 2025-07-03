@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.Domain.Entities
 {
@@ -14,6 +15,7 @@ namespace Tatawwa3.Domain.Entities
         [ForeignKey("User")]
         
         public string UserID { get; set; }
+        public VolunteerStatus Status { get; set; }
         public string? Skills { get; set; } 
         public string Interests { get; set; } 
         public float TotalHours { get; set; }
