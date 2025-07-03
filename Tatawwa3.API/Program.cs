@@ -29,6 +29,8 @@ using Tatawwa3.Domain.Entities.MailSetting;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Tatawwa3.Infrastructure.Repositorirs;
+using Tatawwa3.API.MiddleWares;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -232,8 +234,9 @@ using (var scope = app.Services.CreateScope())
 
 
 
-
-
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
+app.UseMiddleware<ValidationExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 
 app.UseCors("AllowAll");
@@ -245,10 +248,13 @@ app.UseCors("AllowAll");
 //    app.UseSwaggerUI();
 //}
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseAuthentication();
 
 app.UseAuthorization();
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 app.MapGet("/", () => Results.Ok("🚀 Tatawwa3 API is running"));
