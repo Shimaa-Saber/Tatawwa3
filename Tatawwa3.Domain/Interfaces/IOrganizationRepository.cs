@@ -13,6 +13,8 @@ namespace Tatawwa3.Domain.Interfaces
         public IQueryable<OrganizationProfile> GetAll();
 
         Task<int> CountOrganizationsAsync();
+        Task<List<string>> GetAllCitiesAsync();
+
 
     }
 }

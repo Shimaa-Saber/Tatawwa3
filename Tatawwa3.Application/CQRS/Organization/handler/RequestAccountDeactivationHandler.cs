@@ -9,7 +9,7 @@ using Tatawwa3.Domain.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.Organization.handler
 {
-    internal class RequestAccountDeactivationHandler : IRequestHandler<RequestAccountDeactivationCommand, string>
+   public class RequestAccountDeactivationHandler : IRequestHandler<RequestAccountDeactivationCommand, string>
     {
         private readonly IOrganizationRepository _repository;
 
