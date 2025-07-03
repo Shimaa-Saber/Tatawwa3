@@ -14,6 +14,8 @@ namespace Tatawwa3.Domain.Interfaces
 
         Task<int> CountOrganizationsAsync();
         Task<List<string>> GetAllCitiesAsync();
+        Task<List<string>> GetAllOrganizationNamesAsync();
+
 
 
     }

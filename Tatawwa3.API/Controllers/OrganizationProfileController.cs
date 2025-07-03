@@ -78,6 +78,14 @@ public async Task<IActionResult> GetOrganizationCities()
 
             return Ok(result);
         }
+
+        [HttpGet("organization-names")]
+        public async Task<IActionResult> GetOrganizationNames()
+        {
+            var result = await _mediator.Send(new GetAllOrganizationNamesQuery());
+            return Ok(result);
+        }
+
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
