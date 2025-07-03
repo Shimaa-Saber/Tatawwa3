@@ -26,8 +26,9 @@ namespace Tatawwa3.Application.Dtos.AuthDtos
         public string ConfirmPassword { get; set; }
         public string CommercialRegistration { get; set; }
 
-        
 
+
+        [Required]
         public IFormFile? ProfileImage { get; set; }
 
     }
