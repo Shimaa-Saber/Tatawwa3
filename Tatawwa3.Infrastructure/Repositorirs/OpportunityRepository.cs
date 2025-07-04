@@ -7,6 +7,12 @@ using Tatawwa3.Domain.Entities;
 using Tatawwa3.Infrastructure.Data;
 using Tatawwa3.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Tatawwa3.Domain.Enums;
+using AutoMapper.QueryableExtensions;
+
+
+
+
 
 
 namespace Tatawwa3.Infrastructure.Repositorirs
@@ -61,6 +67,18 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
 
         }
+        public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
+        {
+            return await _context.VolunteerOpportunities
+                .Include(v => v.Organization)
+                .Include(v => v.Applications)
+                .Include(v => v.Reviews)
+                
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+
 
 
     }
