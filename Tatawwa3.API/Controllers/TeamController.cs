@@ -112,5 +112,13 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+
+        [HttpGet("GetOpportunitesnames")]
+        public async Task<IActionResult> GetOpportunityNames()
+        {
+            var result = await _mediator.Send(new GetOpportunityNamesQuery());
+            return Ok(result);
+        }
+
     }
 }
