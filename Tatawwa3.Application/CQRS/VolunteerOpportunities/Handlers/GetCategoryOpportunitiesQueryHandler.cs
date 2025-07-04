@@ -22,7 +22,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
         }
         public async Task<List<searchDto>> Handle(GetCategoryOpportunitiesQuery request, CancellationToken cancellationToken)
         {
-            var opportunitiesLCategory = await opportunity.GetByLocation(request.categoryname);
+            var opportunitiesLCategory = await opportunity.GetByCategoryName(request.categoryname);
             return mapper.Map<List<searchDto>>(opportunitiesLCategory);
 
         }
