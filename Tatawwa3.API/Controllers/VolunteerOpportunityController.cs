@@ -51,7 +51,7 @@ namespace Tatawwa3.API.Controllers
         public async Task<IActionResult> GetOpportunityCategory(string CatName)
         {
 
-            var query = new GetLocationOpportunitiesQuery(CatName);
+            var query = new GetCategoryOpportunitiesQuery(CatName);
             var result = await mediator.Send(query);
             return Ok(result);
 

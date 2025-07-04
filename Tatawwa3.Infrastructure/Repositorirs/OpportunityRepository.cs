@@ -32,7 +32,7 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         public async Task<List<VolunteerOpportunity>> SearchByTitleAsync(string title)
         {
             return await _context.VolunteerOpportunities
-                .Where(o => o.Title.Contains(title)) // يحتوي على الاسم
+                .Where(o => o.Title.Contains(title)) 
                 .ToListAsync();
         }
 
@@ -40,10 +40,10 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
         public async Task<List<VolunteerOpportunity>> GetByCategoryName(string categoryName)
         {
-            return await _dbSet
-                .Include(v => v.Category)
-                .Where(v => v.Category != null && v.Category.Name== categoryName)
-                .ToListAsync();
+            return await _context.VolunteerOpportunities
+        .Where(v => _context.Categories
+            .Any(c => c.Id == v.CategoryID && c.Name.Trim().ToLower() == categoryName.Trim().ToLower()))
+        .ToListAsync();
         }
 
      
