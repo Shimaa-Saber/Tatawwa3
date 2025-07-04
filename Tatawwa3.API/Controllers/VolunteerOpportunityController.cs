@@ -147,6 +147,14 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet(" forsa-management")]
+        public async Task<ActionResult<List<VolunteerOpportunityListDto>>> GetAllOpportunities()
+        {
+            var result = await mediator.Send(new GetOpportunitiemangmentQuery());
+
+            return Ok(result);
+        }
+
 
 
 

@@ -30,6 +30,17 @@ namespace Tatawwa3.API.Mapper.Opportunity
          .ForMember(dest => dest.Deadline, opt => opt.MapFrom(src => src.EndDate)); // استخدم EndDate كـ Deadline لو مفيش خاصية مستقلة
 
 
+
+            CreateMap<VolunteerOpportunity, VolunteerOpportunityListDto>()
+               .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName))
+               .ForMember(dest => dest.ApplicantsCount, opt => opt.MapFrom(src => src.Applications.Count))
+               .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.Reviews.Any() ? src.Reviews.Average(r => r.Rating) : 0))
+               .ForMember(dest => dest.StatusDisplay, opt => opt.MapFrom(src =>
+                   src.Status == Domain.Enums.OpportunityStatus.Published ? "نشطة" :
+                   src.Status == Domain.Enums.OpportunityStatus.Draft ? "قيد المراجعة" :
+                   src.Status == Domain.Enums.OpportunityStatus.Completed ? "مكتملة" : "غير معروف"));
+
+
         }
     }
 }

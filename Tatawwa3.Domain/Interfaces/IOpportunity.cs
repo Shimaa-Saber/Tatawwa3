@@ -16,6 +16,7 @@ namespace Tatawwa3.Domain.Interfaces
         public IQueryable<VolunteerOpportunity> GetAllOpportunity();
         VolunteerOpportunity? GetByIdWithIncludes(string id);
         Task<List<VolunteerOpportunity>> SearchByTitleAsync(string title);
+        public Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync();
 
     }
 }
