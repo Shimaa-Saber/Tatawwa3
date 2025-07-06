@@ -123,6 +123,25 @@ namespace Tatawwa3.Application.Services
         }
 
 
+        public async Task<List<NotificationDto>> GetOrganizationNotificationsAsync(string organizationUserId)
+        {
+            var notifications = await _context.Notifications
+                .Where(n => n.UserId == organizationUserId)
+                .OrderByDescending(n => n.CreatedAt)
+                .ToListAsync();
+
+            return notifications.Select(n => new NotificationDto
+            {
+                Id = n.Id,
+                Title = n.Title,
+                Message = n.Message,
+                IsRead = n.IsRead,
+                CreatedAt = n.CreatedAt
+            }).ToList();
+        }
+
+
+
     }
 
 }

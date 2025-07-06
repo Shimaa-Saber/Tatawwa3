@@ -19,6 +19,9 @@ namespace Tatawwa3.Application.Interfaces
         Task MarkAllAsReadAsync(string userId);
         Task<bool> DeleteNotificationAsync(string notificationId);
 
+        Task<List<NotificationDto>> GetOrganizationNotificationsAsync(string organizationUserId);
+        
+
     }
 }
 
