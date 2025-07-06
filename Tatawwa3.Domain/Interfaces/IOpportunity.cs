@@ -17,6 +17,6 @@ namespace Tatawwa3.Domain.Interfaces
         VolunteerOpportunity? GetByIdWithIncludes(string id);
         Task<List<VolunteerOpportunity>> SearchByTitleAsync(string title);
         public Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync();
-
+        Task AddVolunteerToOpportunityAsync(string opportunityId, string volunteerId);
     }
 }

@@ -15,13 +15,16 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.API.Mapper.Categoryy;
+using Tatawwa3.API.Mapper.NotificationMap;
 using Tatawwa3.API.Mapper.Opportunity;
 using Tatawwa3.API.Mapper.Organization;
 using Tatawwa3.API.Mapper.Volunteer;
+using Tatawwa3.API.MiddleWares;
 using Tatawwa3.Application;
 using Tatawwa3.Application;
 using Tatawwa3.Application.CQRS.Team.Commands;
 using Tatawwa3.Application.CQRS.Team.Handlers;
+using Tatawwa3.Application.Hubs;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.MappingProfiles;
 using Tatawwa3.Application.Services;
@@ -30,7 +33,6 @@ using Tatawwa3.Domain.Entities.MailSetting;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Tatawwa3.Infrastructure.Repositorirs;
-using Tatawwa3.API.MiddleWares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -98,6 +100,11 @@ builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileReposito
 builder.Services.AddScoped<IVolunteerInvitationReprosatry, VolunteerInvitationReprosatry>();
 builder.Services.AddScoped<ICertificateService, CertificateService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+
 
 
 
@@ -144,6 +151,7 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<VolunteerOpportunityProfile>();///////انا الي ضايفه
     cfg.AddProfile<categoryProfile>();
     cfg.AddProfile<organizationprofile>();
+    cfg.AddProfile<NotificationProfile>();
 
 
 });
@@ -253,6 +261,8 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapHub<NotificationHub>("/hub/notifications");
 
 
 app.UseSwagger();

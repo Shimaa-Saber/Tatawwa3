@@ -1,15 +1,17 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.CQRS.MakeApplication.Commands;
-using Tatawwa3.Domain.Interfaces;
-using Microsoft.AspNetCore.Hosting;
+using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.Services;
 using Tatawwa3.Domain.Enums;
-using AutoMapper;
+using Tatawwa3.Domain.Interfaces;
+using Tatawwa3.Infrastructure.Repositorirs;
 
 
 namespace Tatawwa3.Application.CQRS.MakeApplication.Handlers
@@ -18,11 +20,18 @@ namespace Tatawwa3.Application.CQRS.MakeApplication.Handlers
     {
         private readonly IApplicationRepository repository;
         private readonly IMapper mapper;
+        private readonly IOpportunity opportunityRepository;
+        private readonly IVolunteerProfileRepository volunteerRepo;
+        private readonly INotificationService _notificationService;
 
-        public ApplyToOpportunityCommandHandler(IApplicationRepository repository, IMapper mapper)
+        public ApplyToOpportunityCommandHandler(IApplicationRepository repository, IMapper mapper,
+            IOpportunity opportunityRepository, IVolunteerProfileRepository volunteerRepo, INotificationService notificationService)
         {
             this.repository = repository;
             this.mapper = mapper;
+            this.opportunityRepository = opportunityRepository;
+            this.volunteerRepo = volunteerRepo;
+            _notificationService = notificationService;
         }
         public async Task<string> Handle(ApplyToOpportunityCommand request, CancellationToken cancellationToken)
         {
@@ -59,9 +68,22 @@ namespace Tatawwa3.Application.CQRS.MakeApplication.Handlers
                 application.Status = ApplicationStatus.Pending;
 
                 repository.Add(application);
-                repository.SaveChangesAsync();
-                //await repository.Add(application);
-                //await repository.SaveChangesAsync();
+              await  repository.SaveChangesAsync();
+
+                var opportunity = await opportunityRepository.FirstOrDefaultAsync(o => o.Id == dto.OpportunityID);
+                if (opportunity != null && !string.IsNullOrEmpty(opportunity.Organization.Id))
+                {
+                   
+                    //var volunteer = await volunteerRepo.FirstOrDefaultAsync(v => v.Id == dto.);
+                    //var volunteerName = volunteer?.User?.FullName ?? "متطوع";
+
+                    await _notificationService.SendNotificationAsync(
+                        userId: opportunity.ApplicationUser.Id,
+                        title: "📥 طلب تطوع جديد",
+                        message: $"قام متطوع جديد بالتقديم على الفرصة: {opportunity.Title}"
+                    );
+                }
+
 
 
                 return "تم التقديم بنجاح ";

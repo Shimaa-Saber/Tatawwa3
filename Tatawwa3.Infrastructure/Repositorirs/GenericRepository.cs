@@ -102,5 +102,11 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return _tatawwa3DbContext.Set<T>().CountAsync(predicate);
         }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            _tatawwa3DbContext.Set<T>().UpdateRange(entities);
+        }
+
     }
 }

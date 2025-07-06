@@ -39,6 +39,8 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<VolunteerInvitation> VolunteerInvitations {  get; set; }
         public DbSet<Skills> Skills { get; set; }
         public DbSet<Skilless> skillesses { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
 
 
 

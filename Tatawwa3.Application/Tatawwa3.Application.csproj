@@ -25,6 +25,7 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.0" />
     <PackageReference Include="QuestPDF" Version="2025.6.0-rc0" />
 
   </ItemGroup>
