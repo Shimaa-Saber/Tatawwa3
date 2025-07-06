@@ -103,6 +103,7 @@ builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<ISkillReprosatry, SkillReprosatry>();
 
 
 

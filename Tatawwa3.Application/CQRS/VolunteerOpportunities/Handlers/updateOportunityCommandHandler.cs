@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Commands;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 using Tatawwa3.Application.Services;
+using Tatawwa3.Domain.Entities;
 using Tatawwa3.Domain.Interfaces;
 using DomainTeam = Tatawwa3.Domain.Entities.Team;
 
@@ -19,25 +20,27 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
         private readonly ICategoryRepository _categoryRepo;
         private readonly IOrganizationRepository _organizationRepo;
         private readonly ITeamRepository _teamRepo;
-        //private readonly ISkillRepository _skillRepo;
+        private readonly ISkillReprosatry _skillRepo;
 
         public updateOportunityCommandHandler(
             IOpportunity opportunityRepo,
             ICategoryRepository categoryRepo,
             IOrganizationRepository organizationRepo,
-            ITeamRepository teamRepo
-            /*ISkillRepository skillRepo*/)
+            ITeamRepository teamRepo,
+            ISkillReprosatry skillRepo)
         {
             _opportunityRepo = opportunityRepo;
             _categoryRepo = categoryRepo;
             _organizationRepo = organizationRepo;
             _teamRepo = teamRepo;
+            _skillRepo = skillRepo;
         }
         public async Task<string> Handle(updateOportunityCommand request, CancellationToken cancellationToken)
         {
             var dto = request.updateOportunuityDto;
-            var opportunity =  _opportunityRepo.GetByID(dto.Id)
-                ?? throw new Exception("الفرصة غير موجودة");
+            //var opportunity =  _opportunityRepo.GetByID(dto.Id)
+            var opportunity = _opportunityRepo.GetByIdForUpdate(dto.Id)
+             ?? throw new Exception("الفرصة غير موجودة");
 
             if (!string.IsNullOrEmpty(dto.Title)) opportunity.Title = dto.Title;
             if (!string.IsNullOrEmpty(dto.Description)) opportunity.Description = dto.Description;
@@ -87,6 +90,27 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
                 }
                 opportunity.TeamId = team.Id;
             }
+
+
+            if (dto.RequiredSkills != null && dto.RequiredSkills.Any())
+            {
+                var existingSkills = opportunity.RequiredSkills?.Select(s => s.Name).ToList() ?? new List<string>();
+                var newSkills = dto.RequiredSkills.Except(existingSkills).ToList();
+
+                foreach (var skillName in newSkills)
+                {
+                    var skill = new Skilless
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = skillName,
+                        OpportunityID = opportunity.Id
+                    };
+                    _skillRepo.Add(skill);
+                }
+
+                await _skillRepo.SaveChangesAsync();
+            }
+
             _opportunityRepo.UpdateByEntity(opportunity);
 
 
