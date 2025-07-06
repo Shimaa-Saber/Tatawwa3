@@ -11,7 +11,7 @@ namespace Tatawwa3.API.Mapper.AuthMapper
         public VolunteerRegMapper()
         {
             CreateMap<RegisterVolunteerDto, ApplicationUser>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => ExtractUserName(src.Email)))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(_ => UserType.Volunteer));
 
@@ -25,6 +25,11 @@ namespace Tatawwa3.API.Mapper.AuthMapper
         private static string SerializeInterests(List<string> interests)
         {
             return JsonSerializer.Serialize(interests);
+        }
+
+        private static string ExtractUserName(string email)
+        {
+            return email.Split('@')[0];
         }
     }
     }

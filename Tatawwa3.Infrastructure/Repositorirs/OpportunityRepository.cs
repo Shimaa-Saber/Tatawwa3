@@ -68,6 +68,7 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
         }
 
+
         public VolunteerOpportunity? GetByIdForUpdate(string id)
         {
             return _context.VolunteerOpportunities
@@ -77,17 +78,30 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .FirstOrDefault(o => o.Id == id && !o.IsDeleted);
         }
 
-        //public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
-        //{
-        //    return await _context.VolunteerOpportunities
-        //        .Include(v => v.Organization)
-        //        .Include(v => v.Applications)
-        //        .Include(v => v.Reviews)
-        //        .Where(v => !v.IsDeleted )
+        public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
+        {
+           return await _context.VolunteerOpportunities
+               .Include(v => v.Organization)
+               .Include(v => v.Applications)
+               .Include(v => v.Reviews)
+               .Where(v => !v.IsDeleted )
 
-        //        .AsNoTracking()
-        //        .ToListAsync();
-        //}
+               .AsNoTracking()
+               .ToListAsync();
+        }
+
+        public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
+        {
+            return await _context.VolunteerOpportunities
+                .Include(v => v.Organization)
+                .Include(v => v.Applications)
+                .Include(v => v.Reviews)
+                .Where(v => !v.IsDeleted)
+
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
         public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync(string organizationId)
         {
             return await _context.VolunteerOpportunities
@@ -97,6 +111,20 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .Where(v => !v.IsDeleted && v.OrganizationID == organizationId)
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task AddVolunteerToOpportunityAsync(string opportunityId, string volunteerId)
+        {
+            var entity = new Participation
+            {
+                Id = Guid.NewGuid().ToString(),
+                OpportunityId = opportunityId,
+                VolunteerID = volunteerId,
+                FirstCheckIn = DateTime.UtcNow
+            };
+
+            await _context.Participations.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
 

@@ -15,13 +15,16 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.API.Mapper.Categoryy;
+using Tatawwa3.API.Mapper.NotificationMap;
 using Tatawwa3.API.Mapper.Opportunity;
 using Tatawwa3.API.Mapper.Organization;
 using Tatawwa3.API.Mapper.Volunteer;
+using Tatawwa3.API.MiddleWares;
 using Tatawwa3.Application;
 using Tatawwa3.Application;
 using Tatawwa3.Application.CQRS.Team.Commands;
 using Tatawwa3.Application.CQRS.Team.Handlers;
+using Tatawwa3.Application.Hubs;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.MappingProfiles;
 using Tatawwa3.Application.Services;
@@ -30,6 +33,7 @@ using Tatawwa3.Domain.Entities.MailSetting;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Tatawwa3.Infrastructure.Repositorirs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,6 +100,11 @@ builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileReposito
 builder.Services.AddScoped<IVolunteerInvitationReprosatry, VolunteerInvitationReprosatry>();
 builder.Services.AddScoped<ICertificateService, CertificateService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+
 
 
 
@@ -115,9 +124,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy
+            .WithOrigins("http://localhost:4200", "http://localhost:36398", "https://localhost:36398") 
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); 
     });
 });
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -140,6 +151,7 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<VolunteerOpportunityProfile>();///////انا الي ضايفه
     cfg.AddProfile<categoryProfile>();
     cfg.AddProfile<organizationprofile>();
+    cfg.AddProfile<NotificationProfile>();
 
 
 });
@@ -214,7 +226,7 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
-
+builder.Services.AddScoped<IDashboardStatisticsService, DashboardStatisticsService>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -235,7 +247,6 @@ using (var scope = app.Services.CreateScope())
 
 
 
-
 app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
@@ -248,7 +259,21 @@ app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
 
+
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
+app.UseMiddleware<ValidationExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
+
+
+app.UseAuthentication();
+
 app.UseAuthorization();
+
+app.MapHub<NotificationHub>("/hub/notifications");
+
+
+
+
 
 app.MapControllers();
 app.MapGet("/", () => Results.Ok("🚀 Tatawwa3 API is running"));

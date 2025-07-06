@@ -9,7 +9,7 @@ namespace Tatawwa3.Domain.Entities
 {
     public class Skills
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
 
         [ForeignKey("Opportunity")]

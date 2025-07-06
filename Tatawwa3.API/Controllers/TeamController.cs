@@ -102,5 +102,31 @@ namespace Tatawwa3.API.Controllers
             await _mediator.Send(command);
             return Ok("تم إرسال طلب الانضمام بنجاح");
         }
+
+
+        [HttpGet("cities")]
+        public async Task<IActionResult> GetAllCities()
+        {
+            var result = await _mediator.Send(new GetAllCitiesQuery());
+            return Ok(result);
+        }
+
+
+
+        [HttpGet("categories")]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var result = await _mediator.Send(new GetAllCategoriesQuery());
+            return Ok(result);
+        }
+
+
+        [HttpGet("GetOpportunitesnames")]
+        public async Task<IActionResult> GetOpportunityNames()
+        {
+            var result = await _mediator.Send(new GetOpportunityNamesQuery());
+            return Ok(result);
+        }
+
     }
 }

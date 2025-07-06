@@ -36,6 +36,20 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                            .ToList();
         }
 
+        public async Task AddVolunteerToTeamAsync(string teamId, string volunteerId)
+        {
+            var volunteerTeam = new TeamMember
+            {
+                Id = Guid.NewGuid().ToString(),
+                TeamID = teamId,
+                VolunteerID = volunteerId,
+                JoinDate = DateTime.UtcNow
+            };
+
+            _context.TeamMembers.Add(volunteerTeam);
+            await _context.SaveChangesAsync();
+        }
+
 
 
 

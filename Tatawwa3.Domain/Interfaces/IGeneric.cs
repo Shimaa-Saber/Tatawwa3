@@ -27,5 +27,7 @@ namespace Tatawwa3.Domain.Interfaces
 
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<T, bool>> predicate);
+
+        void UpdateRange(IEnumerable<T> entities);
     }
 }
