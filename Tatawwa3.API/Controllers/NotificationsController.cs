@@ -71,7 +71,7 @@ namespace Tatawwa3.API.Controllers
             return Ok("تم حذف الإشعار بنجاح");
         }
 
-        [HttpGet]
+        [HttpGet("getAllOrgNotifications")]
         public async Task<IActionResult> Get()
         {
             var orgUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -244,9 +244,7 @@ using (var scope = app.Services.CreateScope())
 
 
 
-app.UseMiddleware<RequestResponseLoggingMiddleware>();
-app.UseMiddleware<ValidationExceptionMiddleware>();
-app.UseMiddleware<ExceptionMiddleware>();
+
 
 
 app.UseCors("AllowAll");
@@ -258,6 +256,15 @@ app.UseCors("AllowAll");
 //    app.UseSwaggerUI();
 //}
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
+app.UseMiddleware<ValidationExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
+
+
 app.UseAuthentication();
 
 app.UseAuthorization();
@@ -265,8 +272,8 @@ app.UseAuthorization();
 app.MapHub<NotificationHub>("/hub/notifications");
 
 
-app.UseSwagger();
-app.UseSwaggerUI();
+
+
 
 app.MapControllers();
 app.MapGet("/", () => Results.Ok("🚀 Tatawwa3 API is running"));

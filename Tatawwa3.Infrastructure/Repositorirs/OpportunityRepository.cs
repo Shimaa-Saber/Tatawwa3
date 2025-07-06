@@ -67,17 +67,17 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
 
         }
-        //public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
-        //{
-        //    return await _context.VolunteerOpportunities
-        //        .Include(v => v.Organization)
-        //        .Include(v => v.Applications)
-        //        .Include(v => v.Reviews)
-        //        .Where(v => !v.IsDeleted )
+        public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
+        {
+            return await _context.VolunteerOpportunities
+                .Include(v => v.Organization)
+                .Include(v => v.Applications)
+                .Include(v => v.Reviews)
+                .Where(v => !v.IsDeleted)
 
-        //        .AsNoTracking()
-        //        .ToListAsync();
-        //}
+                .AsNoTracking()
+                .ToListAsync();
+        }
         public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync(string organizationId)
         {
             return await _context.VolunteerOpportunities
