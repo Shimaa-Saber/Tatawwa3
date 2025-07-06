@@ -15,6 +15,11 @@ namespace Tatawwa3.API.Mapper.Opportunity
 
             CreateMap<VolunteerOpportunity, GetAllOpportunitiesDto>();
             CreateMap<VolunteerOpportunity, searchDto>();
+            CreateMap<updateOportunuityDto, VolunteerOpportunity>();
+            CreateMap<VolunteerOpportunity, updateOportunuityDto>()
+                 .ForMember(dest => dest.Image, opt => opt.Ignore());
+
+
 
             //CreateMap<VolunteerOpportunity, DetailsOpportunityDto>();
             CreateMap<VolunteerOpportunity, DetailsOpportunityDto>()

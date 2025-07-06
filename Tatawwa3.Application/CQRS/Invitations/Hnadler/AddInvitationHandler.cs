@@ -43,7 +43,7 @@ namespace Tatawwa3.Application.CQRS.Invitations.Hnadler
         {
             var dto = request.addInvitaon;
 
-            var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.User.UserName == dto.VolunteerFullName);
+            var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.User.FullName == dto.VolunteerFullName);
             if (volunteer == null)
                 throw new Exception("المتطوع غير موجود");
 
