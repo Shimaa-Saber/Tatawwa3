@@ -8,6 +8,8 @@ namespace Tatawwa3.Application.Dtos.Teams
 {
     public class OpportunityDto
     {
+        public string Id { get; set; }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }

@@ -29,6 +29,8 @@ namespace Tatawwa3.Application.Dtos.AuthDtos
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
+
+        [Required]
         public IFormFile? ProfileImage { get; set; }
 
         public List<string> Interests { get; set; } = new();

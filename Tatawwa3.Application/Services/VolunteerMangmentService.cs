@@ -9,6 +9,7 @@ using Tatawwa3.Application.Dtos.VolunteerMangement;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Domain.Entities;
 using Tatawwa3.Domain.Enums;
+using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 
 namespace Tatawwa3.Application.Services
@@ -16,10 +17,16 @@ namespace Tatawwa3.Application.Services
     public class VolunteerMangmentService : IApplicationService
     {
         private readonly Tatawwa3DbContext _context;
+        private readonly INotificationService _notificationService;
+        private readonly INotificationRepository _notificationRepository;
 
-        public VolunteerMangmentService(Tatawwa3DbContext context)
+        public VolunteerMangmentService(Tatawwa3DbContext context, INotificationService notificationService,
+            INotificationRepository notificationRepository
+            )
         {
             _context = context;
+            _notificationService = notificationService;
+            _notificationRepository = notificationRepository;
         }
 
         public async Task<List<ApplicationDto>> GetAllApplicationsAsync()
@@ -39,19 +46,46 @@ namespace Tatawwa3.Application.Services
 
         public async Task<bool> AcceptApplicationAsync(string applicationId)
         {
-            var application = await _context.Applications.FindAsync(applicationId);
+            var application = await _context.Applications
+           .Include(a => a.Volunteer)
+           .ThenInclude(v => v.User)
+           .Include(a => a.Opportunity) 
+           .FirstOrDefaultAsync(a => a.Id == applicationId);
             if (application == null)
                 return false;
 
             application.Status = ApplicationStatus.Accepted;
             _context.Applications.Update(application);
             await _context.SaveChangesAsync();
+
+            await _notificationService.SendNotificationAsync(
+            userId: application.Volunteer.UserID,
+            title: "تم قبول طلبك",
+            message: $"تم قبولك في الفرصة: {application.Opportunity.Title}"
+   );
+
+            // _notificationRepository.Add(new Notification
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    UserId = application.Volunteer.UserID,
+            //    Title = "تم قبول طلبك",
+            //    Message = $"تم قبولك في الفرصة: {application.Opportunity.Title}",
+            //    CreatedAt = DateTime.UtcNow,
+            //    IsRead = false
+            //});
+            //await _notificationRepository.SaveChangesAsync();
+
+
             return true;
         }
 
         public async Task<bool> RejectApplicationAsync(string applicationId)
         {
-            var application = await _context.Applications.FindAsync(applicationId);
+            var application = await _context.Applications
+           .Include(a => a.Volunteer)
+           .ThenInclude(v => v.User)
+           .Include(a => a.Opportunity)
+           .FirstOrDefaultAsync(a => a.Id == applicationId);
             if (application == null)
                 return false;
 
@@ -59,6 +93,23 @@ namespace Tatawwa3.Application.Services
 
             _context.Applications.Update(application);
             await _context.SaveChangesAsync();
+
+            await _notificationService.SendNotificationAsync(
+           userId: application.Volunteer.UserID,
+           title: "تم رفض طلبك",
+           message: $"تم رفض طلبك في الفرصة: {application.Opportunity.Title}");
+
+
+            //_notificationRepository.Add(new Notification
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    UserId = application.Volunteer.UserID,
+            //    Title = "تم رفض طلبك",
+            //    Message = $"تم تم رفض طلبك في الفرصة: {application.Opportunity.Title}",
+            //    CreatedAt = DateTime.UtcNow,
+            //    IsRead = false
+            //});
+            //await _notificationRepository.SaveChangesAsync();
             return true;
         }
 

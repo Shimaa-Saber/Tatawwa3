@@ -89,6 +89,20 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .ToListAsync();
         }
 
+        public async Task AddVolunteerToOpportunityAsync(string opportunityId, string volunteerId)
+        {
+            var entity = new Participation
+            {
+                Id = Guid.NewGuid().ToString(),
+                OpportunityId = opportunityId,
+                VolunteerID = volunteerId,
+                FirstCheckIn = DateTime.UtcNow
+            };
+
+            await _context.Participations.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
 
 
 

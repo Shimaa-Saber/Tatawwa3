@@ -58,7 +58,7 @@ namespace Tatawwa3.API.Controllers
 
         }
 
-        [HttpGet("Detailes{id}")]
+        [HttpGet("{id}/Detailes")]
         public async Task<IActionResult> GetOpportunityById(string id)
         {
             var query = new GetIdOpportunutyQuery(id);
@@ -71,6 +71,7 @@ namespace Tatawwa3.API.Controllers
 
             return Ok(result);
         }
+
 
         //[HttpPut("Update{id}")]
         //public async Task<IActionResult> UpdateOpportunity(string id, [FromForm] updateOportunityCommand command)
@@ -91,6 +92,9 @@ namespace Tatawwa3.API.Controllers
         //}
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateOpportunity(string id, [FromForm] updateOportunityCommand command)
+
+       
+
         {
             // لو ID مش في الـDTO، نعينه هنا
             command.updateOportunuityDto.Id = id;
@@ -103,7 +107,7 @@ namespace Tatawwa3.API.Controllers
             });
         }
 
-        [HttpDelete("Remove{id}")]
+        [HttpDelete("{id}/remove")]
 
         public async Task<IActionResult> deleteOpportunity(string id)
         {
@@ -117,8 +121,11 @@ namespace Tatawwa3.API.Controllers
         }
 
 
+
         [HttpPost("nshr forsa")]
         public async Task<IActionResult> AddOpportunity([FromForm] AddOpportunityCommand command)
+
+       
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
