@@ -72,6 +72,20 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("updated-databy-id{id}")]
+        public async Task<IActionResult> GetUpdatedyById(string id)
+        {
+            var query = new getdataupdateid(id);
+            var result = await mediator.Send(query);
+
+
+
+            if (result == null)
+                return NotFound(new { message = "❌ الفرصة التطوعية غير موجودة." });
+
+            return Ok(result);
+        }
+
         //[HttpPut("Update{id}")]
         //public async Task<IActionResult> UpdateOpportunity(string id, [FromForm] updateOportunityCommand command)
         //{

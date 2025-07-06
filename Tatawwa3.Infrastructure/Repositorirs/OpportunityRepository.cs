@@ -67,6 +67,16 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
 
         }
+
+        public VolunteerOpportunity? GetByIdForUpdate(string id)
+        {
+            return _context.VolunteerOpportunities
+                .Include(o => o.Organization)
+                .Include(o => o.Category)
+                .Include(o => o.Team)
+                .FirstOrDefault(o => o.Id == id && !o.IsDeleted);
+        }
+
         //public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
         //{
         //    return await _context.VolunteerOpportunities

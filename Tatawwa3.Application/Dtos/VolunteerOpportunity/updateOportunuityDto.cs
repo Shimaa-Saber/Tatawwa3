@@ -22,10 +22,12 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
         public string? OrganizationName { get; set; }
         public string? TeamName { get; set; }
         public IFormFile? Image { get; set; }
-        public string? Conditions { get; set; }
+        public string? TimeAttend { get; set; }
         public bool? IsAttendanceTracked { get; set; }
         public bool? IsCertificateAvailable { get; set; }
         public int? TotalHours { get; set; }
         public Gender? GenderRequirement { get; set; }
+        public List<string>? RequiredSkills { get; set; }
+
     }
 }
