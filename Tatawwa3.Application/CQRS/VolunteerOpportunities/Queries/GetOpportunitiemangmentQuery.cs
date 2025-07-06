@@ -10,6 +10,11 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries
 {
     public class GetOpportunitiemangmentQuery : IRequest<List<VolunteerOpportunityListDto>>
     {
-       
+        public string OrganizationId { get; set; }
+
+        public GetOpportunitiemangmentQuery(string organizationId)
+        {
+            OrganizationId = organizationId;
+        }
     }
 }
