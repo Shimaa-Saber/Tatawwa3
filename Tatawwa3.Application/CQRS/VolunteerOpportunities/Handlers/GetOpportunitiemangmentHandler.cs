@@ -24,7 +24,9 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
 
         public async Task<List<VolunteerOpportunityListDto>> Handle(GetOpportunitiemangmentQuery request, CancellationToken cancellationToken)
         {
-            var opportunities = await _opportunityRepo.GetAllWithIncludesAsync();
+            //var opportunities = await _opportunityRepo.GetAllWithIncludesAsync();
+            var opportunities = await _opportunityRepo.GetAllWithIncludesAsync(request.OrganizationId);
+
             return _mapper.Map<List<VolunteerOpportunityListDto>>(opportunities);
         }
     }
