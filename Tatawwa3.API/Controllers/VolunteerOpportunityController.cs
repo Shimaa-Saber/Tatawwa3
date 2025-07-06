@@ -147,13 +147,30 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet(" forsa-management")]
-        public async Task<ActionResult<List<VolunteerOpportunityListDto>>> GetAllOpportunities()
+        [HttpGet("forsa-management/by-id")]
+        public async Task<IActionResult> GetOpportunitiesByOrgId([FromQuery] string organizationId)
         {
-            var result = await mediator.Send(new GetOpportunitiemangmentQuery());
+            if (string.IsNullOrEmpty(organizationId))
+                return BadRequest(new { message = "يرجى إرسال معرف المنظمة." });
 
+            var result = await mediator.Send(new GetOpportunitiemangmentQuery(organizationId));
             return Ok(result);
         }
+
+        [HttpGet("forsa-management/by-token")]
+        
+        public async Task<IActionResult> GetOpportunitiesByToken()
+        {
+            var organizationId = User.FindFirst("OrganizationId")?.Value;
+
+            if (string.IsNullOrEmpty(organizationId))
+                return Unauthorized(new { message = "لم يتم التعرف على المنظمة." });
+
+            var result = await mediator.Send(new GetOpportunitiemangmentQuery(organizationId));
+            return Ok(result);
+        }
+
+
 
 
 
