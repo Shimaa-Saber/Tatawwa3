@@ -75,6 +75,7 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .Include(o => o.Organization)
                 .Include(o => o.Category)
                 .Include(o => o.Team)
+                .Include(o => o.RequiredSkills)
                 .FirstOrDefault(o => o.Id == id && !o.IsDeleted);
         }
 
@@ -90,17 +91,17 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                .ToListAsync();
         }
 
-        public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
-        {
-            return await _context.VolunteerOpportunities
-                .Include(v => v.Organization)
-                .Include(v => v.Applications)
-                .Include(v => v.Reviews)
-                .Where(v => !v.IsDeleted)
+        //public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync()
+        //{
+        //    return await _context.VolunteerOpportunities
+        //        .Include(v => v.Organization)
+        //        .Include(v => v.Applications)
+        //        .Include(v => v.Reviews)
+        //        .Where(v => !v.IsDeleted)
 
-                .AsNoTracking()
-                .ToListAsync();
-        }
+        //        .AsNoTracking()
+        //        .ToListAsync();
+        //}
 
         public async Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync(string organizationId)
         {
