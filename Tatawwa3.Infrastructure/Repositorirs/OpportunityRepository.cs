@@ -46,10 +46,11 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .ToListAsync();
         }
 
-     
+
         public IQueryable<VolunteerOpportunity> GetAllOpportunity()
         {
-            return _context.VolunteerOpportunities.AsQueryable();
+            return _context.VolunteerOpportunities
+                           .Where(o => !o.IsDeleted);
         }
         public VolunteerOpportunity? GetByIdWithIncludes(string id)
         {
