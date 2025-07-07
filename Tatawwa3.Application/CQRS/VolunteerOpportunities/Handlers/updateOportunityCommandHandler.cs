@@ -19,12 +19,14 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
         private readonly ICategoryRepository _categoryRepo;
         private readonly IOrganizationRepository _organizationRepo;
         private readonly ITeamRepository _teamRepo;
+        //private readonly ISkillRepository _skillRepo;
 
         public updateOportunityCommandHandler(
             IOpportunity opportunityRepo,
             ICategoryRepository categoryRepo,
             IOrganizationRepository organizationRepo,
-            ITeamRepository teamRepo)
+            ITeamRepository teamRepo
+            /*ISkillRepository skillRepo*/)
         {
             _opportunityRepo = opportunityRepo;
             _categoryRepo = categoryRepo;
@@ -43,7 +45,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
             if (dto.StartDate.HasValue) opportunity.StartDate = dto.StartDate.Value;
             if (dto.EndDate.HasValue) opportunity.EndDate = dto.EndDate.Value;
             if (dto.RequiredVolunteers.HasValue) opportunity.RequiredVolunteers = dto.RequiredVolunteers.Value;
-            if (dto.Conditions != null) opportunity.Conditions = dto.Conditions;
+            if (dto.TimeAttend != null) opportunity.Conditions = dto.TimeAttend;
             if (dto.IsAttendanceTracked.HasValue) opportunity.IsAttendanceTracked = dto.IsAttendanceTracked;
             if (dto.IsCertificateAvailable.HasValue) opportunity.IsCertificateAvailable = dto.IsCertificateAvailable;
             if (dto.TotalHours.HasValue) opportunity.TotalHours = dto.TotalHours;
