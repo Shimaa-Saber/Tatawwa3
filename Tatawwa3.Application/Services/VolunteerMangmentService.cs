@@ -29,18 +29,23 @@ namespace Tatawwa3.Application.Services
             _notificationRepository = notificationRepository;
         }
 
-        public async Task<List<ApplicationDto>> GetAllApplicationsAsync()
+        public async Task<List<ApplicationDto>> GetAllApplicationsByOrganizationAsync(string orgUserId)
         {
             return await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
+                .Include(a => a.Opportunity)
+                .Where(a => a.Opportunity.OrganizationID == orgUserId)
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
                     AppliedAt = a.CreatedAt
-                }).ToListAsync();
+                })
+                .ToListAsync();
         }
 
 

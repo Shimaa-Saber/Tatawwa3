@@ -10,7 +10,7 @@ namespace Tatawwa3.Application.Interfaces
 {
     public interface IApplicationService
     {
-        Task<List<ApplicationDto>> GetAllApplicationsAsync();
+        Task<List<ApplicationDto>> GetAllApplicationsByOrganizationAsync(string orgUserId);
         Task<bool> AcceptApplicationAsync(string applicationId);
 
         Task<bool> RejectApplicationAsync(string applicationId);

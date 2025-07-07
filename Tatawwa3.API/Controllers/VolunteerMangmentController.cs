@@ -16,12 +16,14 @@ namespace Tatawwa3.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet]
+        [HttpGet("organization-applications")]
         public async Task<IActionResult> GetAllApplications()
         {
-            var result = await _mediator.Send(new GetAllApplicationsQuery());
+            var orgUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetAllApplicationsQuery(orgUserId));
             return Ok(result);
         }
+
 
         [HttpPut("{id}/accept")]
         public async Task<IActionResult> AcceptApplication(string id)
