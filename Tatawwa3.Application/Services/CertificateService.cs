@@ -26,24 +26,26 @@ namespace Tatawwa3.Application.Services
             _context = context;
         }
 
-        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsAsync(string opportunityId)
+        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsForOrganizationAsync(string orgUserId)
         {
             var participants = await _context.Participations
-           .Where(p => p.OpportunityId == opportunityId && p.Status == ParticipationStatus.Completed)
-            .Include(p => p.Opportunity)
-            .ThenInclude(o => o.Organization)
-            .Include(p => p.Volunteer)
-           .ThenInclude(v => v.User)
-              .ToListAsync();
+                .Where(p => p.Status == ParticipationStatus.Completed &&
+                            p.Opportunity.OrganizationID == orgUserId)
+                .Include(p => p.Opportunity)
+                    .ThenInclude(o => o.Organization)
+                .Include(p => p.Volunteer)
+                    .ThenInclude(v => v.User)
+                .ToListAsync();
 
             var result = participants.Select(p => new CompletedParticipantDto
             {
+                Id = p.Id,
                 VolunteerId = p.VolunteerID!,
                 FullName = p.Volunteer?.User?.FullName ?? "",
                 Email = p.Volunteer?.User?.Email ?? "",
                 TotalHours = p.TotalAttendedHours,
                 ParticipationDate = p.FirstCheckIn,
-               
+                 CertificateId = p.Certificate != null ? p.Certificate.Id : null
             }).ToList();
 
             return result;
@@ -52,8 +54,11 @@ namespace Tatawwa3.Application.Services
         public async Task<bool> IssueCertificateAsync(IssueCertificateDto dto)
         {
             var participation = await _context.Participations
-                .Include(p => p.Volunteer)
-                .FirstOrDefaultAsync(p => p.Id == dto.ParticipationId && p.Status == ParticipationStatus.Completed);
+           .Include(p => p.Volunteer)
+           .Include(p => p.Opportunity)
+        .ThenInclude(o => o.Organization)
+         .FirstOrDefaultAsync(p => p.Id == dto.ParticipationId && p.Status == ParticipationStatus.Completed);
+
 
             if (participation == null)
                 return false;
@@ -70,7 +75,7 @@ namespace Tatawwa3.Application.Services
                 ParticipationID = dto.ParticipationId,
                 VolunteerID = participation.VolunteerID!,
                 Title = dto.Title,
-                Issuer = dto.Issuer,
+                Issuer = participation.Opportunity.Organization.OrganizationName??"غير معروف",
                 TotalHours = dto.TotalHours,
                 IssueDate = DateTime.UtcNow,
                 CertificateNumber = $"CERT-{DateTime.UtcNow:yyyyMMddHHmmss}",
@@ -106,7 +111,7 @@ namespace Tatawwa3.Application.Services
                     ParticipationID = participation.Id,
                     VolunteerID = participation.VolunteerID!,
                     Title = dto.Title,
-                    Issuer = dto.Issuer,
+                    Issuer = participation.Opportunity.Organization.OrganizationName ?? "غير معروف",
                     TotalHours = dto.TotalHours,
                     IssueDate = DateTime.UtcNow,
                     CertificateNumber = $"CERT-{DateTime.UtcNow:yyyyMMddHHmmss}-{issuedCount + 1}",

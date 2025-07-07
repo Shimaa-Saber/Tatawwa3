@@ -86,7 +86,8 @@ namespace Tatawwa3.Application.CQRS.Invitations.Hnadler
             await _notificationService.SendNotificationAsync(
              userId: volunteer.UserID,
              title: "📩 دعوة جديدة",
-             message: message
+             message: message,
+             invitationId: invitation.Id
              );
 
 
