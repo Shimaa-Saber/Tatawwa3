@@ -128,5 +128,17 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{organizationId}/team-names")]
+        public async Task<IActionResult> GetTeamNamesByOrganizationId(string organizationId)
+        {
+            if (string.IsNullOrWhiteSpace(organizationId))
+                return BadRequest(new { message = "يرجى إرسال id المنظمة." });
+
+            var result = await _mediator.Send(new GetTeamNamesByOrganizationIdQuery(organizationId));
+
+            return Ok(result);
+        }
+
+
     }
 }

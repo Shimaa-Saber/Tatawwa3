@@ -128,6 +128,43 @@ namespace Tatawwa3.Infrastructure.Repositorirs
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<VolunteerOpportunity>> GetAllWithOrganizationAsync()
+        {
+            return await _context.VolunteerOpportunities
+                .Include(v => v.Organization)
+                .Where(v => !v.IsDeleted)
+                .ToListAsync();
+        }
+
+        public async Task<List<VolunteerOpportunity>> SearchOpportunitiesAsync(string? status, string? orgName, DateTime? startDate)
+        {
+            var query = _context.VolunteerOpportunities
+                .Include(v => v.Organization)
+                .Where(v => !v.IsDeleted)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                if (Enum.TryParse(status, out OpportunityStatus parsedStatus))
+                {
+                    query = query.Where(v => v.Status == parsedStatus);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(orgName))
+            {
+                query = query.Where(v => v.Organization.OrganizationName.Contains(orgName));
+            }
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(v => v.StartDate.Date == startDate.Value.Date);
+            }
+
+            return await query.ToListAsync();
+        }
+
+
 
 
 
