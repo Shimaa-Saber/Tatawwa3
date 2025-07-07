@@ -64,7 +64,7 @@ namespace Tatawwa3.Application.CQRS.Notifications.Commands
                 await _teamRepo.AddVolunteerToTeamAsync(invitation.TeamId, invitation.VolunteerId);
 
                 var team = await _teamRepo.FirstOrDefaultAsync(t => t.Id == invitation.TeamId);
-                targetUserId = team?.ApplicationUser?.Id;
+                targetUserId = team?.OrganizationID; 
                 message = $"قام {volunteerName} بقبول دعوة الانضمام إلى الفريق: {team?.Name}";
             }
 
@@ -73,7 +73,7 @@ namespace Tatawwa3.Application.CQRS.Notifications.Commands
                 await _opportunityRepo.AddVolunteerToOpportunityAsync(invitation.OpportunityId, invitation.VolunteerId);
 
                 var opportunity = await _opportunityRepo.FirstOrDefaultAsync(o => o.Id == invitation.OpportunityId);
-                targetUserId = opportunity?.ApplicationUser.Id;
+                targetUserId = opportunity?.OrganizationID; 
                 message = $"قام {volunteerName} بقبول دعوة الانضمام إلى الفرصة: {opportunity?.Title}";
             }
 

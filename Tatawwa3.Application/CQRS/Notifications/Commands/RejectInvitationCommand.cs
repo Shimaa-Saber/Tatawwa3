@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,23 +59,34 @@ namespace Tatawwa3.Application.CQRS.Notifications.Commands
 
             if (invitation.TeamId != null)
             {
-                var team = await _teamRepo.FirstOrDefaultAsync(t => t.Id == invitation.TeamId);
-                if (team != null && team.ApplicationUser != null)
+                var team = await _context.Teams
+                    .Where(t => t.Id == invitation.TeamId)
+                    .Select(t => new { t.Name, t.OrganizationID })
+                    .FirstOrDefaultAsync();
+
+                if (team != null)
                 {
-                    targetUserId = team.ApplicationUser.Id;
+                    targetUserId = team.OrganizationID;
                     message = $"قام {volunteerName} برفض دعوة الانضمام إلى الفريق: {team.Name}";
                 }
             }
 
+
             if (invitation.OpportunityId != null)
             {
-                var opportunity = await _opportunityRepo.FirstOrDefaultAsync(o => o.Id == invitation.OpportunityId);
-                if (opportunity != null && opportunity.ApplicationUser != null)
+                var opportunity = await _context.VolunteerOpportunities
+                    .Where(o => o.Id == invitation.OpportunityId)
+                    .Select(o => new { o.Title, o.OrganizationID })
+                    .FirstOrDefaultAsync();
+
+                if (opportunity != null)
                 {
-                    targetUserId = opportunity.ApplicationUser.Id;
+                    targetUserId = opportunity.OrganizationID;
                     message = $"قام {volunteerName} برفض دعوة الانضمام إلى الفرصة: {opportunity.Title}";
                 }
             }
+
+
 
             await _invitationRepo.SaveChangesAsync();
 
