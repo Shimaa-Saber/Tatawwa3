@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.API.Mapper.Categoryy;
+using Tatawwa3.API.Mapper.InvitationMap;
 using Tatawwa3.API.Mapper.NotificationMap;
 using Tatawwa3.API.Mapper.Opportunity;
 using Tatawwa3.API.Mapper.Organization;
@@ -152,6 +153,7 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<categoryProfile>();
     cfg.AddProfile<organizationprofile>();
     cfg.AddProfile<NotificationProfile>();
+    cfg.AddProfile<InvitationProfile>();
 
 
 });

@@ -64,16 +64,6 @@ namespace Tatawwa3.Application.Services
             message: $"تم قبولك في الفرصة: {application.Opportunity.Title}"
    );
 
-            // _notificationRepository.Add(new Notification
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    UserId = application.Volunteer.UserID,
-            //    Title = "تم قبول طلبك",
-            //    Message = $"تم قبولك في الفرصة: {application.Opportunity.Title}",
-            //    CreatedAt = DateTime.UtcNow,
-            //    IsRead = false
-            //});
-            //await _notificationRepository.SaveChangesAsync();
 
 
             return true;
@@ -100,16 +90,7 @@ namespace Tatawwa3.Application.Services
            message: $"تم رفض طلبك في الفرصة: {application.Opportunity.Title}");
 
 
-            //_notificationRepository.Add(new Notification
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    UserId = application.Volunteer.UserID,
-            //    Title = "تم رفض طلبك",
-            //    Message = $"تم تم رفض طلبك في الفرصة: {application.Opportunity.Title}",
-            //    CreatedAt = DateTime.UtcNow,
-            //    IsRead = false
-            //});
-            //await _notificationRepository.SaveChangesAsync();
+            
             return true;
         }
 
