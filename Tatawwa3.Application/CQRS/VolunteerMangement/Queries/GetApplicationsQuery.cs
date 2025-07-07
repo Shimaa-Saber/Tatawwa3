@@ -11,10 +11,10 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
 {
     public class GetAllApplicationsQuery : IRequest<List<ApplicationDto>>
     {
-        public string OrgUserId { get; }
-        public GetAllApplicationsQuery(string orgUserId)
+        public string OppId { get; }
+        public GetAllApplicationsQuery(string OppIdd)
         {
-            OrgUserId = orgUserId;
+            OppId = OppIdd;
         }
     }
 
@@ -30,7 +30,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
 
         public async Task<List<ApplicationDto>> Handle(GetAllApplicationsQuery request, CancellationToken cancellationToken)
         {
-            return await _applicationService.GetAllApplicationsByOrganizationAsync(request.OrgUserId);
+            return await _applicationService.GetAllApplicationsByOrganizationAsync(request.OppId);
         }
     }
 

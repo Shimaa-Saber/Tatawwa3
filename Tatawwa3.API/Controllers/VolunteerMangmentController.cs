@@ -16,11 +16,11 @@ namespace Tatawwa3.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("organization-applications")]
-        public async Task<IActionResult> GetAllApplications()
+        [HttpGet("opportunity-applications")]
+        public async Task<IActionResult> GetAllApplications(string OppId)
         {
-            var orgUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _mediator.Send(new GetAllApplicationsQuery(orgUserId));
+         // var orgUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetAllApplicationsQuery(OppId));
             return Ok(result);
         }
 
@@ -66,30 +66,30 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpGet("by-name")]
-        public async Task<IActionResult> GetApplicationsByName([FromQuery] string name)
+        public async Task<IActionResult> GetApplicationsByName([FromQuery] string name,string opp_id)
         {
-            var result = await _mediator.Send(new GetApplicationsByNameQuery(name));
+            var result = await _mediator.Send(new GetApplicationsByNameQuery(name, opp_id));
             return Ok(result);
         }
 
         [HttpGet("by-status")]
-        public async Task<IActionResult> GetApplicationsByStatus([FromQuery] string status)
+        public async Task<IActionResult> GetApplicationsByStatus([FromQuery] string status, string opp_id)
         {
-            var result = await _mediator.Send(new GetApplicationsByStatusQuery(status));
+            var result = await _mediator.Send(new GetApplicationsByStatusQuery(status, opp_id));
             return Ok(result);
         }
 
         [HttpGet("by-date")]
-        public async Task<IActionResult> GetApplicationsByDate([FromQuery] DateTime date)
+        public async Task<IActionResult> GetApplicationsByDate([FromQuery] DateTime date, string opp_id)
         {
-            var result = await _mediator.Send(new GetApplicationsByDateQuery(date));
+            var result = await _mediator.Send(new GetApplicationsByDateQuery(date, opp_id));
             return Ok(result);
         }
 
         [HttpGet("statistics")]
-        public async Task<IActionResult> GetApplicationStatistics()
+        public async Task<IActionResult> GetApplicationStatistics(string opp_id)
         {
-            var result = await _mediator.Send(new GetApplicationStatisticsQuery());
+            var result = await _mediator.Send(new GetApplicationStatisticsQuery(opp_id));
             return Ok(result);
         }
 

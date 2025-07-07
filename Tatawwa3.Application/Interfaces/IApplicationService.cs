@@ -19,11 +19,11 @@ namespace Tatawwa3.Application.Interfaces
 
         Task<VolunteerProfileDto> GetVolunteerProfileAsync(string userId);
 
-        Task<List<ApplicationDto>> GetApplicationsByNameAsync(string name);
-        Task<List<ApplicationDto>> GetApplicationsByStatusAsync(string status);
-        Task<List<ApplicationDto>> GetApplicationsByDateAsync(DateTime date);
+        Task<List<ApplicationDto>> GetApplicationsByNameAsync(string name, string opportunityId);
+        Task<List<ApplicationDto>> GetApplicationsByStatusAsync(string status, string opportunityId);
+        Task<List<ApplicationDto>> GetApplicationsByDateAsync(DateTime date, string opportunityId);
 
-        Task<ApplicationStatisticsDto> GetApplicationStatisticsAsync();
+        Task<ApplicationStatisticsDto> GetApplicationStatisticsAsync(string opp_id);
 
 
     }

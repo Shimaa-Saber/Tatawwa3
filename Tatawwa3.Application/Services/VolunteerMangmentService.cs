@@ -35,7 +35,7 @@ namespace Tatawwa3.Application.Services
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
                 .Include(a => a.Opportunity)
-                .Where(a => a.Opportunity.OrganizationID == orgUserId)
+                .Where(a => a.Opportunity.Id == orgUserId)
                 .Select(a => new ApplicationDto
                 {
                     Id = a.Id,
@@ -122,14 +122,16 @@ namespace Tatawwa3.Application.Services
             return profile.Map<VolunteerProfileDto>();
         }
 
-        public async Task<List<ApplicationDto>> GetApplicationsByNameAsync(string name)
+        public async Task<List<ApplicationDto>> GetApplicationsByNameAsync(string name, string opportunityId)
         {
             var apps = await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
-                .Where(a => a.Volunteer.User.FullName.Contains(name))
+                .Where(a => a.OpportunityID == opportunityId && a.Volunteer.User.FullName.Contains(name))
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -140,7 +142,7 @@ namespace Tatawwa3.Application.Services
             return apps;
         }
 
-        public async Task<List<ApplicationDto>> GetApplicationsByStatusAsync(string status)
+        public async Task<List<ApplicationDto>> GetApplicationsByStatusAsync(string status,string opportunityId)
         {
             if (!Enum.TryParse<ApplicationStatus>(status, true, out var statusEnum))
             {
@@ -150,9 +152,12 @@ namespace Tatawwa3.Application.Services
             var apps = await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
-                .Where(a => a.Status == statusEnum)
+                .Where(a => a.OpportunityID == opportunityId && a.Status == statusEnum)
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
+
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -163,14 +168,16 @@ namespace Tatawwa3.Application.Services
             return apps;
         }
 
-        public async Task<List<ApplicationDto>> GetApplicationsByDateAsync(DateTime date)
+        public async Task<List<ApplicationDto>> GetApplicationsByDateAsync(DateTime date, string opportunityId)
         {
             return await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
-                .Where(a => a.CreatedAt.Date == date.Date)
+                .Where(a => a.OpportunityID == opportunityId && a.CreatedAt.Date == date.Date)
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -178,16 +185,17 @@ namespace Tatawwa3.Application.Services
                 })
                 .ToListAsync();
         }
-        public async Task<ApplicationStatisticsDto> GetApplicationStatisticsAsync()
+
+        public async Task<ApplicationStatisticsDto> GetApplicationStatisticsAsync(string opp_id)
         {
             var applications = await _context.Applications.ToListAsync();
 
             return new ApplicationStatisticsDto
             {
-                Total = applications.Count,
-                Accepted = applications.Count(a => a.Status == ApplicationStatus.Accepted),
-                Rejected = applications.Count(a => a.Status == ApplicationStatus.Rejected),
-                Pending = applications.Count(a => a.Status == ApplicationStatus.Pending)
+                Total = applications.Where(id => id.OpportunityID == opp_id).Count(),
+                Accepted = applications.Where(id=>id.OpportunityID==opp_id).Count(a => a.Status == ApplicationStatus.Accepted),
+                Rejected = applications.Where(id => id.OpportunityID == opp_id).Count(a => a.Status == ApplicationStatus.Rejected),
+                Pending = applications.Where(id => id.OpportunityID == opp_id).Count(a => a.Status == ApplicationStatus.Pending)
             };
         }
 

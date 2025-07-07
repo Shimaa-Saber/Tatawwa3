@@ -11,11 +11,15 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
 {
     public class GetApplicationsByDateQuery : IRequest<List<ApplicationDto>>
     {
+
+        public string OpportunityId { get; set; }
         public DateTime Date { get; set; }
 
-        public GetApplicationsByDateQuery(DateTime date)
+
+        public GetApplicationsByDateQuery(DateTime date, string opportunityId)
         {
             Date = date;
+            OpportunityId = opportunityId;
         }
     }
 
@@ -31,7 +35,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
 
         public async Task<List<ApplicationDto>> Handle(GetApplicationsByDateQuery request, CancellationToken cancellationToken)
         {
-            return await _applicationService.GetApplicationsByDateAsync(request.Date);
+            return await _applicationService.GetApplicationsByDateAsync(request.Date,request.OpportunityId);
         }
     }
 
