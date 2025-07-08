@@ -39,6 +39,12 @@ namespace Tatawwa3.Application.MappingProfiles
                 .ForMember(dest => dest.Skills, opt => opt.MapFrom<SkillsResolver>())
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => RequestStatus.Pending.ToString()))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow));
+
+
+            CreateMap<Team, UpdateTeamPageDto>();
+            CreateMap<UpdateTeamPageDto, Team>();
+
+       
         }
     }
 

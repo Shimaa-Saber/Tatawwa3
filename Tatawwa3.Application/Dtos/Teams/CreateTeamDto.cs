@@ -8,6 +8,7 @@ namespace Tatawwa3.Application.Dtos.Teams
 {
     public class CreateTeamDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int? CategoryId { get; set; }

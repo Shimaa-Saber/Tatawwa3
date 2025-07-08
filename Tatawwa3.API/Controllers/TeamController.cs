@@ -128,5 +128,21 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+
+
+        [HttpGet("getTeamById{id}")]
+        public async Task<ActionResult<UpdateTeamPageDto>> GetTeamForEdit(string id)
+        {
+            var result = await _mediator.Send(new GetTeamByIdQuery(id));
+            return Ok(result);
+        }
+
+
+        [HttpPut("updateTeampage")]
+        public async Task<IActionResult> UpdateTeamPage([FromBody] UpdateTeamPageDto dto)
+        {
+            await _mediator.Send(new UpdateTeamPageCommand(dto));
+            return NoContent();
+        }
     }
 }
