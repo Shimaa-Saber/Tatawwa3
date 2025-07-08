@@ -18,11 +18,11 @@ namespace Tatawwa3.API.Controllers
             _mediator = mediator;
         }
         [HttpGet("completed-participants")]
-        public async Task<IActionResult> GetCompletedParticipants(string opp_id)
+        public async Task<IActionResult> GetCompletedParticipants(string opp_title)
         {
            // var orgUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var result = await _mediator.Send(new GetCompletedParticipantsQuery(opp_id));
+            var result = await _mediator.Send(new GetCompletedParticipantsQuery(opp_title));
             return Ok(result);
         }
 

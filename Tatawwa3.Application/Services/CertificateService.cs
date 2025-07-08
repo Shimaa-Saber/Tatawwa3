@@ -26,11 +26,11 @@ namespace Tatawwa3.Application.Services
             _context = context;
         }
 
-        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsForOrganizationAsync(string opp_id)
+        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsForOrganizationAsync(string opp_title)
         {
             var participants = await _context.Participations
                 .Where(p => p.Status == ParticipationStatus.Completed &&
-                            p.Opportunity.Id == opp_id)
+                            p.Opportunity.Title == opp_title)
                 .Include(p => p.Opportunity)
                     .ThenInclude(o => o.Organization)
                 .Include(p => p.Volunteer)
