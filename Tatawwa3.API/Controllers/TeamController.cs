@@ -12,7 +12,7 @@ namespace Tatawwa3.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeamController: ControllerBase
+    public class TeamController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IGeneric<VolunteerProfile> _volunteerRepo;
@@ -37,8 +37,8 @@ namespace Tatawwa3.API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var command =new CreateTeamCommand(dto);
-             await _mediator.Send(command);
+            var command = new CreateTeamCommand(dto);
+            await _mediator.Send(command);
 
             return Ok();
         }
@@ -136,20 +136,15 @@ namespace Tatawwa3.API.Controllers
                 return BadRequest(new { message = "يرجى إرسال id المنظمة." });
 
             var result = await _mediator.Send(new GetTeamNamesByOrganizationIdQuery(organizationId));
-
-
-
+            return Ok(result);
+        }
 
         [HttpGet("getTeamById{id}")]
         public async Task<ActionResult<UpdateTeamPageDto>> GetTeamForEdit(string id)
         {
             var result = await _mediator.Send(new GetTeamByIdQuery(id));
-
             return Ok(result);
         }
-
-
-
 
         [HttpPut("updateTeampage")]
         public async Task<IActionResult> UpdateTeamPage([FromBody] UpdateTeamPageDto dto)
@@ -157,6 +152,5 @@ namespace Tatawwa3.API.Controllers
             await _mediator.Send(new UpdateTeamPageCommand(dto));
             return NoContent();
         }
-
     }
 }
