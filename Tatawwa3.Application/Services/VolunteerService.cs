@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,7 @@ namespace Tatawwa3.Application.Services
                 .Where(c => c.Volunteer.UserID == userId) 
                 .Select(c => new CertificateDto
                 {
+                    Id = c.Id,
                     Title = c.Participation.Opportunity.Title,
                     TotalHours = c.TotalHours,
                     IssueDate = c.IssueDate,
@@ -90,10 +92,13 @@ namespace Tatawwa3.Application.Services
         public async Task<byte[]> DownloadCertificateAsync(string certificateId)
         {
             var cert = await _context.Certificates
-                .Include(c => c.Participation)
-                    .ThenInclude(p => p.Opportunity)
-                        .ThenInclude(o => o.Organization)
-                .FirstOrDefaultAsync(c => c.Id == certificateId);
+            .Include(c => c.Volunteer)
+        .ThenInclude(v => v.User)
+             .Include(c => c.Participation)
+        .ThenInclude(p => p.Opportunity)
+            .ThenInclude(o => o.Organization)
+           .FirstOrDefaultAsync(c => c.Id == certificateId);
+
 
             if (cert == null)
                 throw new Exception("الشهادة غير موجودة");

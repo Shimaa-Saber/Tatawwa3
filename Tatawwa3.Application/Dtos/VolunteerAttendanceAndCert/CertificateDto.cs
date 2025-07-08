@@ -8,6 +8,7 @@ namespace Tatawwa3.Application.Dtos.VolunteerAttendanceAndCert
 {
     public class CertificateDto
     {
+        public string Id { get; set; }
         public string Title { get; set; }         
         public float TotalHours { get; set; }      
         public DateTime IssueDate { get; set; }    

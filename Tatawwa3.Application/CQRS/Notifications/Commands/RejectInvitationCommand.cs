@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Domain.Enums;
 using Tatawwa3.Domain.Interfaces;
+using Tatawwa3.Infrastructure.Data;
 
 namespace Tatawwa3.Application.CQRS.Notifications.Commands
 {
@@ -20,13 +22,16 @@ namespace Tatawwa3.Application.CQRS.Notifications.Commands
         private readonly IOpportunity _opportunityRepo;
         private readonly IVolunteerProfileRepository _volunteerRepo;
         private readonly INotificationService _notificationService;
+        private readonly Tatawwa3DbContext _context;
 
         public RejectInvitationHandler(IVolunteerInvitationReprosatry invitationRepo
             , 
                                        ITeamRepository teamRepo, 
                                        IOpportunity opportunityRepo, 
                                        IVolunteerProfileRepository volunteerRepo, 
-                                       INotificationService notificationService
+                                       INotificationService notificationService,
+                                       Tatawwa3DbContext context
+
             )
         {
             _invitationRepo = invitationRepo;
@@ -34,14 +39,16 @@ namespace Tatawwa3.Application.CQRS.Notifications.Commands
             _notificationService = notificationService;
             _opportunityRepo = opportunityRepo;
             _volunteerRepo = volunteerRepo;
+            _context = context;
         }
 
         public async Task<string> Handle(RejectInvitationCommand request, CancellationToken cancellationToken)
         {
-            var invitation = _invitationRepo.GetByID(request.InvitationId);
+            var invitation =await _invitationRepo.GetByIDAsync(request.InvitationId);
             if (invitation == null) return "الدعوة غير موجودة.";
 
             invitation.Status = InvitationStatus.Rejected;
+            _context.VolunteerInvitations.Update(invitation);
 
             // Get volunteer name
             var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.Id == invitation.VolunteerId);
@@ -52,17 +59,34 @@ namespace Tatawwa3.Application.CQRS.Notifications.Commands
 
             if (invitation.TeamId != null)
             {
-                var team = await _teamRepo.FirstOrDefaultAsync(t => t.Id == invitation.TeamId);
-                targetUserId = team?.ApplicationUser.Id;
-                message = $"قام {volunteerName} برفض دعوة الانضمام إلى الفريق: {team?.Name}";
+                var team = await _context.Teams
+                    .Where(t => t.Id == invitation.TeamId)
+                    .Select(t => new { t.Name, t.OrganizationID })
+                    .FirstOrDefaultAsync();
+
+                if (team != null)
+                {
+                    targetUserId = team.OrganizationID;
+                    message = $"قام {volunteerName} برفض دعوة الانضمام إلى الفريق: {team.Name}";
+                }
             }
+
 
             if (invitation.OpportunityId != null)
             {
-                var opportunity = await _opportunityRepo.FirstOrDefaultAsync(o => o.Id == invitation.OpportunityId);
-                targetUserId = opportunity?.ApplicationUser.Id;
-                message = $"قام {volunteerName} برفض دعوة الانضمام إلى الفرصة: {opportunity?.Title}";
+                var opportunity = await _context.VolunteerOpportunities
+                    .Where(o => o.Id == invitation.OpportunityId)
+                    .Select(o => new { o.Title, o.OrganizationID })
+                    .FirstOrDefaultAsync();
+
+                if (opportunity != null)
+                {
+                    targetUserId = opportunity.OrganizationID;
+                    message = $"قام {volunteerName} برفض دعوة الانضمام إلى الفرصة: {opportunity.Title}";
+                }
             }
+
+
 
             await _invitationRepo.SaveChangesAsync();
 

@@ -42,6 +42,7 @@ namespace Tatawwa3.Application.Services
             return participations.Select(p => new AttendanceVolunteerDto
             {
                 VolunteerId = p.VolunteerID,
+                ProfileImage = p.Volunteer?.ProfilePictureUrl??"",
                 FullName = p.Volunteer.User.FullName,
                 Email = p.Volunteer.User.Email,
                 ParticipationId = p.Id,
@@ -68,25 +69,26 @@ namespace Tatawwa3.Application.Services
             {
                 existingAttendance.Status = dto.Status;
                 existingAttendance.Comment = dto.Comment;
+                _context.Attendances.Update(existingAttendance);
             }
             else
             {
-                participation.Attendances = new List<Attendance>
-        {
-            new Attendance
-            {
-                Id = Guid.NewGuid().ToString(),
-                ParticipationID = participation.Id,
-                Status = dto.Status,
-                Comment = dto.Comment,
-                AttendanceDate = DateTime.UtcNow
-            }
-        };
+                var newAttendance = new Attendance
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ParticipationID = participation.Id,
+                    Status = dto.Status,
+                    Comment = dto.Comment,
+                    AttendanceDate = DateTime.UtcNow
+                };
+
+                _context.Attendances.Add(newAttendance);
             }
 
             await _context.SaveChangesAsync();
             return true;
         }
+
 
 
         public async Task<byte[]> ExportAttendanceReportPdfAsync(string opportunityId)

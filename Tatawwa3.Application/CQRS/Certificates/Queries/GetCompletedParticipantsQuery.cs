@@ -12,7 +12,7 @@ using Tatawwa3.Domain.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.Certificates.Queries
 {
-    public record GetCompletedParticipantsQuery(string OpportunityId) : IRequest<List<CompletedParticipantDto>>;
+    public record GetCompletedParticipantsQuery(string Opp_id) : IRequest<List<CompletedParticipantDto>>;
    
 
     public class GetCompletedParticipantsHandler : IRequestHandler<GetCompletedParticipantsQuery, List<CompletedParticipantDto>>
@@ -26,7 +26,7 @@ namespace Tatawwa3.Application.CQRS.Certificates.Queries
 
         public async Task<List<CompletedParticipantDto>> Handle(GetCompletedParticipantsQuery request, CancellationToken cancellationToken)
         {
-            return await _certificateService.GetCompletedParticipantsAsync(request.OpportunityId);
+            return await _certificateService.GetCompletedParticipantsForOrganizationAsync(request.Opp_id);
         }
     }
 

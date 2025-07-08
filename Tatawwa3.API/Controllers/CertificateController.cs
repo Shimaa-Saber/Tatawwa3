@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tatawwa3.Application.CQRS.Certificates.Commands;
 using Tatawwa3.Application.CQRS.Certificates.Queries;
 using Tatawwa3.Application.Dtos.Certificats;
@@ -16,10 +17,12 @@ namespace Tatawwa3.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("completed-participants/{opportunityId}")]
-        public async Task<IActionResult> GetCompletedParticipants(string opportunityId)
+        [HttpGet("completed-participants")]
+        public async Task<IActionResult> GetCompletedParticipants(string opp_id)
         {
-            var result = await _mediator.Send(new GetCompletedParticipantsQuery(opportunityId));
+           // var orgUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = await _mediator.Send(new GetCompletedParticipantsQuery(opp_id));
             return Ok(result);
         }
 

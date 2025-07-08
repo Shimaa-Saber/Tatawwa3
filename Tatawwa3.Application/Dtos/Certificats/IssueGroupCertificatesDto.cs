@@ -10,7 +10,7 @@ namespace Tatawwa3.Application.Dtos.Certificats
     {
         public string OpportunityId { get; set; }
         public string Title { get; set; }
-        public string Issuer { get; set; }
+      //  public string Issuer { get; set; }
         public float TotalHours { get; set; }
     }
 

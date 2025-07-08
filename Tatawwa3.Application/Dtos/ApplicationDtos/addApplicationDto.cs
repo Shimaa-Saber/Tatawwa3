@@ -9,6 +9,7 @@ namespace Tatawwa3.Application.Dtos.ApplicationDtos
 {
    public class addApplicationDto
     {
+
         public string OpportunityID { get; set; }
         //public string VolunteerID { get; set; }
         public string MotivationLetter { get; set; }
