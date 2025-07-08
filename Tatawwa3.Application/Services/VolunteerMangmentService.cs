@@ -40,6 +40,7 @@ namespace Tatawwa3.Application.Services
                 {
                     Id = a.Id,
                     OpportunityTitle = a.Opportunity.Title,
+                    profileImage = a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -132,6 +133,7 @@ namespace Tatawwa3.Application.Services
                 {
                     Id = a.Id,
                     OpportunityTitle = a.Opportunity.Title,
+                    profileImage=a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -157,7 +159,7 @@ namespace Tatawwa3.Application.Services
                 {
                     Id = a.Id,
                     OpportunityTitle = a.Opportunity.Title,
-
+                    profileImage = a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -178,6 +180,7 @@ namespace Tatawwa3.Application.Services
                 {
                     Id = a.Id,
                     OpportunityTitle = a.Opportunity.Title,
+                    profileImage = a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),

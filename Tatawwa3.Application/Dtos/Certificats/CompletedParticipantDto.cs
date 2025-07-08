@@ -10,6 +10,7 @@ namespace Tatawwa3.Application.Dtos.Certificats
     {
         public string Id { get; set; }
         public string VolunteerId { get; set; }
+        public string ProfileImage { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public float TotalHours { get; set; }

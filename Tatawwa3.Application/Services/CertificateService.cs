@@ -26,11 +26,11 @@ namespace Tatawwa3.Application.Services
             _context = context;
         }
 
-        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsForOrganizationAsync(string orgUserId)
+        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsForOrganizationAsync(string opp_id)
         {
             var participants = await _context.Participations
                 .Where(p => p.Status == ParticipationStatus.Completed &&
-                            p.Opportunity.OrganizationID == orgUserId)
+                            p.Opportunity.Id == opp_id)
                 .Include(p => p.Opportunity)
                     .ThenInclude(o => o.Organization)
                 .Include(p => p.Volunteer)
@@ -41,6 +41,7 @@ namespace Tatawwa3.Application.Services
             {
                 Id = p.Id,
                 VolunteerId = p.VolunteerID!,
+                ProfileImage = p.Volunteer?.ProfilePictureUrl ?? "",
                 FullName = p.Volunteer?.User?.FullName ?? "",
                 Email = p.Volunteer?.User?.Email ?? "",
                 TotalHours = p.TotalAttendedHours,

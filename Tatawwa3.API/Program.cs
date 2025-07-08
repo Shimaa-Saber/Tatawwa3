@@ -77,7 +77,7 @@ builder.Services.AddDbContext<Tatawwa3DbContext>(options =>
             builder.Configuration.GetConnectionString("CS"),
             x => x.MigrationsAssembly("Tatawwa3.Infrastructure")
         )
-        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+        .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
         .LogTo(log => Debug.WriteLine(log), LogLevel.Information)
 );
 
