@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tatawwa3.Application.CQRS.teams.Queries;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Commands;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
@@ -185,6 +186,23 @@ namespace Tatawwa3.API.Controllers
             var result = await mediator.Send(new GetOpportunitiemangmentQuery(organizationId));
             return Ok(result);
         }
+
+        [HttpGet("morag3a-opportunities")]
+        public async Task<IActionResult> GetMorag3aOpportunities()
+        {
+            var result = await mediator.Send(new Morag3aOpportunitiesQuery());
+            return Ok(result);
+        }
+
+        [HttpPost("search-by-filters")]
+        public async Task<IActionResult> SearchOpportunities([FromBody] OpportunitySearchDto dto)
+        {
+            var query = new SearchOpportunitiesQuery(dto);
+            var result = await mediator.Send(query);
+            return Ok(result);
+        }
+
+
 
 
 

@@ -129,13 +129,26 @@ namespace Tatawwa3.API.Controllers
         }
 
 
+        [HttpGet("{organizationId}/team-names")]
+        public async Task<IActionResult> GetTeamNamesByOrganizationId(string organizationId)
+        {
+            if (string.IsNullOrWhiteSpace(organizationId))
+                return BadRequest(new { message = "يرجى إرسال id المنظمة." });
+
+            var result = await _mediator.Send(new GetTeamNamesByOrganizationIdQuery(organizationId));
+
+
+
 
         [HttpGet("getTeamById{id}")]
         public async Task<ActionResult<UpdateTeamPageDto>> GetTeamForEdit(string id)
         {
             var result = await _mediator.Send(new GetTeamByIdQuery(id));
+
             return Ok(result);
         }
+
+
 
 
         [HttpPut("updateTeampage")]
@@ -144,5 +157,6 @@ namespace Tatawwa3.API.Controllers
             await _mediator.Send(new UpdateTeamPageCommand(dto));
             return NoContent();
         }
+
     }
 }
