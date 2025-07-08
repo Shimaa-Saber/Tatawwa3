@@ -20,11 +20,16 @@ namespace Tatawwa3.API.MiddleWares
         {
             try
             {
-                await _next(context); // مرر الطلب
+                await _next(context);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message); 
+              
+                Console.WriteLine("🔥 EXCEPTION CAUGHT IN MIDDLEWARE 🔥");
+                Console.WriteLine(ex.ToString());
+
+          
+                _logger.LogError(ex, ex.Message);
 
                 context.Response.ContentType = "application/json";
 
@@ -32,6 +37,7 @@ namespace Tatawwa3.API.MiddleWares
 
                 object response;
 
+           
                 if (_env.IsDevelopment())
                 {
                     response = new
@@ -43,13 +49,13 @@ namespace Tatawwa3.API.MiddleWares
                 }
                 else
                 {
+                  
                     response = new
                     {
                         status = statusCode,
-                        error = "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا."
+                        error = ex.Message,
                     };
                 }
-
 
                 var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
                 var json = JsonSerializer.Serialize(response, options);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 
@@ -102,5 +103,16 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return _tatawwa3DbContext.Set<T>().CountAsync(predicate);
         }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            _tatawwa3DbContext.Set<T>().UpdateRange(entities);
+        }
+
+        public async Task<VolunteerInvitation?> GetByIDAsync(string id)
+        {
+            return await _tatawwa3DbContext.VolunteerInvitations.FindAsync(id);
+        }
+
     }
 }

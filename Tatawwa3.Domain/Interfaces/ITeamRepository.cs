@@ -12,8 +12,8 @@ namespace Tatawwa3.Domain.Interfaces
     {
 
         IQueryable<Team> GetAllTeams();
-        
-      
-
+        List<string> GetAllTeamNames();
+        Task AddVolunteerToTeamAsync(string teamId, string volunteerId);
+        List<string> GetTeamNamesByOrganizationId(string organizationId);
     }
 }

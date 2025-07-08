@@ -11,6 +11,11 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
 {
     public class GetAllApplicationsQuery : IRequest<List<ApplicationDto>>
     {
+        public string OppId { get; }
+        public GetAllApplicationsQuery(string OppIdd)
+        {
+            OppId = OppIdd;
+        }
     }
 
 
@@ -25,7 +30,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
 
         public async Task<List<ApplicationDto>> Handle(GetAllApplicationsQuery request, CancellationToken cancellationToken)
         {
-            return await _applicationService.GetAllApplicationsAsync();
+            return await _applicationService.GetAllApplicationsByOrganizationAsync(request.OppId);
         }
     }
 

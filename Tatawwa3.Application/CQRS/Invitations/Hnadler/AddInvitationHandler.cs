@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.CQRS.Invitations.Commands;
 using Tatawwa3.Application.Dtos.InvitationDtos;
+using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.Services;
 using Tatawwa3.Domain.Entities;
 using Tatawwa3.Domain.Enums;
@@ -22,23 +23,27 @@ namespace Tatawwa3.Application.CQRS.Invitations.Hnadler
         private readonly ITeamRepository _teamRepo;
         private readonly IOpportunity _opportunityRepo;
         private readonly IVolunteerInvitationReprosatry _invitationRepo;
+        private readonly INotificationRepository _notificationRepo;
+        private readonly INotificationService _notificationService;
 
         public AddInvitationHandler(
         IVolunteerProfileRepository volunteerRepo,
         ITeamRepository teamRepo,
         IOpportunity opportunityRepo,
-        IVolunteerInvitationReprosatry invitationRepo)
+        IVolunteerInvitationReprosatry invitationRepo,
+        INotificationService notificationService)
         {
             _volunteerRepo = volunteerRepo;
             _teamRepo = teamRepo;
             _opportunityRepo = opportunityRepo;
             _invitationRepo = invitationRepo;
+            _notificationService = notificationService;
         }
         public async Task<string> Handle(AddInvitationCommand request, CancellationToken cancellationToken)
         {
             var dto = request.addInvitaon;
 
-            var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.User.UserName == dto.VolunteerFullName);
+            var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.User.FullName == dto.VolunteerFullName);
             if (volunteer == null)
                 throw new Exception("المتطوع غير موجود");
 
@@ -70,8 +75,27 @@ namespace Tatawwa3.Application.CQRS.Invitations.Hnadler
 
             _invitationRepo.Add(invitation);
             await _invitationRepo.SaveChangesAsync();
+
+            string message = dto.InvitationType switch
+            {
+                InvitationType.JoinTeam => $"تم إرسال دعوة للانضمام إلى الفريق: {dto.TeamName}",
+                InvitationType.JoinOpportunity => $"تم إرسال دعوة للمشاركة في الفرصة: {dto.OpportunityTitle}",
+                _ => "تم إرسال دعوة جديدة"
+            };
+
+            await _notificationService.SendNotificationAsync(
+             userId: volunteer.UserID,
+             title: "📩 دعوة جديدة",
+             message: message,
+             invitationId: invitation.Id
+             );
+
+
+          
             return "تم ارسال الدعوه";
 
         }
     }
+
+    
 }

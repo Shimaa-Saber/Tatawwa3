@@ -15,12 +15,17 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.API.Mapper.Categoryy;
+using Tatawwa3.API.Mapper.InvitationMap;
+using Tatawwa3.API.Mapper.NotificationMap;
 using Tatawwa3.API.Mapper.Opportunity;
+using Tatawwa3.API.Mapper.Organization;
 using Tatawwa3.API.Mapper.Volunteer;
+using Tatawwa3.API.MiddleWares;
 using Tatawwa3.Application;
 using Tatawwa3.Application;
 using Tatawwa3.Application.CQRS.Team.Commands;
 using Tatawwa3.Application.CQRS.Team.Handlers;
+using Tatawwa3.Application.Hubs;
 using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Application.MappingProfiles;
 using Tatawwa3.Application.Services;
@@ -29,7 +34,6 @@ using Tatawwa3.Domain.Entities.MailSetting;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Tatawwa3.Infrastructure.Repositorirs;
-using Tatawwa3.API.MiddleWares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,11 +67,16 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Smtp"
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IVolunteerOpportunityRepository, VolunteerOpportunityRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
+builder.Services.AddScoped<INotificationPreferenceService, NotificationPreferenceService>();
+
+
 
 
 
@@ -77,7 +86,7 @@ builder.Services.AddDbContext<Tatawwa3DbContext>(options =>
             builder.Configuration.GetConnectionString("CS"),
             x => x.MigrationsAssembly("Tatawwa3.Infrastructure")
         )
-        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+        .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
         .LogTo(log => Debug.WriteLine(log), LogLevel.Information)
 );
 
@@ -101,6 +110,12 @@ builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileReposito
 builder.Services.AddScoped<IVolunteerInvitationReprosatry, VolunteerInvitationReprosatry>();
 builder.Services.AddScoped<ICertificateService, CertificateService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<ISkillReprosatry, SkillReprosatry>();
+
+
 
 
 
@@ -146,6 +161,9 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<RecommendedOpportunityProfile>();
     cfg.AddProfile<VolunteerOpportunityProfile>();///////انا الي ضايفه
     cfg.AddProfile<categoryProfile>();
+    cfg.AddProfile<organizationprofile>();
+    cfg.AddProfile<NotificationProfile>();
+    cfg.AddProfile<InvitationProfile>();
 
 
 });
@@ -238,9 +256,7 @@ using (var scope = app.Services.CreateScope())
 
 
 
-app.UseMiddleware<RequestResponseLoggingMiddleware>();
-app.UseMiddleware<ValidationExceptionMiddleware>();
-app.UseMiddleware<ExceptionMiddleware>();
+
 
 
 app.UseCors("AllowAll");
@@ -252,13 +268,24 @@ app.UseCors("AllowAll");
 //    app.UseSwaggerUI();
 //}
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
+app.UseMiddleware<ValidationExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
+
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.MapHub<NotificationHub>("/hub/notifications");
 
-app.UseSwagger();
-app.UseSwaggerUI();
+
+
+
 
 app.MapControllers();
 app.MapGet("/", () => Results.Ok("🚀 Tatawwa3 API is running"));

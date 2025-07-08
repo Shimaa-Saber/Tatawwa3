@@ -18,6 +18,7 @@ namespace Tatawwa3.API.Mapper.Volunteer
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.User.City))
+                .ForMember(dest=>dest.ProfileImage,opt=>opt.MapFrom(src=>src.ProfilePictureUrl))
                 .ForMember(dest => dest.Interests, opt => opt.MapFrom(src => DeserializeInterests(src.Interests)));
         }
 

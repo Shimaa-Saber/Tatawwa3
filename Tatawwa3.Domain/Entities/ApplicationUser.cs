@@ -22,6 +22,7 @@ namespace Tatawwa3.Domain.Entities
        
         public VolunteerProfile? VolunteerProfile { get; set; }
         public OrganizationProfile? OrganizationProfile { get; set; }
-     
+        public NotificationPreference ?NotificationPreference { get; set; }
+
     }
 }

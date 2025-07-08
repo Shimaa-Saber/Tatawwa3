@@ -15,7 +15,19 @@ namespace Tatawwa3.Domain.Interfaces
 
         public IQueryable<VolunteerOpportunity> GetAllOpportunity();
         VolunteerOpportunity? GetByIdWithIncludes(string id);
+        VolunteerOpportunity? GetByIdForUpdate(string id);
+
         Task<List<VolunteerOpportunity>> SearchByTitleAsync(string title);
+
+        //public Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync();
+        public  Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync(string organizationId);
+
+
+        public Task<List<VolunteerOpportunity>> GetAllWithIncludesAsync();
+        Task AddVolunteerToOpportunityAsync(string opportunityId, string volunteerId);
+
+        public Task<List<VolunteerOpportunity>> GetAllWithOrganizationAsync();
+        Task<List<VolunteerOpportunity>> SearchOpportunitiesAsync(string? status, string? orgName, DateTime? startDate);
 
     }
 }

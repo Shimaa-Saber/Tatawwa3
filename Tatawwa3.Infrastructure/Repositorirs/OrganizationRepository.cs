@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+//using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +8,9 @@ using Tatawwa3.Domain.Entities;
 using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+
 
 
 namespace Tatawwa3.Infrastructure.Repositorirs
@@ -38,6 +41,27 @@ public class OrganizationRepository:GenericRepository<OrganizationProfile>, IOrg
             return await _context.OrganizationProfiles.CountAsync();
 
         }
-    
+
+        public async Task<List<string>> GetAllCitiesAsync()
+        {
+            var query = _context.OrganizationProfiles
+                                .Where(o => !string.IsNullOrEmpty(o.City))
+                                .Select(o => o.City.Trim())
+                                .Distinct();
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<string>> GetAllOrganizationNamesAsync()
+        {
+            return await _context.OrganizationProfiles
+                                 .Where(o => !string.IsNullOrEmpty(o.OrganizationName))
+                                 .Select(o => o.OrganizationName)
+                                 .Distinct()
+                                 .ToListAsync();
+        }
+
+
+
     }
 }

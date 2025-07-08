@@ -26,7 +26,42 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return _context.Teams.AsQueryable();
        }
-       
+
+        public List<string> GetAllTeamNames()
+        {
+            return _context.Teams
+                           .Where(t => !string.IsNullOrEmpty(t.Name))
+                           .Select(t => t.Name)
+                           .Distinct()
+                           .ToList();
+        }
+        public List<string> GetTeamNamesByOrganizationId(string organizationId)
+        {
+            return _context.Teams
+                           .Where(t => t.OrganizationID == organizationId && !string.IsNullOrEmpty(t.Name))
+                           .Select(t => t.Name)
+                           .Distinct()
+                           .ToList();
+        }
+
+        public async Task AddVolunteerToTeamAsync(string teamId, string volunteerId)
+        {
+            var volunteerTeam = new TeamMember
+            {
+                Id = Guid.NewGuid().ToString(),
+                TeamID = teamId,
+                VolunteerID = volunteerId,
+                JoinDate = DateTime.UtcNow
+            };
+
+            _context.TeamMembers.Add(volunteerTeam);
+            await _context.SaveChangesAsync();
+        }
+
+
+
+
+
 
 
     }

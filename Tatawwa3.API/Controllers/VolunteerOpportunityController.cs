@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tatawwa3.Application.CQRS.teams.Queries;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Commands;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
@@ -51,7 +52,7 @@ namespace Tatawwa3.API.Controllers
         public async Task<IActionResult> GetOpportunityCategory(string CatName)
         {
 
-            var query = new GetLocationOpportunitiesQuery(CatName);
+            var query = new GetCategoryOpportunitiesQuery(CatName);
             var result = await mediator.Send(query);
             return Ok(result);
 
@@ -71,6 +72,22 @@ namespace Tatawwa3.API.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpGet("updated-databy-id{id}")]
+        public async Task<IActionResult> GetUpdatedyById(string id)
+        {
+            var query = new getdataupdateid(id);
+            var result = await mediator.Send(query);
+
+
+
+            if (result == null)
+                return NotFound(new { message = "❌ الفرصة التطوعية غير موجودة." });
+
+            return Ok(result);
+        }
+
 
 
         //[HttpPut("Update{id}")]
@@ -146,6 +163,48 @@ namespace Tatawwa3.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("forsa-management/by-id")]
+        public async Task<IActionResult> GetOpportunitiesByOrgId([FromQuery] string organizationId)
+        {
+            if (string.IsNullOrEmpty(organizationId))
+                return BadRequest(new { message = "يرجى إرسال معرف المنظمة." });
+
+            var result = await mediator.Send(new GetOpportunitiemangmentQuery(organizationId));
+            return Ok(result);
+        }
+
+        [HttpGet("forsa-management/by-token")]
+        
+        public async Task<IActionResult> GetOpportunitiesByToken()
+        {
+            var organizationId = User.FindFirst("OrganizationId")?.Value;
+
+            if (string.IsNullOrEmpty(organizationId))
+                return Unauthorized(new { message = "لم يتم التعرف على المنظمة." });
+
+            var result = await mediator.Send(new GetOpportunitiemangmentQuery(organizationId));
+            return Ok(result);
+        }
+
+        [HttpGet("morag3a-opportunities")]
+        public async Task<IActionResult> GetMorag3aOpportunities()
+        {
+            var result = await mediator.Send(new Morag3aOpportunitiesQuery());
+            return Ok(result);
+        }
+
+        [HttpPost("search-by-filters")]
+        public async Task<IActionResult> SearchOpportunities([FromBody] OpportunitySearchDto dto)
+        {
+            var query = new SearchOpportunitiesQuery(dto);
+            var result = await mediator.Send(query);
+            return Ok(result);
+        }
+
+
+
+
 
 
 

@@ -14,6 +14,8 @@ namespace Tatawwa3.Application.Dtos.VolunteerMangement
         public float Rating { get; set; }
         public float TotalHours { get; set; }
         public bool IsVerified { get; set; }
+        public string ProfileImage { get; set; }
+
         public string[] Interests { get; set; }
     }
 
