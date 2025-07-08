@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.Application.Dtos.Teams
 {
@@ -14,7 +15,7 @@ namespace Tatawwa3.Application.Dtos.Teams
         public int? CategoryId { get; set; }
         public string City { get; set; }
         public bool IsLinkedToOpportunity { get; set; }
-        public string JoinPermission { get; set; }
+        public TeamJoinPermission JoinPermission { get; set; }
         public int? MaxMembers { get; set; }
         public string? InternalNotes { get; set; }
         public string? OrganizationID { get; set; }
