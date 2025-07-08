@@ -16,6 +16,7 @@ namespace Tatawwa3.Application.MappingProfiles
     {
         public TeamProfile()
         {
+            CreateMap<CreateTeamDto, Team>();
 
             CreateMap<UpdateTeamDto, Team>();
             CreateMap<Team, GetTeamaDto>()
