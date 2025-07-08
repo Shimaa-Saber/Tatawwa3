@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +20,16 @@ namespace Tatawwa3.Application.Services
         private readonly Tatawwa3DbContext _context;
         private readonly INotificationService _notificationService;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IVolunteerProfileRepository _volunteerRepo;
 
         public VolunteerMangmentService(Tatawwa3DbContext context, INotificationService notificationService,
-            INotificationRepository notificationRepository
+            INotificationRepository notificationRepository, IVolunteerProfileRepository volunteerRepo
             )
         {
             _context = context;
             _notificationService = notificationService;
             _notificationRepository = notificationRepository;
+            _volunteerRepo = volunteerRepo;
         }
 
         public async Task<List<ApplicationDto>> GetAllApplicationsByOrganizationAsync(string orgUserId)
@@ -63,12 +66,19 @@ namespace Tatawwa3.Application.Services
             application.Status = ApplicationStatus.Accepted;
             _context.Applications.Update(application);
             await _context.SaveChangesAsync();
-
-            await _notificationService.SendNotificationAsync(
+            var volunteer = await _volunteerRepo
+                .GetWithIncludes(v => v.User.NotificationPreference)
+                .FirstOrDefaultAsync(v => v.Id == application.VolunteerID);
+            var preferences = volunteer?.User?.NotificationPreference;
+            if (preferences?.NotifyOnApplicationAccepted == true)
+            {
+                await _notificationService.SendNotificationAsync(
             userId: application.Volunteer.UserID,
             title: "تم قبول طلبك",
             message: $"تم قبولك في الفرصة: {application.Opportunity.Title}"
+
    );
+            }
 
 
 
