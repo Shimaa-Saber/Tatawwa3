@@ -57,6 +57,7 @@ namespace Tatawwa3.Application.Services
                 .Select(p => new ParticipationDto
                 {
                     OpportunityTitle = p.Opportunity.Title,
+                    Opportunity_discrption = p.Opportunity.Description,
                     Date = p.CreatedAt,
                     Hours = p.TotalAttendedHours,
                     Status = p.Status.ToString()
