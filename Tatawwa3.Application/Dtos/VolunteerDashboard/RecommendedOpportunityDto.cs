@@ -13,7 +13,7 @@ namespace Tatawwa3.Application.Dtos.VolunteerDashboard
         public string OrganizationName { get; set; }
         public string Category { get; set; }
         public DateTime StartDate { get; set; }
-
+        public string id { get; set; }
         public string Location { get; set; }
         public string? Image { get; set; }
     }
