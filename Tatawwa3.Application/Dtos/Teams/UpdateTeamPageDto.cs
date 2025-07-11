@@ -9,5 +9,10 @@ namespace Tatawwa3.Application.Dtos.Teams
     public class UpdateTeamPageDto:CreateTeamDto
     {
         public string Id { get; set; }
+        public string? CategoryName { get; set; }
+
+       
+        public string? OpportunityName { get; set; }
+
     }
 }
