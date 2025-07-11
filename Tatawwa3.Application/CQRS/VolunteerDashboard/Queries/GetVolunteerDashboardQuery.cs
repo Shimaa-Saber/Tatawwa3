@@ -8,7 +8,7 @@ using Tatawwa3.Application.Dtos.VolunteerDashboard;
 
 namespace Tatawwa3.Application.CQRS.VolunteerDashboard.Queries
 {
-    public class GetVolunteerDashboardQuery : IRequest<List<VolunteerDashboardDto>>
+    public class GetVolunteerDashboardQuery : IRequest<List<SubmittedOpportunityDto>>
     {
         public string UserId { get; set; }
 

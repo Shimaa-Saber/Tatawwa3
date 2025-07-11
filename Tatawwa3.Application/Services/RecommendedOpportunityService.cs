@@ -26,7 +26,7 @@ namespace Tatawwa3.Application.Services
         {
             // Get volunteer profile
             var volunteer = await _context.VolunteerProfiles
-                .FirstOrDefaultAsync(v => v.Id == volunteerId);
+      .FirstOrDefaultAsync(v => v.UserID == volunteerId);
 
             if (volunteer == null || volunteer.CategoryId == null)
                 return new List<RecommendedOpportunityDto>();
@@ -39,11 +39,13 @@ namespace Tatawwa3.Application.Services
 
             // Get recommended opportunities
             var recommended = await _context.VolunteerOpportunities
-               .Where(o => o.CategoryID == volunteer.CategoryId.Value.ToString() && !appliedIds.Contains(o.Id))
+               .Where(o => o.CategoryID == volunteer.CategoryId.ToString() && !appliedIds.Contains(o.Id))
+
                 .ProjectTo<RecommendedOpportunityDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             return recommended;
         }
+
     }
 }

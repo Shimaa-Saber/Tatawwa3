@@ -15,16 +15,15 @@ namespace Tatawwa3.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("my-Opportunites")]
-        public async Task<IActionResult> GetMyApplications([FromQuery] string volunteerId)
+        [HttpGet("submitted/{userId}")]
+        public async Task<IActionResult> GetSubmittedOpportunities(string userId)
         {
-            var result = await _mediator.Send(new GetVolunteerDashboardQuery(volunteerId));
+            var result = await _mediator.Send(new GetVolunteerDashboardQuery(userId));
             return Ok(result);
         }
-       
-        
 
-            [HttpGet("recommended")]
+
+        [HttpGet("recommended")]
             public async Task<IActionResult> GetRecommended([FromQuery] string volunteerId)
             {
                 var result = await _mediator.Send(new GetRecommendedOpportunitiesQuery(volunteerId));
