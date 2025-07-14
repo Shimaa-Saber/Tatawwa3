@@ -66,6 +66,13 @@ public async Task<IActionResult> GetOrganizationCities()
 
             return Ok(result);
         }
+        [HttpGet("getupdatedata/{id}")]
+        public async Task<IActionResult> GetUpdateData(string id)
+        {
+            var result = await _mediator.Send(new GetUpdateDataQuery(id));
+            return Ok(result);
+        }
+
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteOrganization(string id)

@@ -27,7 +27,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
             var opportunities = await _opportunityRepo.SearchOpportunitiesAsync(
                 request.SearchDto.Status,
                 request.SearchDto.OrganizationName,
-                request.SearchDto.StartDate
+                request.SearchDto.location
             );
 
             return _mapper.Map<List<OpportunityListDto>>(opportunities);

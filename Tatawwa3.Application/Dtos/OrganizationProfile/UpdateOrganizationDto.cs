@@ -15,7 +15,7 @@ namespace Tatawwa3.Application.Dtos.OrganizationProfile
         public string OrganizationName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public OrganizationTypeEnum OrganizationType { get; set; }
+        //public OrganizationTypeEnum OrganizationType { get; set; }
         public string City { get; set; }
        
         public IFormFile? LogoFile { get; set; }

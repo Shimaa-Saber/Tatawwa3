@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.CQRS.teams.Queries;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
+using Tatawwa3.Domain.Enums;
 using Tatawwa3.Domain.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.teams.Handlers
@@ -24,7 +25,8 @@ namespace Tatawwa3.Application.CQRS.teams.Handlers
         public async Task<List<OpportunityListDto>> Handle(Morag3aOpportunitiesQuery request, CancellationToken cancellationToken)
         {
             var opportunities = await _opportunityRepo.GetAllWithOrganizationAsync();
-            var result = _mapper.Map<List<OpportunityListDto>>(opportunities);
+            var published = opportunities.Where(o => o.Status == OpportunityStatus.Published).ToList();
+            var result = _mapper.Map<List<OpportunityListDto>>(published);
             return result;
         }
     }

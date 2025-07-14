@@ -13,6 +13,8 @@ namespace Tatawwa3.API.Mapper.Organization
             CreateMap<OrganizationProfile, OrganizationbasedFilterationDTO>();
             CreateMap<UpdateOrganizationDto, OrganizationProfile>()
           .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+            CreateMap<OrganizationProfile, UpdateOrganizationDto>().ReverseMap();
+
         }
     }
 }
