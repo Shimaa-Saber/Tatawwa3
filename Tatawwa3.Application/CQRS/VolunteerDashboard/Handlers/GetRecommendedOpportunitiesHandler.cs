@@ -21,7 +21,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerDashboard.Handlers
 
         public async Task<List<RecommendedOpportunityDto>> Handle(GetRecommendedOpportunitiesQuery request, CancellationToken cancellationToken)
         {
-            return await _service.GetRecommendedOpportunitiesAsync(request.VolunteerId);
+            return await _service.GetRecommendedOpportunitiesAsync(request.UserId);
         }
     }
 }

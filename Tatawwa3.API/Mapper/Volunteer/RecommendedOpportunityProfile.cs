@@ -11,15 +11,14 @@ namespace Tatawwa3.API.Mapper.Volunteer
         public RecommendedOpportunityProfile()
         {
             CreateMap<VolunteerOpportunity, RecommendedOpportunityDto>()
-                .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+     .ForMember(dest => dest.OpportunityTitle, opt => opt.MapFrom(src => src.Title))
+     .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName))
+     .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
+     .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
+     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
+     .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+     .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image));
 
-            CreateMap<VolunteerProfile, VolunteerProfileDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.User.City))
-                .ForMember(dest=>dest.ProfileImage,opt=>opt.MapFrom(src=>src.ProfilePictureUrl))
-                .ForMember(dest => dest.Interests, opt => opt.MapFrom(src => DeserializeInterests(src.Interests)));
         }
 
         private static string[] DeserializeInterests(string interests)

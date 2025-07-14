@@ -10,6 +10,7 @@ namespace Tatawwa3.Domain.Interfaces
    public interface IVolunteerProfileRepository:IGeneric<VolunteerProfile>
     {
         Task<float> GetTotalHoursAsync();
-
+        Task<VolunteerProfile?> GetByUserIdAsync(string userId);
+        Task Remove(VolunteerProfile volunteer);
     }
 }

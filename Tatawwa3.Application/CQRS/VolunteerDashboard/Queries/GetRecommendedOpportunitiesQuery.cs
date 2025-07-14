@@ -10,11 +10,11 @@ namespace Tatawwa3.Application.CQRS.VolunteerDashboard.Queries
 {
     public class GetRecommendedOpportunitiesQuery : IRequest<List<RecommendedOpportunityDto>>
     {
-        public string VolunteerId { get; set; }
+        public string UserId { get; set; }
 
-        public GetRecommendedOpportunitiesQuery(string volunteerId)
+        public GetRecommendedOpportunitiesQuery(string userId)
         {
-            VolunteerId = volunteerId;
+            UserId = userId;
         }
     }
 }

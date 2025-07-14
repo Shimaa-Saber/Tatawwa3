@@ -235,7 +235,7 @@ MapperService.Mapper = config.CreateMapper();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
 builder.Services.AddScoped<IVolunteerOpportunityService, VolunteerOpportunityService>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
-builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
+//builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddScoped<IDashboardStatisticsService, DashboardStatisticsService>();
