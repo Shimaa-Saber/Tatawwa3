@@ -45,19 +45,39 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
             var organization = await _organizationRepo.FirstOrDefaultAsync(o => o.OrganizationName == dto.OrganizationName)
                 ?? throw new Exception("الجهه الي اتكتبت مش موجوده");
 
+            //DomainTeam? team = null;
+            //if (!string.IsNullOrWhiteSpace(dto.TeamName))
+            //{
+            //    team = await _teamRepo.FirstOrDefaultAsync(t => t.Name == dto.TeamName);
+            //    if (team == null)
+            //    {
+            //        team = new DomainTeam { Name = dto.TeamName };
+            //        _teamRepo.Add(team);
+            //        await _teamRepo.SaveChangesAsync();
+            //    }
+            //}
             DomainTeam? team = null;
+
             if (!string.IsNullOrWhiteSpace(dto.TeamName))
             {
                 team = await _teamRepo.FirstOrDefaultAsync(t => t.Name == dto.TeamName);
+
                 if (team == null)
                 {
-                    team = new DomainTeam { Name = dto.TeamName };
+                    team = new DomainTeam
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = dto.TeamName
+                    };
+
                     _teamRepo.Add(team);
                     await _teamRepo.SaveChangesAsync();
                 }
             }
 
-            
+
+
+
             string? savedImagePath = null;
             if (dto.Image != null && dto.Image.Length > 0)
             {

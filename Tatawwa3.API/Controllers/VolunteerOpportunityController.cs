@@ -6,6 +6,7 @@ using Tatawwa3.Application.CQRS.teams.Queries;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Commands;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
+using Tatawwa3.Domain.Enums;
 
 
 
@@ -193,6 +194,20 @@ namespace Tatawwa3.API.Controllers
             var result = await mediator.Send(new Morag3aOpportunitiesQuery());
             return Ok(result);
         }
+        [HttpPut("approve/{id}")]
+        public async Task<IActionResult> ApproveOpportunity(string id)
+        {
+            var result = await mediator.Send(new UpdateOpportunityStatusCommand(id, OpportunityStatus.Completed));
+            return Ok(result);
+        }
+
+        [HttpPut("reject/{id}")]
+        public async Task<IActionResult> RejectOpportunity(string id)
+        {
+            var result = await mediator.Send(new UpdateOpportunityStatusCommand(id, OpportunityStatus.Draft));
+            return Ok(result);
+        }
+
 
         [HttpPost("search-by-filters")]
         public async Task<IActionResult> SearchOpportunities([FromBody] OpportunitySearchDto dto)

@@ -136,7 +136,7 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .ToListAsync();
         }
 
-        public async Task<List<VolunteerOpportunity>> SearchOpportunitiesAsync(string? status, string? orgName, DateTime? startDate)
+        public async Task<List<VolunteerOpportunity>> SearchOpportunitiesAsync(string? status, string? orgName, string? location)
         {
             var query = _context.VolunteerOpportunities
                 .Include(v => v.Organization)
@@ -156,9 +156,9 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 query = query.Where(v => v.Organization.OrganizationName.Contains(orgName));
             }
 
-            if (startDate.HasValue)
+            if (!string.IsNullOrWhiteSpace(location))
             {
-                query = query.Where(v => v.StartDate.Date == startDate.Value.Date);
+                query = query.Where(v => v.Location.Contains(location));
             }
 
             return await query.ToListAsync();

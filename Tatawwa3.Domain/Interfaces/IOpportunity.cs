@@ -27,7 +27,7 @@ namespace Tatawwa3.Domain.Interfaces
         Task AddVolunteerToOpportunityAsync(string opportunityId, string volunteerId);
 
         public Task<List<VolunteerOpportunity>> GetAllWithOrganizationAsync();
-        Task<List<VolunteerOpportunity>> SearchOpportunitiesAsync(string? status, string? orgName, DateTime? startDate);
+        Task<List<VolunteerOpportunity>> SearchOpportunitiesAsync(string? status, string? orgName, string? location);
 
     }
 }

@@ -10,6 +10,6 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
     {
         public string? Status { get; set; }
         public string? OrganizationName { get; set; }
-        public DateTime? StartDate { get; set; }
+        public string? location {  get; set; }
     }
 }
