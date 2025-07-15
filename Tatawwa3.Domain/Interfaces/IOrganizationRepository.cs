@@ -16,7 +16,7 @@ namespace Tatawwa3.Domain.Interfaces
         Task<List<string>> GetAllCitiesAsync();
         Task<List<string>> GetAllOrganizationNamesAsync();
 
-
+        Task<OrganizationProfile> GetByIdAsync(string id);
 
     }
 }

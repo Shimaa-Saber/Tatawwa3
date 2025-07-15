@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 
 namespace Tatawwa3.Application.CQRS.Organization.quiers
 {
-    public class GetAllOrganizationNamesQuery : IRequest<List<string>> { }
+    public class GetAllOrganizationNamesQuery : IRequest<List<string>> {
+    }
 }

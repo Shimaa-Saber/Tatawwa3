@@ -19,5 +19,7 @@ namespace Tatawwa3.Application.Dtos.Teams
         public int? MaxMembers { get; set; }
         public string? InternalNotes { get; set; }
         public string? OrganizationID { get; set; }
+        public string? CategoryName { get; set; }          // ✅ بدل الـ ID
+        public string? OpportunityTitle { get; set; }      // ✅ اسم الفرصة
     }
 }

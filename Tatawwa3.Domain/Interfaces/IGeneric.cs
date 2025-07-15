@@ -23,7 +23,7 @@ namespace Tatawwa3.Domain.Interfaces
 
         IQueryable<T> GetQueryable(bool includeSoftDeleted = false);
 
-
+        Task<T> FindAsync(string id); // ✅ أضيفيها هنا
         Task<int> SaveChangesAsync();
 
         Task<int> CountAsync();
@@ -32,5 +32,8 @@ namespace Tatawwa3.Domain.Interfaces
         void UpdateRange(IEnumerable<T> entities);
 
         Task<VolunteerInvitation?> GetByIDAsync(string id);
+        
+
+
     }
 }

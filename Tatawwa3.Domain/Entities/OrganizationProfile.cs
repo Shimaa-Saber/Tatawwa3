@@ -39,7 +39,7 @@ namespace Tatawwa3.Domain.Entities
 
 
 
-
+        public bool IsBanned { get; set; } = false;
         public bool IsVerified { get; set; }
 
         public ApplicationUser? User { get; set; }
