@@ -34,6 +34,10 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 _tatawwa3DbContext.Set<T>().Update(newentity);
             }
         }
+        public async Task<T> FindAsync(string id)
+        {
+            return await _tatawwa3DbContext.Set<T>().FindAsync(id);
+        }
 
         public void Remove(string id)
         {

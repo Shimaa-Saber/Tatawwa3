@@ -10,18 +10,18 @@ using Tatawwa3.Application.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.OrganizationProfile_1.Handler
 {
-    public class GetOrganizationByNameQueryHandler: IRequestHandler<GetOrganizationByNameQuery, List<OrganizationbasedFilterationDTO>>
+    public class GetOrganizationsByStatusHandler : IRequestHandler<GetOrganizationsByStatusQuery, List<OrganizationbasedFilterationDTO>>
     {
         private readonly IOrganizationService _organizationService;
-        public GetOrganizationByNameQueryHandler(IOrganizationService organizationService)
+
+        public GetOrganizationsByStatusHandler(IOrganizationService organizationService)
         {
             _organizationService = organizationService;
         }
-        public async Task<List<OrganizationbasedFilterationDTO>> Handle(GetOrganizationByNameQuery request, CancellationToken cancellationToken)
-        {
-            return await _organizationService.GetOrganizationByNameAsync(request.Name);
 
+        public async Task<List<OrganizationbasedFilterationDTO>> Handle(GetOrganizationsByStatusQuery request, CancellationToken cancellationToken)
+        {
+            return await _organizationService.GetOrganizationsByStatusAsync(request.Status);
         }
     }
-   
 }

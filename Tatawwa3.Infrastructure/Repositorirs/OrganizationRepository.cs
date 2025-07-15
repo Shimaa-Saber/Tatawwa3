@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +9,7 @@ using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 
 
 
@@ -61,7 +62,10 @@ public class OrganizationRepository:GenericRepository<OrganizationProfile>, IOrg
                                  .ToListAsync();
         }
 
-
-
+        public async Task<OrganizationProfile> GetByIdAsync(string id)
+        {
+            return await _context.OrganizationProfiles
+                                 .FirstOrDefaultAsync(o => o.Id == id);
+        }
     }
 }

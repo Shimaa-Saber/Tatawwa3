@@ -11,7 +11,7 @@ using Tatawwa3.Domain.Enums;
 using Tatawwa3.Application.Dtos.Teams;
 using Tatawwa3.Infrastructure.Repositorirs;
 using AutoMapper;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
 using Microsoft.EntityFrameworkCore;
@@ -31,22 +31,25 @@ namespace Tatawwa3.Application.Services
 
         public async Task<List<OrganizationbasedFilterationDTO>> GetOrganizationByCityAsync(string city)
         {
-
-            var organizations =  _organizationRepository.GetAll()
-              .Where(o => o.City == city)
-              .ToList();
+            var organizations = await _organizationRepository.GetAll()
+                .Where(o => o.City == city)
+                .Include(o => o.VolunteerOpportunities) // ✅ لازم ده علشان نعرف نعد الفرص
+               .Include(o => o.Teams)
+                .ToListAsync();
 
             return _mapper.Map<List<OrganizationbasedFilterationDTO>>(organizations);
-
         }
 
         public async Task<List<OrganizationbasedFilterationDTO>> GetOrganizationByNameAsync(string name)
         {
-            var organizationNames = _organizationRepository.GetAll().Where(o => o.OrganizationName == name).ToList();
+            var organizationNames = await _organizationRepository
+                .GetAll()
+                .Where(o => o.OrganizationName == name)
+                .Include(o => o.VolunteerOpportunities) // ✅ علشان OpportunitiesCount ما يكونش دايمًا 0
+               .Include(o => o.Teams)
+                .ToListAsync();
+
             return _mapper.Map<List<OrganizationbasedFilterationDTO>>(organizationNames);
-
-
-          
         }
 
         public async Task<OrganizationsStatisticsDTO> GetStatisticsAsync()
@@ -68,6 +71,17 @@ namespace Tatawwa3.Application.Services
 
 
 
+        }
+        public async Task<List<OrganizationbasedFilterationDTO>> GetOrganizationsByStatusAsync(OrganizationStatus status)
+        {
+            var organizations = await _organizationRepository
+                .GetAll()
+                .Where(o => o.Status == status)
+                .Include(o => o.VolunteerOpportunities)
+               .Include(o => o.Teams)
+                .ToListAsync();
+
+            return _mapper.Map<List<OrganizationbasedFilterationDTO>>(organizations);
         }
     }
 }

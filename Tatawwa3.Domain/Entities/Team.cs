@@ -32,8 +32,8 @@ namespace Tatawwa3.Domain.Entities
         public OrganizationProfile? Organization { get; set; }
         public ICollection<TeamMember> ?Members { get; set; }
         public ICollection<VolunteerOpportunity>? Opportunities { get; set; }
-        
-       
+
+        public string? OpportunityId { get; set; }
         public Category? Category { get; set; }
 
         public TeamJoinPermission? JoinPermission { get; set; }
