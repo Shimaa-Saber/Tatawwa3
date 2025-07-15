@@ -54,5 +54,13 @@ namespace Tatawwa3.API.Controllers
             return Ok(new { message = "Organization banned successfully" });
         }
 
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllOrganizations()
+        {
+            var result = await _mediator.Send(new GetAllOrganizationsQuery());
+            return Ok(result);
+        }
+
     }
 }
