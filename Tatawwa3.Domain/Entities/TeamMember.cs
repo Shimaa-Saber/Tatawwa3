@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.Domain.Entities
 {
@@ -25,7 +26,7 @@ namespace Tatawwa3.Domain.Entities
         public Team? Team { get; set; }
         public string?  Role {  get; set; }
 
-
+        public TeamMemberStatus Status { get; set; } = TeamMemberStatus.Accepted;
         public VolunteerProfile? Volunteer { get; set; }
     }
 }

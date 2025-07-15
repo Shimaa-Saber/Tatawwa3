@@ -47,5 +47,19 @@ namespace Tatawwa3.API.Controllers
                 return Ok(result);
             }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllTeams()
+        {
+            var result = await _mediator.Send(new GetMangeVolunteerTeamsQuery());
+            return Ok(result);
         }
+
+    
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchTeams([FromQuery] string name)
+        {
+            var result = await _mediator.Send(new SearchMangeVolunteerTeamsByNameQuery(name));
+            return Ok(result);
+        }
+    }
 }
