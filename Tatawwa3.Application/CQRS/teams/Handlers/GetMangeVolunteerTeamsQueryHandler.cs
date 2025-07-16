@@ -24,8 +24,10 @@ namespace Tatawwa3.Application.CQRS.teams.Handlers
         public async Task<List<MangeVolunteerTeamsDto>> Handle(GetMangeVolunteerTeamsQuery request, CancellationToken cancellationToken)
         {
             return await _context.Teams
+                .Where(t => !t.IsDeleted) // ✅ استبعاد الفرق المحذوفة
                 .Include(t => t.Organization)
                 .Include(t => t.Members)
+                    .ThenInclude(m => m.Volunteer)
                 .Select(t => new MangeVolunteerTeamsDto
                 {
                     Id = t.Id,
@@ -34,8 +36,11 @@ namespace Tatawwa3.Application.CQRS.teams.Handlers
                     CreationDate = t.CreationDate,
                     Status = t.Status,
                     OrganizationName = t.Organization.OrganizationName,
-                    ActualMembersCount = t.Members.Count()
-                    //ActualMembersCount = t.Members.Count(m => m.Status == TeamMemberStatus.Accepted)
+                    ActualMembersCount = t.Members.Count(m =>
+                        m.Status == TeamMemberStatus.Accepted &&
+                        m.Volunteer != null &&
+                        !m.Volunteer.IsBanned &&
+                        !m.Volunteer.IsDeleted)
                 })
                 .ToListAsync(cancellationToken);
         }
