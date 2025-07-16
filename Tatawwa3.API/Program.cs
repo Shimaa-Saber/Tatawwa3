@@ -264,6 +264,8 @@ using (var scope = app.Services.CreateScope())
 
 app.UseCors("AllowAll");
 
+app.UseStaticFiles();
+
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
