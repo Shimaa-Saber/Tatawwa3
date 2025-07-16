@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tatawwa3.Application.CQRS.OrganizationProfile_1.command;
 using Tatawwa3.Domain.Entities;
+using Tatawwa3.Domain.Enums;
 using Tatawwa3.Domain.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.OrganizationProfile_1.Handler
@@ -29,6 +30,7 @@ namespace Tatawwa3.Application.CQRS.OrganizationProfile_1.Handler
                 throw new KeyNotFoundException("Organization not found.");
 
             organization.IsBanned = true;
+            organization.Status = OrganizationStatus.Rejected;
             _orgRepo.UpdateByEntity(organization);
 
             await _orgRepo.SaveChangesAsync();
