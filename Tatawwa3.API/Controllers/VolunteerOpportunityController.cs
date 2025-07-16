@@ -30,6 +30,21 @@ namespace Tatawwa3.API.Controllers
             var res = await mediator.Send(commands);
             return Ok(res);
         }
+        [HttpPost("nshr")]
+        public async Task<IActionResult> AddOpportunity([FromForm] AddOpportunityDto dto)
+        {
+            var command = new AddOpportunityGdedCommand { AddOpportunityDto = dto };
+
+            try
+            {
+                var result = await mediator.Send(command);
+                return Ok(new { message = "تمت الإضافة بنجاح"/*, data = result*/ });
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
         [HttpGet("Allllocations")]
         public async Task<IActionResult> GetAllLocations()

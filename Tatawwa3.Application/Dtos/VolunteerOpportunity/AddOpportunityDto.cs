@@ -25,7 +25,7 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
         public int RequiredVolunteers { get; set; }
         public string? Conditions { get; set; }
         public string OrganizationName { get; set; }   
-        public string CategoryName { get; set; }
+        public string? CategoryName { get; set; }
         public bool IsAttendanceTracked { get; set; }
         public bool IsCertificateAvailable { get; set; }
         public int TotalHours { get; set; }
@@ -35,6 +35,6 @@ namespace Tatawwa3.Application.Dtos.VolunteerOpportunity
         public string? TeamName { get; set; }
 
 
-        public List<string>? RequiredSkillsIds { get; set; }
+        public List<string>? RequiredSkillNames { get; set; }
     }
 }
