@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Tatawwa3.Application.CQRS.Organization.quiers;
+using Tatawwa3.Application.CQRS.OrganizationProfile_1.command;
 using Tatawwa3.Application.CQRS.OrganizationProfile_1.Queries;
 using Tatawwa3.Application.CQRS.teams.Queries;
 using Tatawwa3.Application.Dtos.OrganizationProfile_1;
 using Tatawwa3.Application.Dtos.Teams;
+using Tatawwa3.Domain.Enums;
 
 namespace Tatawwa3.API.Controllers
 {
@@ -34,10 +37,30 @@ namespace Tatawwa3.API.Controllers
         [HttpGet("by-Name")]
         public async Task<IActionResult> GetOrgabizationByNamw([FromQuery] string name)
         {
-            var result = await _mediator.Send(new GetOrganizationByCityQuery(name));
+            var result = await _mediator.Send(new GetOrganizationByNameQuery(name));
+            return Ok(result);
+        }
+        [HttpGet("by-status")]
+        public async Task<IActionResult> GetOrganizationsByStatus([FromQuery] OrganizationStatus status)
+        {
+            var result = await _mediator.Send(new GetOrganizationsByStatusQuery(status));
             return Ok(result);
         }
 
+        [HttpPut("ban/{id}")]
+        public async Task<IActionResult> BanOrganization(string id)
+        {
+            await _mediator.Send(new BanOrganizationCommand(id));
+            return Ok(new { message = "Organization banned successfully" });
+        }
+
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllOrganizations()
+        {
+            var result = await _mediator.Send(new GetAllOrganizationsQuery());
+            return Ok(result);
+        }
 
     }
 }

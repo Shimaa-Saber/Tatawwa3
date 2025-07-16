@@ -10,7 +10,7 @@ namespace Tatawwa3.Domain.Entities
 {
     public class VolunteerInvitation:BaseModel
     {
-        [ForeignKey("VolunteerProfile")]
+        [ForeignKey("Volunteer")]
         public string VolunteerId { get; set; }
         public VolunteerProfile? Volunteer { get; set; }
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Tatawwa3.Application.CQRS.Notifications.Commands;
 using Tatawwa3.Application.CQRS.Notifications.Queries;
+using Tatawwa3.Application.Dtos.Notifications;
 
 namespace Tatawwa3.API.Controllers
 {
@@ -78,6 +79,39 @@ namespace Tatawwa3.API.Controllers
             var notifications = await _mediator.Send(new GetOrgNotificationsQuery(orgUserId));
             return Ok(notifications);
         }
+
+        [HttpGet("GetPreferencesNotif")]
+        public async Task<IActionResult> GetPreferences()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetNotificationPreferencesQuery(userId));
+            return Ok(result);
+        }
+
+        [HttpPut(" UpdatePreferencesNotif")]
+        public async Task<IActionResult> UpdatePreferences([FromBody] NotificationPreferenceDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await _mediator.Send(new UpdateNotificationPreferencesCommand(userId, dto));
+            return Ok("تم حفظ التفضيلات");
+        }
+
+        [HttpGet("org-preferences")]
+        public async Task<IActionResult> GetOrgPreferences()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetOrgNotificationPreferencesQuery(userId));
+            return Ok(result);
+        }
+
+        [HttpPut("org-preferences")]
+        public async Task<IActionResult> UpdateOrgPreferences([FromBody] UpdateOrgNotificationPreferencesDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new UpdateOrgNotificationPreferencesCommand(userId, dto));
+            return Ok(result);
+        }
+        
 
     }
 

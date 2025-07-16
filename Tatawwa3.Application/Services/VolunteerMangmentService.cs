@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,28 +20,36 @@ namespace Tatawwa3.Application.Services
         private readonly Tatawwa3DbContext _context;
         private readonly INotificationService _notificationService;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IVolunteerProfileRepository _volunteerRepo;
 
         public VolunteerMangmentService(Tatawwa3DbContext context, INotificationService notificationService,
-            INotificationRepository notificationRepository
+            INotificationRepository notificationRepository, IVolunteerProfileRepository volunteerRepo
             )
         {
             _context = context;
             _notificationService = notificationService;
             _notificationRepository = notificationRepository;
+            _volunteerRepo = volunteerRepo;
         }
 
-        public async Task<List<ApplicationDto>> GetAllApplicationsAsync()
+        public async Task<List<ApplicationDto>> GetAllApplicationsByOrganizationAsync(string orgUserId)
         {
             return await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
+                .Include(a => a.Opportunity)
+                .Where(a => a.Opportunity.Id == orgUserId)
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
+                    profileImage = a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
                     AppliedAt = a.CreatedAt
-                }).ToListAsync();
+                })
+                .ToListAsync();
         }
 
 
@@ -57,23 +66,20 @@ namespace Tatawwa3.Application.Services
             application.Status = ApplicationStatus.Accepted;
             _context.Applications.Update(application);
             await _context.SaveChangesAsync();
-
-            await _notificationService.SendNotificationAsync(
+            var volunteer = await _volunteerRepo
+                .GetWithIncludes(v => v.User.NotificationPreference)
+                .FirstOrDefaultAsync(v => v.Id == application.VolunteerID);
+            var preferences = volunteer?.User?.NotificationPreference;
+            if (preferences?.NotifyOnApplicationAccepted == true)
+            {
+                await _notificationService.SendNotificationAsync(
             userId: application.Volunteer.UserID,
             title: "تم قبول طلبك",
             message: $"تم قبولك في الفرصة: {application.Opportunity.Title}"
-   );
 
-            // _notificationRepository.Add(new Notification
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    UserId = application.Volunteer.UserID,
-            //    Title = "تم قبول طلبك",
-            //    Message = $"تم قبولك في الفرصة: {application.Opportunity.Title}",
-            //    CreatedAt = DateTime.UtcNow,
-            //    IsRead = false
-            //});
-            //await _notificationRepository.SaveChangesAsync();
+   );
+            }
+
 
 
             return true;
@@ -100,16 +106,7 @@ namespace Tatawwa3.Application.Services
            message: $"تم رفض طلبك في الفرصة: {application.Opportunity.Title}");
 
 
-            //_notificationRepository.Add(new Notification
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    UserId = application.Volunteer.UserID,
-            //    Title = "تم رفض طلبك",
-            //    Message = $"تم تم رفض طلبك في الفرصة: {application.Opportunity.Title}",
-            //    CreatedAt = DateTime.UtcNow,
-            //    IsRead = false
-            //});
-            //await _notificationRepository.SaveChangesAsync();
+            
             return true;
         }
 
@@ -136,14 +133,17 @@ namespace Tatawwa3.Application.Services
             return profile.Map<VolunteerProfileDto>();
         }
 
-        public async Task<List<ApplicationDto>> GetApplicationsByNameAsync(string name)
+        public async Task<List<ApplicationDto>> GetApplicationsByNameAsync(string name, string opportunityId)
         {
             var apps = await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
-                .Where(a => a.Volunteer.User.FullName.Contains(name))
+                .Where(a => a.OpportunityID == opportunityId && a.Volunteer.User.FullName.Contains(name))
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
+                    profileImage=a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -154,7 +154,7 @@ namespace Tatawwa3.Application.Services
             return apps;
         }
 
-        public async Task<List<ApplicationDto>> GetApplicationsByStatusAsync(string status)
+        public async Task<List<ApplicationDto>> GetApplicationsByStatusAsync(string status,string opportunityId)
         {
             if (!Enum.TryParse<ApplicationStatus>(status, true, out var statusEnum))
             {
@@ -164,9 +164,12 @@ namespace Tatawwa3.Application.Services
             var apps = await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
-                .Where(a => a.Status == statusEnum)
+                .Where(a => a.OpportunityID == opportunityId && a.Status == statusEnum)
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
+                    profileImage = a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -177,14 +180,17 @@ namespace Tatawwa3.Application.Services
             return apps;
         }
 
-        public async Task<List<ApplicationDto>> GetApplicationsByDateAsync(DateTime date)
+        public async Task<List<ApplicationDto>> GetApplicationsByDateAsync(DateTime date, string opportunityId)
         {
             return await _context.Applications
                 .Include(a => a.Volunteer)
                     .ThenInclude(v => v.User)
-                .Where(a => a.CreatedAt.Date == date.Date)
+                .Where(a => a.OpportunityID == opportunityId && a.CreatedAt.Date == date.Date)
                 .Select(a => new ApplicationDto
                 {
+                    Id = a.Id,
+                    OpportunityTitle = a.Opportunity.Title,
+                    profileImage = a.Volunteer.ProfilePictureUrl,
                     VolunteerId = a.VolunteerID,
                     FullName = a.Volunteer.User.FullName,
                     Status = a.Status.ToString(),
@@ -192,16 +198,17 @@ namespace Tatawwa3.Application.Services
                 })
                 .ToListAsync();
         }
-        public async Task<ApplicationStatisticsDto> GetApplicationStatisticsAsync()
+
+        public async Task<ApplicationStatisticsDto> GetApplicationStatisticsAsync(string opp_id)
         {
             var applications = await _context.Applications.ToListAsync();
 
             return new ApplicationStatisticsDto
             {
-                Total = applications.Count,
-                Accepted = applications.Count(a => a.Status == ApplicationStatus.Accepted),
-                Rejected = applications.Count(a => a.Status == ApplicationStatus.Rejected),
-                Pending = applications.Count(a => a.Status == ApplicationStatus.Pending)
+                Total = applications.Where(id => id.OpportunityID == opp_id).Count(),
+                Accepted = applications.Where(id=>id.OpportunityID==opp_id).Count(a => a.Status == ApplicationStatus.Accepted),
+                Rejected = applications.Where(id => id.OpportunityID == opp_id).Count(a => a.Status == ApplicationStatus.Rejected),
+                Pending = applications.Where(id => id.OpportunityID == opp_id).Count(a => a.Status == ApplicationStatus.Pending)
             };
         }
 

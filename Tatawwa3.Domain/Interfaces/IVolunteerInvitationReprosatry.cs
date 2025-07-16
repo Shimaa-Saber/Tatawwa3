@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,9 @@ namespace Tatawwa3.Domain.Interfaces
 {
    public interface IVolunteerInvitationReprosatry:IGeneric<VolunteerInvitation>
     {
+       
+         
+       
+
     }
 }

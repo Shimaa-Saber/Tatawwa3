@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Tatawwa3.Domain.Entities;
 
 namespace Tatawwa3.Domain.Interfaces
 {
@@ -22,12 +23,17 @@ namespace Tatawwa3.Domain.Interfaces
 
         IQueryable<T> GetQueryable(bool includeSoftDeleted = false);
 
-
+        Task<T> FindAsync(string id); // ✅ أضيفيها هنا
         Task<int> SaveChangesAsync();
 
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<T, bool>> predicate);
 
         void UpdateRange(IEnumerable<T> entities);
+
+        Task<VolunteerInvitation?> GetByIDAsync(string id);
+        
+
+
     }
 }

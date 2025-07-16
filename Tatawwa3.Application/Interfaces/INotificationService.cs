@@ -10,7 +10,7 @@ namespace Tatawwa3.Application.Interfaces
 {
     public interface INotificationService
     {
-        Task SendNotificationAsync(string userId, string title, string message);
+        Task SendNotificationAsync(string userId, string title, string message, string? invitationId = null);
         Task<List<Notification>> GetUserNotificationsAsync(string userId);
         Task<List<NotificationDto>> GetNotificationsAsync(string userId, int page, int pageSize);
 

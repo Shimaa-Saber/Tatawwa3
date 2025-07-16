@@ -11,11 +11,12 @@ namespace Tatawwa3.Application.CQRS.Attendance.Commands
 {
     public class UpdateAttendanceCommand : IRequest<bool>
     {
-        public UpdateAttendanceDto Dto { get; set; }
+        public List<UpdateAttendanceDto> Updates{get; set; } = new List<UpdateAttendanceDto>();
 
-        public UpdateAttendanceCommand(UpdateAttendanceDto dto)
+        public UpdateAttendanceCommand(List<UpdateAttendanceDto> updates)
         {
-            Dto = dto;
+            Updates = updates;
+
         }
     }
 
@@ -30,7 +31,7 @@ namespace Tatawwa3.Application.CQRS.Attendance.Commands
 
         public async Task<bool> Handle(UpdateAttendanceCommand request, CancellationToken cancellationToken)
         {
-            return await _attendanceService.UpdateAttendanceAsync(request.Dto);
+            return await _attendanceService.UpdateOpportunityAttendancesAsync(request.Updates);
         }
     }
 

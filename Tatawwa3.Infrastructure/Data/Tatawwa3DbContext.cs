@@ -40,6 +40,8 @@ namespace Tatawwa3.Infrastructure.Data
         public DbSet<Skills> Skills { get; set; }
         public DbSet<Skilless> skillesses { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<NotificationPreference> notificationPreferences { get; set; }
+
 
 
 
@@ -66,6 +68,12 @@ namespace Tatawwa3.Infrastructure.Data
                 .WithOne(v => v.User)
                 .HasForeignKey<VolunteerProfile>(v => v.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<NotificationPreference>()
+           .HasOne(p => p.User)
+          .WithOne(u => u.NotificationPreference)
+          .HasForeignKey<NotificationPreference>(p => p.UserId);
+
 
 
 

@@ -16,6 +16,7 @@ namespace Tatawwa3.Application.MappingProfiles
     {
         public TeamProfile()
         {
+            CreateMap<CreateTeamDto, Team>();
 
             CreateMap<UpdateTeamDto, Team>();
             CreateMap<Team, GetTeamaDto>()
@@ -39,6 +40,19 @@ namespace Tatawwa3.Application.MappingProfiles
                 .ForMember(dest => dest.Skills, opt => opt.MapFrom<SkillsResolver>())
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => RequestStatus.Pending.ToString()))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow));
+
+
+            CreateMap<UpdateTeamPageDto, Team>();
+
+            CreateMap<Team, UpdateTeamPageDto>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.OpportunityName, opt => opt.MapFrom(src =>
+                    src.Opportunities != null && src.Opportunities.Any()
+                        ? src.Opportunities.First().Title
+                        : null))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+
+
         }
     }
 

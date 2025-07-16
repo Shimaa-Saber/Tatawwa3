@@ -17,33 +17,68 @@ namespace Tatawwa3.Application.Services
     {
         private readonly IGeneric<Participation> _participationRepo;
         private readonly Tatawwa3DbContext _context;
+        private readonly INotificationService _notificationService;
 
         public CertificateService(IGeneric<Participation> participationRepo,
-            Tatawwa3DbContext context
+            Tatawwa3DbContext context ,INotificationService notificationService
             )
         {
             _participationRepo = participationRepo;
             _context = context;
+            _notificationService = notificationService;
         }
 
-        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsAsync(string opportunityId)
+        public async Task<List<CompletedParticipantDto>> GetCompletedParticipantsForOrganizationAsync(string opp_title)
         {
             var participants = await _context.Participations
-           .Where(p => p.OpportunityId == opportunityId && p.Status == ParticipationStatus.Completed)
-            .Include(p => p.Opportunity)
-            .ThenInclude(o => o.Organization)
-            .Include(p => p.Volunteer)
-           .ThenInclude(v => v.User)
-              .ToListAsync();
+                .Where(p => p.Status == ParticipationStatus.Completed &&
+                            p.Opportunity.Title == opp_title)
+                .Include(p => p.Opportunity)
+                    .ThenInclude(o => o.Organization)
+                .Include(p => p.Volunteer)
+                    .ThenInclude(v => v.User)
+                .ToListAsync();
 
             var result = participants.Select(p => new CompletedParticipantDto
             {
+                Id = p.Id,
                 VolunteerId = p.VolunteerID!,
+                opp_id = p.OpportunityId,
+                ProfileImage = p.Volunteer?.ProfilePictureUrl ?? "",
                 FullName = p.Volunteer?.User?.FullName ?? "",
                 Email = p.Volunteer?.User?.Email ?? "",
                 TotalHours = p.TotalAttendedHours,
+                opportunityTitle = p.Opportunity.Title,
                 ParticipationDate = p.FirstCheckIn,
-               
+                 CertificateId = p.Certificate != null ? p.Certificate.Id : null
+            }).ToList();
+
+            return result;
+        }
+
+        public async Task<List<CompletedParticipantDto>> GetAllCompletedParticipantsForOrganizationAsync(string org_id)
+        {
+            var participants = await _context.Participations
+                .Where(p => p.Status == ParticipationStatus.Completed &&
+                            p.Opportunity.OrganizationID == org_id)
+                .Include(p => p.Opportunity)
+                    .ThenInclude(o => o.Organization)
+                .Include(p => p.Volunteer)
+                    .ThenInclude(v => v.User)
+                .ToListAsync();
+
+            var result = participants.Select(p => new CompletedParticipantDto
+            {
+                Id = p.Id,
+                VolunteerId = p.VolunteerID!,
+                opp_id = p.OpportunityId,
+                ProfileImage = p.Volunteer?.ProfilePictureUrl ?? "",
+                FullName = p.Volunteer?.User?.FullName ?? "",
+                Email = p.Volunteer?.User?.Email ?? "",
+                TotalHours = p.TotalAttendedHours,
+                opportunityTitle = p.Opportunity.Title,
+                ParticipationDate = p.FirstCheckIn,
+                CertificateId = p.Certificate != null ? p.Certificate.Id : null
             }).ToList();
 
             return result;
@@ -53,12 +88,15 @@ namespace Tatawwa3.Application.Services
         {
             var participation = await _context.Participations
                 .Include(p => p.Volunteer)
+                    .ThenInclude(v => v.User)
+                        .ThenInclude(u => u.NotificationPreference)
+                .Include(p => p.Opportunity)
+                    .ThenInclude(o => o.Organization)
                 .FirstOrDefaultAsync(p => p.Id == dto.ParticipationId && p.Status == ParticipationStatus.Completed);
 
             if (participation == null)
                 return false;
 
-           
             var existing = await _context.Certificates
                 .FirstOrDefaultAsync(c => c.ParticipationID == dto.ParticipationId);
             if (existing != null)
@@ -70,7 +108,7 @@ namespace Tatawwa3.Application.Services
                 ParticipationID = dto.ParticipationId,
                 VolunteerID = participation.VolunteerID!,
                 Title = dto.Title,
-                Issuer = dto.Issuer,
+                Issuer = participation.Opportunity.Organization?.OrganizationName ?? "غير معروف",
                 TotalHours = dto.TotalHours,
                 IssueDate = DateTime.UtcNow,
                 CertificateNumber = $"CERT-{DateTime.UtcNow:yyyyMMddHHmmss}",
@@ -81,6 +119,18 @@ namespace Tatawwa3.Application.Services
 
             _context.Certificates.Add(certificate);
             await _context.SaveChangesAsync();
+
+            // ✅ إرسال إشعار إن كانت التفضيلات مفعّلة
+            var user = participation.Volunteer?.User;
+            if (user?.NotificationPreference?.NotifyOnCertificateIssued == true)
+            {
+                await _notificationService.SendNotificationAsync(
+                    userId: user.Id,
+                    title: "🎓 شهادة جديدة",
+                    message: $"تم إصدار شهادة تطوع جديدة لك في فرصة: {participation.Opportunity.Title}"
+                );
+            }
+
             return true;
         }
 
@@ -106,7 +156,7 @@ namespace Tatawwa3.Application.Services
                     ParticipationID = participation.Id,
                     VolunteerID = participation.VolunteerID!,
                     Title = dto.Title,
-                    Issuer = dto.Issuer,
+                    Issuer = participation.Opportunity.Organization.OrganizationName ?? "غير معروف",
                     TotalHours = dto.TotalHours,
                     IssueDate = DateTime.UtcNow,
                     CertificateNumber = $"CERT-{DateTime.UtcNow:yyyyMMddHHmmss}-{issuedCount + 1}",

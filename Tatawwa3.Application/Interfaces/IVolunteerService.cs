@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.Dtos.VolunteerAttendanceAndCert;
+using Tatawwa3.Application.Dtos.VolunteerMangement;
 
 namespace Tatawwa3.Application.Interfaces
 {
@@ -14,6 +15,7 @@ namespace Tatawwa3.Application.Interfaces
 
         Task<List<CertificateDto>> GetVolunteerCertificatesAsync(string volunteerId);
         Task<byte[]> DownloadCertificateAsync(string certificateId);
+        Task<VolunteerProfileDetailsDto?> GetVolunteerProfileAsync(string volunteerId);
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 
@@ -32,6 +33,10 @@ namespace Tatawwa3.Infrastructure.Repositorirs
             {
                 _tatawwa3DbContext.Set<T>().Update(newentity);
             }
+        }
+        public async Task<T> FindAsync(string id)
+        {
+            return await _tatawwa3DbContext.Set<T>().FindAsync(id);
         }
 
         public void Remove(string id)
@@ -106,6 +111,11 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         public void UpdateRange(IEnumerable<T> entities)
         {
             _tatawwa3DbContext.Set<T>().UpdateRange(entities);
+        }
+
+        public async Task<VolunteerInvitation?> GetByIDAsync(string id)
+        {
+            return await _tatawwa3DbContext.VolunteerInvitations.FindAsync(id);
         }
 
     }

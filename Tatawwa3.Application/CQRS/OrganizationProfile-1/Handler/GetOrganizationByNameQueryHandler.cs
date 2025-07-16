@@ -23,17 +23,5 @@ namespace Tatawwa3.Application.CQRS.OrganizationProfile_1.Handler
 
         }
     }
-    //public class GetOrganizationByCityQueryHandler : IRequestHandler<GetOrganizationByCityQuery, List<OrganizationbasedFilterationDTO>>
-    //{
-    //    private readonly IOrganizationService _organizationService;
-    //    public GetOrganizationByCityQueryHandler(IOrganizationService organizationService)
-    //    {
-    //        _organizationService = organizationService;
-    //    }
-    //    public async Task<List<OrganizationbasedFilterationDTO>> Handle(GetOrganizationByCityQuery request, CancellationToken cancellationToken)
-    //    {
-    //        return await _organizationService.GetOrganizationByCityAsync(request.City);
-
-    //    }
-    //}
+   
 }

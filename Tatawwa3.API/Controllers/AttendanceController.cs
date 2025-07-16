@@ -25,13 +25,12 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpPut("attendance/update")]
-        public async Task<IActionResult> UpdateAttendance([FromBody] UpdateAttendanceDto dto)
+        public async Task<IActionResult> UpdateAttendance([FromBody] List<UpdateAttendanceDto> updates)
         {
-            var result = await _mediator.Send(new UpdateAttendanceCommand(dto));
-            if (!result)
-                return NotFound("المشارك غير موجود.");
+            var result = await _mediator.Send(new UpdateAttendanceCommand(updates));
+           
 
-            return Ok("تم تعديل الحضور بنجاح");
+            return result? Ok("تم تعديل الحضور بنجاح"): BadRequest("حدث خطأ اثناء التحديث");
         }
 
 

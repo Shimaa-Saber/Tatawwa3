@@ -11,7 +11,7 @@ namespace Tatawwa3.Application.Dtos.Certificats
         public string ParticipationId { get; set; }
         public float TotalHours { get; set; }
         public string Title { get; set; }
-        public string Issuer { get; set; }
+      //  public string Issuer { get; set; }
     }
 
 }

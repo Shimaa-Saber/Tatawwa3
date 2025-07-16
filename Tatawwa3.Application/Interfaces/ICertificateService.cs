@@ -9,9 +9,10 @@ namespace Tatawwa3.Application.Interfaces
 {
     public interface ICertificateService
     {
-        Task<List<CompletedParticipantDto>> GetCompletedParticipantsAsync(string opportunityId);
+        Task<List<CompletedParticipantDto>> GetCompletedParticipantsForOrganizationAsync(string orgUserId);
         Task<bool> IssueCertificateAsync(IssueCertificateDto dto);
         Task<int> IssueGroupCertificatesAsync(IssueGroupCertificatesDto dto);
+        Task<List<CompletedParticipantDto>> GetAllCompletedParticipantsForOrganizationAsync(string org_id);
 
 
     }

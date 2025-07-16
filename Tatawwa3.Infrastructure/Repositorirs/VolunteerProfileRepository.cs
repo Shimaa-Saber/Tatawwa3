@@ -19,14 +19,28 @@ namespace Tatawwa3.Infrastructure.Repositorirs
             _context = context;
         }
 
+        public async Task<VolunteerProfile?> GetByUserIdAsync(string userId)
+        {
+            return await _context.VolunteerProfiles
+       .Include(v => v.User)
+       .FirstOrDefaultAsync(v => v.UserID == userId);
+        }
+
         public async Task<float> GetTotalHoursAsync()
         {
             return await _context.VolunteerProfiles.SumAsync(v => v.TotalHours);
         }
 
+
         public async Task<int> CountCertificatesAsync()
         {
             return await _context.Certificates.CountAsync(); // Assuming Certificate table is available
+
+        public async Task Remove(VolunteerProfile volunteer)
+        {
+            _context.VolunteerProfiles.Remove(volunteer);
+            await _context.SaveChangesAsync();
+
         }
     }
 }

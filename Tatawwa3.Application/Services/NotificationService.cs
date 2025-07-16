@@ -36,7 +36,7 @@ namespace Tatawwa3.Application.Services
                 _mapper = mapper;
         }
 
-            public async Task SendNotificationAsync(string userId, string title, string message)
+            public async Task SendNotificationAsync(string userId, string title, string message, string? invitationId = null)
             {
                 
                 var notification = new Notification
@@ -46,7 +46,8 @@ namespace Tatawwa3.Application.Services
                     Title = title,
                     Message = message,
                     CreatedAt = DateTime.UtcNow,
-                    IsRead = false
+                    IsRead = false,
+                    InvitationId = invitationId
                 };
 
                 _context.Notifications.Add(notification);
@@ -58,7 +59,8 @@ namespace Tatawwa3.Application.Services
                     {
                         Title = title,
                         Message = message,
-                        Date = notification.CreatedAt
+                        Date = notification.CreatedAt,
+                        InvitationId = invitationId
                     });
             }
 

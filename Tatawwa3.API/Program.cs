@@ -16,6 +16,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.API.Mapper.Categoryy;
+using Tatawwa3.API.Mapper.InvitationMap;
 using Tatawwa3.API.Mapper.NotificationMap;
 using Tatawwa3.API.Mapper.Opportunity;
 using Tatawwa3.API.Mapper.Organization;
@@ -68,6 +69,15 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IVolunteerOpportunityRepository, VolunteerOpportunityRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
+builder.Services.AddScoped<INotificationPreferenceService, NotificationPreferenceService>();
+
+
 
 
 
@@ -77,7 +87,7 @@ builder.Services.AddDbContext<Tatawwa3DbContext>(options =>
             builder.Configuration.GetConnectionString("CS"),
             x => x.MigrationsAssembly("Tatawwa3.Infrastructure")
         )
-        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+        .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
         .LogTo(log => Debug.WriteLine(log), LogLevel.Information)
 );
 
@@ -156,6 +166,7 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<categoryProfile>();
     cfg.AddProfile<organizationprofile>();
     cfg.AddProfile<NotificationProfile>();
+    cfg.AddProfile<InvitationProfile>();
 
 
 });
@@ -227,7 +238,7 @@ MapperService.Mapper = config.CreateMapper();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
 builder.Services.AddScoped<IVolunteerOpportunityService, VolunteerOpportunityService>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
-builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
+//builder.Services.AddScoped<IDashboardVolunteer, VolunteerDashboardService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddScoped<IDashboardStatisticsService, DashboardStatisticsService>();

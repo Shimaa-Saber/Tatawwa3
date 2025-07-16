@@ -42,6 +42,7 @@ namespace Tatawwa3.Application.Services
             return participations.Select(p => new AttendanceVolunteerDto
             {
                 VolunteerId = p.VolunteerID,
+                ProfileImage = p.Volunteer?.ProfilePictureUrl??"",
                 FullName = p.Volunteer.User.FullName,
                 Email = p.Volunteer.User.Email,
                 ParticipationId = p.Id,
@@ -51,42 +52,47 @@ namespace Tatawwa3.Application.Services
             }).ToList();
         }
 
-        public async Task<bool> UpdateAttendanceAsync(UpdateAttendanceDto dto)
+        public async Task<bool> UpdateOpportunityAttendancesAsync(List<UpdateAttendanceDto> updates)
         {
-            var participation = await _context.Participations
-                .Include(p => p.Attendances)
-                .FirstOrDefaultAsync(p => p.Id == dto.ParticipationId);
-
-            if (participation == null)
-                return false;
-
-            participation.TotalAttendedHours = dto.ApprovedHours;
-
-            var existingAttendance = participation.Attendances?.FirstOrDefault();
-
-            if (existingAttendance != null)
+            foreach (var dto in updates)
             {
-                existingAttendance.Status = dto.Status;
-                existingAttendance.Comment = dto.Comment;
-            }
-            else
-            {
-                participation.Attendances = new List<Attendance>
-        {
-            new Attendance
-            {
-                Id = Guid.NewGuid().ToString(),
-                ParticipationID = participation.Id,
-                Status = dto.Status,
-                Comment = dto.Comment,
-                AttendanceDate = DateTime.UtcNow
-            }
-        };
+                var participation = await _context.Participations
+                    .Include(p => p.Attendances)
+                    .FirstOrDefaultAsync(p => p.Id == dto.ParticipationId);
+
+                if (participation == null)
+                    continue;
+
+                participation.TotalAttendedHours = dto.ApprovedHours;
+
+                var existingAttendance = participation.Attendances.FirstOrDefault();
+
+                if (existingAttendance != null)
+                {
+                    existingAttendance.Status = dto.AttendanceStatus;
+                    existingAttendance.Comment = dto.Comment;
+                }
+                else
+                {
+                    participation.Attendances = new List<Attendance>
+                {
+                    new Attendance
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ParticipationID = participation.Id,
+                        Status = dto.AttendanceStatus,
+                        Comment = dto.Comment,
+                        AttendanceDate = DateTime.UtcNow
+                    }
+                };
+                }
             }
 
             await _context.SaveChangesAsync();
             return true;
         }
+
+
 
 
         public async Task<byte[]> ExportAttendanceReportPdfAsync(string opportunityId)

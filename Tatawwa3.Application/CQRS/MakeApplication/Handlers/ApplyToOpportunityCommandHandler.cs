@@ -1,18 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Tatawwa3.Application.CQRS.MakeApplication.Commands;
 using Tatawwa3.Application.Interfaces;
-using Tatawwa3.Application.Services;
 using Tatawwa3.Domain.Enums;
 using Tatawwa3.Domain.Interfaces;
-using Tatawwa3.Infrastructure.Repositorirs;
-
+using Tatawwa3.Infrastructure.Data;
 
 namespace Tatawwa3.Application.CQRS.MakeApplication.Handlers
 {
@@ -23,72 +18,89 @@ namespace Tatawwa3.Application.CQRS.MakeApplication.Handlers
         private readonly IOpportunity opportunityRepository;
         private readonly IVolunteerProfileRepository volunteerRepo;
         private readonly INotificationService _notificationService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly Tatawwa3DbContext _context;
 
-        public ApplyToOpportunityCommandHandler(IApplicationRepository repository, IMapper mapper,
-            IOpportunity opportunityRepository, IVolunteerProfileRepository volunteerRepo, INotificationService notificationService)
+
+        public ApplyToOpportunityCommandHandler(
+            IApplicationRepository repository,
+            IMapper mapper,
+            IOpportunity opportunityRepository,
+            IVolunteerProfileRepository volunteerRepo,
+            INotificationService notificationService,
+            IHttpContextAccessor httpContextAccessor,
+            Tatawwa3DbContext context)
         {
             this.repository = repository;
             this.mapper = mapper;
             this.opportunityRepository = opportunityRepository;
             this.volunteerRepo = volunteerRepo;
             _notificationService = notificationService;
+            _httpContextAccessor = httpContextAccessor;
+            _context = context;
         }
+
         public async Task<string> Handle(ApplyToOpportunityCommand request, CancellationToken cancellationToken)
         {
             var dto = request.addapplication;
-            //هناخد البيانات من الفرونت
-            string? savedFilePath = null;
-            //هنعمل باث نشيل فيه اسم الملف 
 
-           
+            // ✅ Get userId from JWT token
+            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return "المستخدم غير مسجل الدخول.";
+
+            string? savedFilePath = null;
+
             if (dto.Attachment != null && dto.Attachment.Length > 0)
             {
-                
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-                //هنحدد المكان الي هنشيل فيه الفيل ده علي الجهاز بتاعنا
-                Directory.CreateDirectory(uploadsFolder); 
-                //لو مفيش الفولدر يعمله
+                Directory.CreateDirectory(uploadsFolder);
 
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.Attachment.FileName);
-                //بنعمله اسم عشوائي و نحط هو .pdf kda
                 var fullPath = Path.Combine(uploadsFolder, fileName);
 
                 using var stream = new FileStream(fullPath, FileMode.Create);
                 await dto.Attachment.CopyToAsync(stream, cancellationToken);
-                //كده اتنزل فعلا ع الجهاز
 
                 savedFilePath = Path.Combine("uploads", fileName);
+            }
 
-                var application = mapper.Map<Tatawwa3.Domain.Entities.Application>(dto);
+            var application = mapper.Map<Tatawwa3.Domain.Entities.Application>(dto);
+            application.Id = Guid.NewGuid().ToString();
+            application.AttachmentPath = savedFilePath;
+            application.ApplicationDate = DateTime.UtcNow;
+            application.Status = ApplicationStatus.Pending;
+            application.VolunteerID = userId; // ✅ Set VolunteerID from token
 
-                application.Id = Guid.NewGuid().ToString();
-                //ده حطيته عشان يعمل id generate تلقائي عشان كان بيجيب null
-                application.AttachmentPath = savedFilePath;
-                application.ApplicationDate = DateTime.Now;
-                application.Status = ApplicationStatus.Pending;
-
+            try
+            {
                 repository.Add(application);
-              await  repository.SaveChangesAsync();
+                await repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DB Save Failed: " + ex.InnerException?.Message, ex);
+            }
 
-                var opportunity = await opportunityRepository.FirstOrDefaultAsync(o => o.Id == dto.OpportunityID);
-                if (opportunity != null && !string.IsNullOrEmpty(opportunity.Organization.Id))
+            var opportunity = await opportunityRepository.FirstOrDefaultAsync(o => o.Id == dto.OpportunityID);
+            if (opportunity != null && opportunity.ApplicationUser != null)
+            {
+                var preference = await _context.notificationPreferences
+                    .FirstOrDefaultAsync(p => p.UserId == opportunity.ApplicationUser.Id);
+
+                if (preference?.NotifyOnNewVolunteerApplication == true)
                 {
-                   
-                    //var volunteer = await volunteerRepo.FirstOrDefaultAsync(v => v.Id == dto.);
-                    //var volunteerName = volunteer?.User?.FullName ?? "متطوع";
-
                     await _notificationService.SendNotificationAsync(
                         userId: opportunity.ApplicationUser.Id,
                         title: "📥 طلب تطوع جديد",
                         message: $"قام متطوع جديد بالتقديم على الفرصة: {opportunity.Title}"
+
                     );
                 }
 
-
-
-                return "تم التقديم بنجاح ";
+              
             }
-            return "لم يتم إرسال ملف. الرجاء إرفاق الملف والمحاولة مرة أخرى ";
+            return "تم التقديم بنجاح ";
         }
     }
 }

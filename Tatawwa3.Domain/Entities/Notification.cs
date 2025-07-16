@@ -11,6 +11,8 @@ namespace Tatawwa3.Domain.Entities
     {
         public string Title { get; set; }
         public string Message { get; set; }
+        public string? InvitationId { get; set; } 
+
         public string UserId { get; set; } 
         public bool IsRead { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

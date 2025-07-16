@@ -10,7 +10,7 @@ namespace Tatawwa3.Application.Interfaces
     public interface IAttendanceService
     {
         Task<List<AttendanceVolunteerDto>> GetOpportunityParticipantsAsync(string opportunityId);
-        Task<bool> UpdateAttendanceAsync(UpdateAttendanceDto dto);
+        Task<bool> UpdateOpportunityAttendancesAsync(List<UpdateAttendanceDto> updates);
 
         Task<byte[]> ExportAttendanceReportPdfAsync(string opportunityId);
         Task<byte[]> ExportAttendanceReportExcelAsync(string opportunityId);

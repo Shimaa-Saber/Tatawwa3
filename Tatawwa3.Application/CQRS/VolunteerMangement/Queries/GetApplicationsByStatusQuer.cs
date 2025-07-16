@@ -12,10 +12,13 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
     public class GetApplicationsByStatusQuery : IRequest<List<ApplicationDto>>
     {
         public string Status { get; set; }
+        public string OppId { get; set; }
 
-        public GetApplicationsByStatusQuery(string status)
+        public GetApplicationsByStatusQuery(string status, string oppId)
         {
             Status = status;
+            OppId = oppId;
+
         }
     }
 
@@ -30,7 +33,7 @@ namespace Tatawwa3.Application.CQRS.VolunteerMangement.Queries
 
         public async Task<List<ApplicationDto>> Handle(GetApplicationsByStatusQuery request, CancellationToken cancellationToken)
         {
-            return await _applicationService.GetApplicationsByStatusAsync(request.Status);
+            return await _applicationService.GetApplicationsByStatusAsync(request.Status,request.OppId);
         }
     }
 
