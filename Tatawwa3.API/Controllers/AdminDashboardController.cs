@@ -23,5 +23,19 @@ namespace Tatawwa3.API.Controllers
             var dashboardData = await _mediator.Send(new GetDashboardQuery());
             return Ok(dashboardData);
         }
+
+        [HttpGet("nzra sare3a")]
+        public async Task<ActionResult<StatisticsDto>> GetStatistics()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetStatisticsQuery());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "حدث خطأ أثناء تحميل الإحصائيات", error = ex.Message });
+            }
+        }
     }
 }

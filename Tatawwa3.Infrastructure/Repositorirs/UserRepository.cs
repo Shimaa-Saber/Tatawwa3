@@ -35,5 +35,11 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                     g.Count()
                 )).ToListAsync();
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
     }
 }

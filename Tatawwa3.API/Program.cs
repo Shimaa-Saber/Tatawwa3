@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using FleetTrackerSystem.Infrastructure.Seeder;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -114,6 +115,8 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<ISkillReprosatry, SkillReprosatry>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+
 
 
 
