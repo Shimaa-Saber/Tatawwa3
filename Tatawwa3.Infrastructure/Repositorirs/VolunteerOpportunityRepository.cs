@@ -25,10 +25,12 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return await _context.VolunteerOpportunities.CountAsync(v => v.Status == OpportunityStatus.Published);
         }
+       
 
-        
-        
-  
+
+
+
+
 
 
     }

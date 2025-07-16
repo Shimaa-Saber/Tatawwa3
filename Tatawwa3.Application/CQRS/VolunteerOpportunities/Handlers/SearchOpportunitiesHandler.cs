@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.CQRS.VolunteerOpportunities.Queries;
 using Tatawwa3.Application.Dtos.VolunteerOpportunity;
+using Tatawwa3.Domain.Enums;
 using Tatawwa3.Domain.Interfaces;
 
 namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
@@ -29,8 +30,11 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
                 request.SearchDto.OrganizationName,
                 request.SearchDto.location
             );
+            var publishedOpportunities = opportunities
+       .Where(o => o.Status == OpportunityStatus.Published)
+       .ToList();
 
-            return _mapper.Map<List<OpportunityListDto>>(opportunities);
+            return _mapper.Map<List<OpportunityListDto>>(publishedOpportunities);
         }
     }
 }

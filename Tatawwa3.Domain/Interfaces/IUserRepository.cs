@@ -12,5 +12,8 @@ namespace Tatawwa3.Domain.Interfaces
     {
         Task<int> CountByRoleAsync(UserType role);
         Task<List<(int Year, int Month, int Count)>> GetUserGrowthByMonthAsync();
+
+        Task<int> CountAsync();
+
     }
 }

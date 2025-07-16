@@ -164,6 +164,13 @@ namespace Tatawwa3.Infrastructure.Repositorirs
             return await query.ToListAsync();
         }
 
+        public async Task<int> CountByStatusAsync(OpportunityStatus status)
+        {
+            return await _context.VolunteerOpportunities
+                .CountAsync(o => o.Status == status && !o.IsDeleted);
+        }
+
+
 
 
 

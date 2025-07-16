@@ -40,23 +40,7 @@ namespace Tatawwa3.Application.CQRS.DashBord_Admin.Handler
             var growthData = await _userRepo.GetUserGrowthByMonthAsync();
 
 
-            //var userGrowth = MapperService.Map<List<UserGrowthDto>>(growthData);
-
-
-            //return new DashboardDto
-            //{
-            //    TotalVolunteers = volunteerCount,
-            //    TotalOrganizations = organizationCount,
-            //    ActiveOpportunities = opportunityCount,
-            //    TotalHours = totalHours,
-            //    MonthlyUserGrowth = userGrowth,
-            //    ActivityDistribution = new ActivityDistributionDto
-            //    {
-            //        Volunteers = volunteerCount,
-            //        Organizations = organizationCount,
-            //        Opportunities = opportunityCount
-            //    }
-            //};
+            
 
             var userGrowth = growthData.Select(g => new UserGrowthDto
             {

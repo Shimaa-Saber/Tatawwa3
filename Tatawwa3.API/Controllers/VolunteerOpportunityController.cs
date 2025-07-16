@@ -232,6 +232,19 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("count/draft")]
+        public async Task<IActionResult> GetDraftCount()
+        {
+            var result = await mediator.Send(new CountDraftOpportunitiesQuery());
+            return Ok(new { count = result });
+        }
+        [HttpGet("count/completed")]
+        public async Task<IActionResult> GetCompletedCount()
+        {
+            var result = await mediator.Send(new CountCompletedOpportunitiesQuery());
+            return Ok(new { count = result });
+        }
+
 
 
 

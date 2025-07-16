@@ -23,5 +23,10 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return await _context.VolunteerProfiles.SumAsync(v => v.TotalHours);
         }
+
+        public async Task<int> CountCertificatesAsync()
+        {
+            return await _context.Certificates.CountAsync(); // Assuming Certificate table is available
+        }
     }
 }

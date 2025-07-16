@@ -7,9 +7,8 @@ using Tatawwa3.Domain.Entities;
 
 namespace Tatawwa3.Domain.Interfaces
 {
-   public interface IVolunteerProfileRepository:IGeneric<VolunteerProfile>
+   public interface IReviewRepository:IGeneric<Review>
     {
-        Task<float> GetTotalHoursAsync();
-        Task<int> CountCertificatesAsync();
+        Task<int> CountAsync();
     }
 }
