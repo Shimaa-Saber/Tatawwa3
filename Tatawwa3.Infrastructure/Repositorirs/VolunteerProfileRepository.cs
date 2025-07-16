@@ -34,7 +34,8 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
         public async Task<int> CountCertificatesAsync()
         {
-            return await _context.Certificates.CountAsync(); // Assuming Certificate table is available
+            return await _context.Certificates.CountAsync();
+        }
 
         public async Task Remove(VolunteerProfile volunteer)
         {
