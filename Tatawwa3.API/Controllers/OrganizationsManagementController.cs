@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tatawwa3.Application.CQRS.Organization.quiers;
 using Tatawwa3.Application.CQRS.OrganizationProfile_1.command;
 using Tatawwa3.Application.CQRS.OrganizationProfile_1.Queries;
+using Tatawwa3.Application.CQRS.Statistics.Command;
 using Tatawwa3.Application.CQRS.teams.Queries;
 using Tatawwa3.Application.Dtos.OrganizationProfile_1;
 using Tatawwa3.Application.Dtos.Teams;
@@ -60,6 +61,14 @@ namespace Tatawwa3.API.Controllers
         {
             var result = await _mediator.Send(new GetAllOrganizationsQuery());
             return Ok(result);
+        }
+
+
+        [HttpPut("approve/{organizationId}")]
+        public async Task<IActionResult> ApproveOrganization(string organizationId)
+        {
+            await _mediator.Send(new ApproveOrganizationCommand(organizationId));
+            return Ok("Organization approved successfully.");
         }
 
     }

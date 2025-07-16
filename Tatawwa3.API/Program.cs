@@ -78,6 +78,7 @@ builder.Services.AddControllers()
 builder.Services.AddScoped<INotificationPreferenceService, NotificationPreferenceService>();
 
 
+builder.Services.AddScoped<IParticipationRepository, ParticipationRepository>();
 
 
 
