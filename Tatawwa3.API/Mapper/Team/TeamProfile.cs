@@ -45,6 +45,7 @@ namespace Tatawwa3.Application.MappingProfiles
             CreateMap<UpdateTeamPageDto, Team>();
 
             CreateMap<Team, UpdateTeamPageDto>()
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.OpportunityName, opt => opt.MapFrom(src =>
                     src.Opportunities != null && src.Opportunities.Any()
