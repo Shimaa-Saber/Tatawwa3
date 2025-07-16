@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tatawwa3.Application.Dtos.OrganizationProfile;
 using Tatawwa3.Application.Dtos.OrganizationProfile_1;
 using Tatawwa3.Application.Dtos.Teams;
 using Tatawwa3.Domain.Enums;
@@ -16,5 +17,6 @@ namespace Tatawwa3.Application.Interfaces
 
         Task<List<OrganizationbasedFilterationDTO>> GetOrganizationByCityAsync(string city);
         Task<List<OrganizationbasedFilterationDTO>> GetOrganizationByNameAsync(string name);
+        Task<OrganizationDetailsDto?> GetOrganizationDetailsAsync(string organizationId);
     }
 }

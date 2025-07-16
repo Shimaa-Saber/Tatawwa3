@@ -100,6 +100,17 @@ public async Task<IActionResult> GetOrganizationCities()
             return Ok(allOrganizations);
         }
 
+        [HttpGet("admin/organizations/{id}")]
+        public async Task<IActionResult> GetOrganizationDetails(string id)
+        {
+            var result = await _mediator.Send(new GetOrganizationDetailsQuery(id));
+            if (result == null)
+                return NotFound("المنظمة غير موجودة");
+
+            return Ok(result);
+        }
+
+
 
 
     }
