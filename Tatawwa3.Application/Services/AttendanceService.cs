@@ -52,42 +52,46 @@ namespace Tatawwa3.Application.Services
             }).ToList();
         }
 
-        public async Task<bool> UpdateAttendanceAsync(UpdateAttendanceDto dto)
+        public async Task<bool> UpdateOpportunityAttendancesAsync(List<UpdateAttendanceDto> updates)
         {
-            var participation = await _context.Participations
-                .Include(p => p.Attendances)
-                .FirstOrDefaultAsync(p => p.Id == dto.ParticipationId);
-
-            if (participation == null)
-                return false;
-
-            participation.TotalAttendedHours = dto.ApprovedHours;
-
-            var existingAttendance = participation.Attendances?.FirstOrDefault();
-
-            if (existingAttendance != null)
+            foreach (var dto in updates)
             {
-                existingAttendance.Status = dto.Status;
-                existingAttendance.Comment = dto.Comment;
-                _context.Attendances.Update(existingAttendance);
-            }
-            else
-            {
-                var newAttendance = new Attendance
+                var participation = await _context.Participations
+                    .Include(p => p.Attendances)
+                    .FirstOrDefaultAsync(p => p.Id == dto.ParticipationId);
+
+                if (participation == null)
+                    continue;
+
+                participation.TotalAttendedHours = dto.ApprovedHours;
+
+                var existingAttendance = participation.Attendances.FirstOrDefault();
+
+                if (existingAttendance != null)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    ParticipationID = participation.Id,
-                    Status = dto.Status,
-                    Comment = dto.Comment,
-                    AttendanceDate = DateTime.UtcNow
+                    existingAttendance.Status = dto.AttendanceStatus;
+                    existingAttendance.Comment = dto.Comment;
+                }
+                else
+                {
+                    participation.Attendances = new List<Attendance>
+                {
+                    new Attendance
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ParticipationID = participation.Id,
+                        Status = dto.AttendanceStatus,
+                        Comment = dto.Comment,
+                        AttendanceDate = DateTime.UtcNow
+                    }
                 };
-
-                _context.Attendances.Add(newAttendance);
+                }
             }
 
             await _context.SaveChangesAsync();
             return true;
         }
+
 
 
 

@@ -10,7 +10,7 @@ namespace Tatawwa3.Application.Dtos.Attendace
     public class UpdateAttendanceDto
     {
         public string ParticipationId { get; set; }
-        public AttendanceStatus Status { get; set; }
+        public AttendanceStatus AttendanceStatus { get; set; }
         public float ApprovedHours { get; set; }
         public string? Comment { get; set; }
     }
