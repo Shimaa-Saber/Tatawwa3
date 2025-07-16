@@ -14,6 +14,8 @@ namespace Tatawwa3.Application.Dtos.Certificats
         public string FullName { get; set; }
         public string Email { get; set; }
         public float TotalHours { get; set; }
+        public string opportunityTitle { get; set; }
+        public string? opp_id { get; set; }
 
         public DateTime ParticipationDate { get; set; }
         public string? CertificateId { get; set; }

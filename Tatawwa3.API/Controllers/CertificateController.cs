@@ -17,6 +17,14 @@ namespace Tatawwa3.API.Controllers
         {
             _mediator = mediator;
         }
+        [HttpGet("completed-participants/org/")]
+        public async Task<IActionResult> GetAllCompletedParticipantsForOrganization()
+        {
+            var orgId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetAllCompletedOrgParQuery(orgId));
+            return Ok(result);
+        }
+
         [HttpGet("completed-participants")]
         public async Task<IActionResult> GetCompletedParticipants(string opp_title)
         {
@@ -25,6 +33,8 @@ namespace Tatawwa3.API.Controllers
             var result = await _mediator.Send(new GetCompletedParticipantsQuery(opp_title));
             return Ok(result);
         }
+
+     
 
         [HttpPost("issue")]
         public async Task<IActionResult> IssueCertificate([FromBody] IssueCertificateDto dto)

@@ -43,12 +43,42 @@ namespace Tatawwa3.Application.Services
             {
                 Id = p.Id,
                 VolunteerId = p.VolunteerID!,
+                opp_id = p.OpportunityId,
                 ProfileImage = p.Volunteer?.ProfilePictureUrl ?? "",
                 FullName = p.Volunteer?.User?.FullName ?? "",
                 Email = p.Volunteer?.User?.Email ?? "",
                 TotalHours = p.TotalAttendedHours,
+                opportunityTitle = p.Opportunity.Title,
                 ParticipationDate = p.FirstCheckIn,
                  CertificateId = p.Certificate != null ? p.Certificate.Id : null
+            }).ToList();
+
+            return result;
+        }
+
+        public async Task<List<CompletedParticipantDto>> GetAllCompletedParticipantsForOrganizationAsync(string org_id)
+        {
+            var participants = await _context.Participations
+                .Where(p => p.Status == ParticipationStatus.Completed &&
+                            p.Opportunity.OrganizationID == org_id)
+                .Include(p => p.Opportunity)
+                    .ThenInclude(o => o.Organization)
+                .Include(p => p.Volunteer)
+                    .ThenInclude(v => v.User)
+                .ToListAsync();
+
+            var result = participants.Select(p => new CompletedParticipantDto
+            {
+                Id = p.Id,
+                VolunteerId = p.VolunteerID!,
+                opp_id = p.OpportunityId,
+                ProfileImage = p.Volunteer?.ProfilePictureUrl ?? "",
+                FullName = p.Volunteer?.User?.FullName ?? "",
+                Email = p.Volunteer?.User?.Email ?? "",
+                TotalHours = p.TotalAttendedHours,
+                opportunityTitle = p.Opportunity.Title,
+                ParticipationDate = p.FirstCheckIn,
+                CertificateId = p.Certificate != null ? p.Certificate.Id : null
             }).ToList();
 
             return result;
