@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using FleetTrackerSystem.Infrastructure.Seeder;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -77,6 +78,7 @@ builder.Services.AddControllers()
 builder.Services.AddScoped<INotificationPreferenceService, NotificationPreferenceService>();
 
 
+builder.Services.AddScoped<IParticipationRepository, ParticipationRepository>();
 
 
 

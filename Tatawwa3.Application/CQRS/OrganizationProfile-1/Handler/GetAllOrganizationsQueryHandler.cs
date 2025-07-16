@@ -27,6 +27,7 @@ namespace Tatawwa3.Application.CQRS.OrganizationProfile_1.Handler
         public async Task<List<OrganizationbasedFilterationDTO>> Handle(GetAllOrganizationsQuery request, CancellationToken cancellationToken)
         {
             return await _context.OrganizationProfiles
+                 .Where(o => !o.IsDeleted)
                 .ProjectTo<OrganizationbasedFilterationDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
         }
