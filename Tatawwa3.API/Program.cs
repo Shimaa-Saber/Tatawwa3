@@ -16,6 +16,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.API.Mapper.Categoryy;
+using Tatawwa3.API.Mapper.Comments;
 using Tatawwa3.API.Mapper.InvitationMap;
 using Tatawwa3.API.Mapper.NotificationMap;
 using Tatawwa3.API.Mapper.Opportunity;
@@ -118,6 +119,9 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<ISkillReprosatry, SkillReprosatry>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
+builder.Services.AddHttpContextAccessor();// somthing for signalr
+
+
 
 
 
@@ -168,6 +172,7 @@ var config = new MapperConfiguration(cfg =>
     cfg.AddProfile<organizationprofile>();
     cfg.AddProfile<NotificationProfile>();
     cfg.AddProfile<InvitationProfile>();
+    cfg.AddProfile<ReviewCommentss>();
 
 
 });
@@ -288,6 +293,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHub<NotificationHub>("/hub/notifications");
+app.MapHub<ReviewHub>("/reviewhub");
+
 
 
 

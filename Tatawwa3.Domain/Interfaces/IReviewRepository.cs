@@ -10,5 +10,9 @@ namespace Tatawwa3.Domain.Interfaces
    public interface IReviewRepository:IGeneric<Review>
     {
         Task<int> CountAsync();
+        Task<List<Review>> GetReviewsWithUserByOpportunityIdAsync(string opportunityId);
+        Task<List<Review>> GetAllReviewsWithUserAndOpportunityAsync();
+
+
     }
 }

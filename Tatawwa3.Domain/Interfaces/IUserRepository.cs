@@ -14,6 +14,8 @@ namespace Tatawwa3.Domain.Interfaces
         Task<List<(int Year, int Month, int Count)>> GetUserGrowthByMonthAsync();
 
         Task<int> CountAsync();
+        Task<ApplicationUser> GetByIdAsync(string id);
+
 
     }
 }

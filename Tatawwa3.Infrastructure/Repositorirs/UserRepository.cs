@@ -40,6 +40,11 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return await _context.Users.CountAsync();
         }
+        public async Task<ApplicationUser> GetByIdAsync(string id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
 
     }
 }
