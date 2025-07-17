@@ -9,6 +9,10 @@ using Tatawwa3.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 
+
+
+
+
 namespace Tatawwa3.Infrastructure.Repositorirs
 {
     public class ReviewRepository:GenericRepository<Review>, IReviewRepository
@@ -22,7 +26,30 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
         public async Task<int> CountAsync()
         {
-            return await _context.Reviews.CountAsync(); // غيّر الاسم لو مختلف
+            return await _context.Reviews.CountAsync(); 
         }
+        public async Task<List<Review>> GetReviewsWithUserByOpportunityIdAsync(string opportunityId)
+        {
+            return await _context.Reviews
+                .Include(r => r.User)
+                .ThenInclude(u => u.VolunteerProfile)
+                 .Include(r => r.Opportunity)
+                //.Where(r => r.OpportunityId == opportunityId)
+                .Where(r => r.OpportunityId == opportunityId && !r.IsDeleted)
+                .ToListAsync();
+        }
+
+        public async Task<List<Review>> GetAllReviewsWithUserAndOpportunityAsync()
+        {
+            return await _context.Reviews
+                .Include(r => r.User).ThenInclude(u => u.VolunteerProfile)
+                .Include(r => r.Opportunity)
+                .Where(r => !r.IsDeleted)
+                .ToListAsync();
+        }
+
+
+
+
     }
 }
