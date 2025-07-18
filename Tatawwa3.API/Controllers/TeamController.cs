@@ -104,6 +104,9 @@ namespace Tatawwa3.API.Controllers
         }
 
 
+
+
+
         [HttpGet("cities")]
         public async Task<IActionResult> GetAllCities()
         {
@@ -152,5 +155,21 @@ namespace Tatawwa3.API.Controllers
             await _mediator.Send(new UpdateTeamPageCommand(dto));
             return NoContent();
         }
+
+
+        [HttpPut("accept/{teamId}/{volunteerId}")]
+        public async Task<IActionResult> AcceptJoinRequest(string teamId, string volunteerId)
+        {
+            var result = await _mediator.Send(new RespondToJoinRequestCommand(teamId, volunteerId, true));
+            return Ok(result);
+        }
+
+        [HttpPut("reject/{teamId}/{volunteerId}")]
+        public async Task<IActionResult> RejectJoinRequest(string teamId, string volunteerId)
+        {
+            var result = await _mediator.Send(new RespondToJoinRequestCommand(teamId, volunteerId, false));
+            return Ok(result);
+        }
+
     }
 }
