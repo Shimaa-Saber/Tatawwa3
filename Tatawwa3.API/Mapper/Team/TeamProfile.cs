@@ -20,8 +20,9 @@ namespace Tatawwa3.Application.MappingProfiles
 
             CreateMap<UpdateTeamDto, Team>();
             CreateMap<Team, GetTeamaDto>()
-            .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName))
-            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+     .ForMember(dest => dest.OrganizationName, opt => opt.MapFrom(src => src.Organization.OrganizationName))
+     .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+     .ForMember(dest => dest.CurrentMembersCount, opt => opt.MapFrom(src => src.Members.Count));
 
             CreateMap<Team, TeamDetailsDto>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
