@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Tatawwa3.Application.CQRS.OrganizationProfile_1.Queries;
 using Tatawwa3.Application.Dtos.OrganizationProfile_1;
+using Tatawwa3.Domain.Enums;
 using Tatawwa3.Infrastructure.Data;
 
 namespace Tatawwa3.Application.CQRS.OrganizationProfile_1.Handler
@@ -27,7 +28,8 @@ namespace Tatawwa3.Application.CQRS.OrganizationProfile_1.Handler
         public async Task<List<OrganizationbasedFilterationDTO>> Handle(GetAllOrganizationsQuery request, CancellationToken cancellationToken)
         {
             return await _context.OrganizationProfiles
-                 .Where(o => !o.IsDeleted)
+              .Where(o => !o.IsDeleted && (o.Status == OrganizationStatus.Approved || o.Status == OrganizationStatus.Rejected))
+
                 .ProjectTo<OrganizationbasedFilterationDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
         }
