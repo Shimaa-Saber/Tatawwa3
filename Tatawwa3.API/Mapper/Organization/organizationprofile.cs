@@ -21,7 +21,7 @@ namespace Tatawwa3.API.Mapper.Organization
 
             CreateMap<OrganizationProfile, OrganizationbasedFilterationDTO>()
     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.OrganizationName))
-    .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage))
+    .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfilePictureUrl))
     .ForMember(dest => dest.OrganizationType, opt => opt.MapFrom(src => src.OrganizationType.ToString()))
     .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
     .ForMember(dest => dest.IsBanned,

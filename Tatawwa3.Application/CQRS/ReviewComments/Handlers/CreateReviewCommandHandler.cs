@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -7,11 +9,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Tatawwa3.Application.CQRS.ReviewComments.commands;
-using Tatawwa3.Domain.Interfaces;
+using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Domain.Entities;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
+using Tatawwa3.Domain.Interfaces;
 using Tatawwa3.Infrastructure.Migrations;
+using Tatawwa3.Infrastructure.Repositorirs;
 
 
 namespace Tatawwa3.Application.CQRS.ReviewComments.Handlers
@@ -20,11 +22,27 @@ namespace Tatawwa3.Application.CQRS.ReviewComments.Handlers
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly OpportunityRepository _opportunityRepository;
+        private readonly IVolunteerProfileRepository _volunteerRepo;
+        private readonly INotificationService _notificationService;
 
-        public CreateReviewCommandHandler(IReviewRepository reviewRepository, IHttpContextAccessor httpContextAccessor)
+
+
+
+        public CreateReviewCommandHandler(IReviewRepository reviewRepository, IHttpContextAccessor httpContextAccessor, OpportunityRepository opportunityRepository,
+            IVolunteerProfileRepository volunteerRepo,
+            INotificationService notificationService
+
+            )
         {
             _reviewRepository = reviewRepository;
             _httpContextAccessor = httpContextAccessor;
+            _opportunityRepository = opportunityRepository;
+            _volunteerRepo = volunteerRepo;
+            _notificationService = notificationService;
+
+
+
         }
 
         public async Task<string> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
@@ -59,7 +77,27 @@ namespace Tatawwa3.Application.CQRS.ReviewComments.Handlers
             };
 
             _reviewRepository.Add(review);
-            await _reviewRepository.SaveChangesAsync(); // مهم جدًا الـ await
+            await _reviewRepository.SaveChangesAsync();
+
+            var opportunity = await _opportunityRepository.FirstOrDefaultAsync(o => o.Id == request.OpportunityId);
+
+            var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.Id == request.UserId);
+            var volunteerName = volunteer?.User?.FullName ?? "متطوع";
+
+            string message = $"قام {volunteerName} بكتابة تعليق جديد على الفرصة: {opportunity?.Title}";
+
+            if (opportunity != null && opportunity.OrganizationID != null)
+            {
+                await _notificationService.SendNotificationAsync(
+                    userId: opportunity.OrganizationID,
+                    title: "💬 تعليق جديد",
+                    message: message
+                );
+            }
+
+
+
+
 
             return "تمت إضافة التعليق بنجاح";
         }

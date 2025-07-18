@@ -23,13 +23,18 @@ namespace Tatawwa3.Application.Services
         private readonly Tatawwa3DbContext _tatawwa3DbContext;
         private readonly ITeamRepository _teamRepository;
         private readonly IMapper _mapper;
+        private readonly IGeneric<VolunteerProfile> _volunteerRepo;
+        private readonly INotificationService _notificationService;
 
         public TeamService(
             IGeneric<Team> teamRepo,
             IGeneric<JoinRequest> joinRequestRepo,
             Tatawwa3DbContext tatawwa3DbContext,
             ITeamRepository teamRepository,
-            IMapper mapper
+            IMapper mapper,
+            IGeneric<VolunteerProfile> volunteerRepo,
+            INotificationService notificationService
+
 
         )
         {
@@ -38,6 +43,8 @@ namespace Tatawwa3.Application.Services
             _tatawwa3DbContext = tatawwa3DbContext;
             _teamRepository = teamRepository;
             _mapper = mapper;
+            _volunteerRepo = volunteerRepo;
+            _notificationService = notificationService;
         }
 
         public async Task<List<GetTeamaDto>> GetAllTeamsAsync()
@@ -108,6 +115,25 @@ namespace Tatawwa3.Application.Services
 
             _joinRequestRepo.Add(newRequest);
             await _joinRequestRepo.SaveChangesAsync();
+
+            var team = await _teamRepo.FirstOrDefaultAsync(t => t.Id == dto.TeamId);
+
+            if (team != null && team.ApplicationUser != null)
+            {
+                var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.Id == volunteerId);
+                var volunteerName = volunteer?.User?.FullName ?? "متطوع";
+
+                string message = $"قام {volunteerName} بطلب الانضمام إلى الفريق: {team.Name}";
+
+                await _notificationService.SendNotificationAsync(
+                    
+                    userId: team.OrganizationID, 
+                    title: "📥 طلب انضمام الى فريق",
+                    message: message,
+                    joinRecuestId: newRequest.Id
+
+                );
+            }
         }
         public async Task<List<GetTeamaDto>> GetTeamsByNameAsync(string name)
         {
