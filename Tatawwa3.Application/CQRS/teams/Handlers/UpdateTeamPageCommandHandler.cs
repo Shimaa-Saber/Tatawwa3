@@ -23,26 +23,37 @@ namespace Tatawwa3.Application.CQRS.teams.Handlers
         
         }
 
-        //public async Task<Unit> Handle(UpdateTeamPageCommand request, CancellationToken cancellationToken)
+      
+
+        //    public async Task<Unit> Handle(UpdateTeamPageCommand request, CancellationToken cancellationToken)
         //{
-            //var dto = request.Dto;
+        //    var dto = request.Dto;
 
-            //var team = await _context.Teams.FindAsync(dto.Id);
-            //if (team == null)
+        //    var team = await _context.Teams.FindAsync(dto.Id);
+        //    if (team == null)
+        //        throw new KeyNotFoundException("Team not found");
 
-            //throw new KeyNotFoundException("Team not found");
+        //    Console.WriteLine($"قبل التحديث: {team.Name}, {team.City}");
 
+        //    _mapper.Map(dto, team);
+        //    Console.WriteLine($"بعد التحديث: {team.Name}, {team.City}");
 
-            //Console.WriteLine($"IsDeleted: {team.IsDeleted}");
+        //    _context.Entry(team).State = (Microsoft.EntityFrameworkCore.EntityState)EntityState.Modified;
 
-            //_mapper.Map(dto, team);
-            //Console.WriteLine("تم حفظ التحديث: " + team.City + " - " + team.MaxMembers);
-            //await _context.SaveChangesAsync(cancellationToken);
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync(cancellationToken);
+        //        Console.WriteLine("تم الحفظ بنجاح");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("خطأ أثناء الحفظ: " + ex.Message);
+        //    }
 
-            //return Unit.Value;
+        //    return Unit.Value;
+        //}
 
-
-            public async Task<Unit> Handle(UpdateTeamPageCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateTeamPageCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Dto;
 
@@ -50,22 +61,29 @@ namespace Tatawwa3.Application.CQRS.teams.Handlers
             if (team == null)
                 throw new KeyNotFoundException("Team not found");
 
-            Console.WriteLine($"قبل التحديث: {team.Name}, {team.City}");
-
             _mapper.Map(dto, team);
-            Console.WriteLine($"بعد التحديث: {team.Name}, {team.City}");
 
-            _context.Entry(team).State = (Microsoft.EntityFrameworkCore.EntityState)EntityState.Modified;
+            // ✅ هنا التعديل الجديد
+            if (!string.IsNullOrWhiteSpace(dto.CategoryName))
+            {
+                var category = await _context.Categories
+                    .FirstOrDefaultAsync(c => c.Name == dto.CategoryName);
 
-            try
-            {
-                await _context.SaveChangesAsync(cancellationToken);
-                Console.WriteLine("تم الحفظ بنجاح");
+                if (category != null)
+                    team.CategoryId = category.Id;
             }
-            catch (Exception ex)
+
+            if (!string.IsNullOrWhiteSpace(dto.OpportunityTitle))
             {
-                Console.WriteLine("خطأ أثناء الحفظ: " + ex.Message);
+                var opportunity = await _context.VolunteerOpportunities
+                    .FirstOrDefaultAsync(o => o.Title == dto.OpportunityTitle);
+
+                if (opportunity != null)
+                    team.OpportunityId = opportunity.Id;
             }
+
+            _context.Entry(team).State = EntityState.Modified;
+            await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
