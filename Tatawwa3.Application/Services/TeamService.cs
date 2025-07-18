@@ -183,6 +183,34 @@ namespace Tatawwa3.Application.Services
             return isAccepted ? "تم قبول المتطوع في الفريق" : "تم رفض الطلب";
         }
 
+        public async Task<string> RespondToJoinRequesgdedtByIdAsync(string joinRequestId, bool isAccepted)
+        {
+            var joinRequest = await _tatawwa3DbContext.JoinRequests
+                .FirstOrDefaultAsync(j => j.Id == joinRequestId);
+
+            if (joinRequest == null)
+                throw new Exception("الطلب غير موجود");
+
+            joinRequest.Status = isAccepted ? RequestStatus.Accepted : RequestStatus.Rejected;
+
+            if (isAccepted)
+            {
+                var teamMember = new TeamMember
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TeamID = joinRequest.TeamId,
+                    VolunteerID = joinRequest.VolunteerId,
+                    Status = TeamMemberStatus.Accepted
+                };
+
+                await _tatawwa3DbContext.TeamMembers.AddAsync(teamMember);
+            }
+
+            await _tatawwa3DbContext.SaveChangesAsync();
+            return isAccepted ? "تم قبول المتطوع في الفريق" : "تم رفض الطلب";
+        }
+
+
 
 
     }
