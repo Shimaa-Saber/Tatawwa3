@@ -12,7 +12,7 @@ namespace Tatawwa3.Application.Dtos.Teams
         public string  Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int? CategoryId { get; set; }
+        public string? CategoryId { get; set; }
         public string City { get; set; }
         public bool IsLinkedToOpportunity { get; set; }
         public TeamJoinPermission JoinPermission { get; set; }

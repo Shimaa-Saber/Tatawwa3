@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Tatawwa3.Application.CQRS.teams.Queries;
 using Tatawwa3.Application.Dtos.Teams;
 using Tatawwa3.Infrastructure.Data;
@@ -24,7 +25,10 @@ namespace Tatawwa3.Application.CQRS.teams.Handlers
 
         public async Task<UpdateTeamPageDto> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
         {
-            var team = await _context.Teams.FindAsync(request.Id);
+            var team = await _context.Teams
+                .Include(t => t.Category)
+                .Include(t => t.Opportunities)
+                .FirstOrDefaultAsync(t => t.Id == request.Id);
 
             if (team == null)
                 throw new KeyNotFoundException("Team not found");
