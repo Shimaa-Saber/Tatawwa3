@@ -46,6 +46,23 @@ namespace Tatawwa3.Application.Services
               .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
             return await query.ToListAsync();
         }
+        //public async Task<List<GetTeamaDto>> GetAllTeamsAsync()
+        //{
+        //    var teams = await _tatawwa3DbContext.Teams
+        //        .Select(team => new GetTeamaDto
+        //        {
+        //            Id = team.Id,
+        //            Name = team.Name,
+        //            MaxNumberOfVolunteers = team.MaxNumberOfVolunteers,
+
+        //            // عدد الأعضاء الفعليين (طلبات انضمام مقبولة)
+        //            CurrentMembersCount = _tatawwa3DbContext.JoinRequests
+        //                .Count(jr => jr.TeamId == team.Id && jr.Status == RequestStatus.Accepted)
+        //        })
+        //        .ToListAsync();
+
+        //    return teams;
+        //}
 
         public async Task<TeamDetailsDto> GetTeamDetailsAsync(string teamId)
         {
