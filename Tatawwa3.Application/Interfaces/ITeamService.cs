@@ -27,6 +27,7 @@ namespace Tatawwa3.Application.Interfaces
 
 
         Task<string> RespondToJoinRequestAsync(string teamId, string volunteerId, bool isAccepted);
+        Task<string> RespondToJoinRequesgdedtByIdAsync(string joinRequestId, bool isAccepted);
 
 
 

@@ -171,5 +171,22 @@ namespace Tatawwa3.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost("join-request/accept")]
+        public async Task<IActionResult> AcceptJoinRequest([FromBody] RespondToJoinRequestByIdgdedCommand command)
+        {
+            command.IsAccepted = true;
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPost("join-request/reject")]
+        public async Task<IActionResult> RejectJoinRequest([FromBody] RespondToJoinRequestByIdgdedCommand command)
+        {
+            command.IsAccepted = false;
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+
     }
 }
