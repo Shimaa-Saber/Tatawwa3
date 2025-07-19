@@ -49,10 +49,26 @@ namespace Tatawwa3.Application.Services
 
         public async Task<List<GetTeamaDto>> GetAllTeamsAsync()
         {
-            var query = _teamRepository.GetAllTeams()
-              .ProjectTo<GetTeamaDto>(_mapper.ConfigurationProvider);
-            return await query.ToListAsync();
+            var teams = await _tatawwa3DbContext.Teams
+                .Select(team => new GetTeamaDto
+                {
+                    Id = team.Id,
+                    Name = team.Name,
+                    Description = team.Description,
+                    City = team.City,
+
+                    CurrentMembersCount = _tatawwa3DbContext.JoinRequests
+                        .Count(j => j.TeamId == team.Id
+                                    && j.Status == RequestStatus.Accepted
+                                    && !j.IsDeleted)
+                })
+                .ToListAsync();
+
+            return teams;
         }
+
+
+
         //public async Task<List<GetTeamaDto>> GetAllTeamsAsync()
         //{
         //    var teams = await _tatawwa3DbContext.Teams

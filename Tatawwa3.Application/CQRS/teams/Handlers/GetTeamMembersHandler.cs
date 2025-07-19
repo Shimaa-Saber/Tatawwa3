@@ -36,5 +36,21 @@ namespace Tatawwa3.Application.CQRS.teams.Handlers
                 })
                 .ToListAsync();
         }
+        //public async Task<List<TeamMemberDto>> Handle(GetTeamMembersQuery request, CancellationToken cancellationToken)
+        //{
+        //    return await _context.TeamMembers
+        //        .Where(tm => tm.TeamID == request.TeamId) // <-- شرط Accepted اتشال
+        //        .Include(tm => tm.Volunteer)
+        //            .ThenInclude(v => v.User)
+        //        .Select(tm => new TeamMemberDto
+        //        {
+        //            VolunteerId = tm.VolunteerID,
+        //            Name = tm.Volunteer.User != null ? tm.Volunteer.User.UserName : "Unknown",
+        //            ProfileImageUrl = tm.Volunteer.ProfilePictureUrl ?? "",
+        //            Role = tm.Role ?? ""
+        //        })
+        //        .ToListAsync();
+        //}
+
     }
 }
