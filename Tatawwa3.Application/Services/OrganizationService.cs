@@ -60,7 +60,7 @@ namespace Tatawwa3.Application.Services
 
         public async Task<OrganizationsStatisticsDTO> GetStatisticsAsync()
         {
-            var total = await _OrgRepo.CountAsync();
+            var total = await _OrgRepo.CountAsync(o => !o.IsDeleted);
             var active = await _OrgRepo.CountAsync(a => a.Status== OrganizationStatus.Approved);
             var pending = await _OrgRepo.CountAsync(p=>p.Status== OrganizationStatus.Pending);
             var rejected = await _OrgRepo.CountAsync(r=>r.Status== OrganizationStatus.Rejected);
