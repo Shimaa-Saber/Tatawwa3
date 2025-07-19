@@ -116,9 +116,15 @@ namespace Tatawwa3.Application.Services
             _joinRequestRepo.Add(newRequest);
             await _joinRequestRepo.SaveChangesAsync();
 
-            var team = await _teamRepo.FirstOrDefaultAsync(t => t.Id == dto.TeamId);
+            var team = await _teamRepo
+           .GetQueryable()
+            .Include(t => t.Organization)
+            .ThenInclude(o => o.User)
+           .FirstOrDefaultAsync(t => t.Id == dto.TeamId);
 
-            if (team != null && team.ApplicationUser != null)
+
+
+            if (team != null && team.Organization?.User != null)
             {
                 var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.Id == volunteerId);
                 var volunteerName = volunteer?.User?.FullName ?? "متطوع";
@@ -127,7 +133,7 @@ namespace Tatawwa3.Application.Services
 
                 await _notificationService.SendNotificationAsync(
                     
-                    userId: team.OrganizationID, 
+                    userId: team.Organization.User.Id,
                     title: "📥 طلب انضمام الى فريق",
                     message: message,
                     joinRecuestId: newRequest.Id
@@ -253,6 +259,7 @@ namespace Tatawwa3.Application.Services
             return isAccepted ? "تم قبول المتطوع في الفريق" : "تم رفض الطلب";
         }
 
+       
 
 
 

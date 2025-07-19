@@ -13,6 +13,7 @@ namespace Tatawwa3.Application.Dtos.Notifications
         public string Message { get; set; }
         public bool IsRead { get; set; }
         public string? InvitationId { get; set; }
+        public string? JoinRecuestId { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 

@@ -43,15 +43,32 @@ namespace Tatawwa3.API.Controllers
             if (!result)
                 return BadRequest("Failed to issue certificate. Participation may be invalid or already issued.");
 
-            return Ok("Certificate issued successfully.");
+            return Ok(new { success = true, message = "تم إصدار الشهادة بنجاح" });
+
         }
 
         [HttpPost("issue-group")]
         public async Task<IActionResult> IssueCertificatesForGroup([FromBody] IssueGroupCertificatesDto dto)
         {
             var count = await _mediator.Send(new IssueGroupCertificatesCommand(dto));
-            return Ok($"{count} certificates issued successfully.");
+
+            if (count == 0)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "لم يتم إصدار أي شهادة. ربما تم إصدارها مسبقًا."
+                });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                message = $"✅ تم إصدار {count} شهادة بنجاح",
+                issuedCount = count
+            });
         }
+
 
 
     }

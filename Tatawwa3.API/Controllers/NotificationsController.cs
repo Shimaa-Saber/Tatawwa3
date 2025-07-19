@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Tatawwa3.Application.CQRS.Notifications.Commands;
 using Tatawwa3.Application.CQRS.Notifications.Queries;
+using Tatawwa3.Application.CQRS.teams.Commands;
 using Tatawwa3.Application.Dtos.Notifications;
 
 namespace Tatawwa3.API.Controllers
@@ -111,7 +112,20 @@ namespace Tatawwa3.API.Controllers
             var result = await _mediator.Send(new UpdateOrgNotificationPreferencesCommand(userId, dto));
             return Ok(result);
         }
-        
+
+        [HttpPut("{requestId}/accept")]
+        public async Task<IActionResult> Accept(string requestId)
+        {
+            var result = await _mediator.Send(new AcceptJoinRequestCommand(requestId));
+            return Ok(result);
+        }
+
+        [HttpPut("{requestId}/reject")]
+        public async Task<IActionResult> Reject(string requestId)
+        {
+            var result = await _mediator.Send(new RejectJoinRequestCommand(requestId));
+            return Ok(result);
+        }
 
     }
 

@@ -69,6 +69,7 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Smtp"
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IVolunteerOpportunityRepository, VolunteerOpportunityRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IJoinRequestService, JoinRequestService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

@@ -139,6 +139,8 @@ namespace Tatawwa3.Application.Services
         {
             var completedParticipants = await _context.Participations
                 .Include(p => p.Volunteer)
+                .Include(p => p.Opportunity)
+                    .ThenInclude(o => o.Organization)
                 .Where(p => p.OpportunityId == dto.OpportunityId && p.Status == ParticipationStatus.Completed)
                 .ToListAsync();
 
@@ -146,7 +148,6 @@ namespace Tatawwa3.Application.Services
 
             foreach (var participation in completedParticipants)
             {
-              
                 bool alreadyIssued = await _context.Certificates.AnyAsync(c => c.ParticipationID == participation.Id);
                 if (alreadyIssued) continue;
 
@@ -156,7 +157,7 @@ namespace Tatawwa3.Application.Services
                     ParticipationID = participation.Id,
                     VolunteerID = participation.VolunteerID!,
                     Title = dto.Title,
-                    Issuer = participation.Opportunity.Organization.OrganizationName ?? "غير معروف",
+                    Issuer = participation.Opportunity?.Organization?.OrganizationName ?? "غير معروف",
                     TotalHours = dto.TotalHours,
                     IssueDate = DateTime.UtcNow,
                     CertificateNumber = $"CERT-{DateTime.UtcNow:yyyyMMddHHmmss}-{issuedCount + 1}",
@@ -172,6 +173,7 @@ namespace Tatawwa3.Application.Services
             await _context.SaveChangesAsync();
             return issuedCount;
         }
+
 
 
     }

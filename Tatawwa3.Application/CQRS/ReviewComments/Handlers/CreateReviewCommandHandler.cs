@@ -22,14 +22,14 @@ namespace Tatawwa3.Application.CQRS.ReviewComments.Handlers
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly OpportunityRepository _opportunityRepository;
+        private readonly IVolunteerOpportunityRepository _opportunityRepository;
         private readonly IVolunteerProfileRepository _volunteerRepo;
         private readonly INotificationService _notificationService;
 
 
 
 
-        public CreateReviewCommandHandler(IReviewRepository reviewRepository, IHttpContextAccessor httpContextAccessor, OpportunityRepository opportunityRepository,
+        public CreateReviewCommandHandler(IReviewRepository reviewRepository, IHttpContextAccessor httpContextAccessor, IVolunteerOpportunityRepository opportunityRepository,
             IVolunteerProfileRepository volunteerRepo,
             INotificationService notificationService
 
