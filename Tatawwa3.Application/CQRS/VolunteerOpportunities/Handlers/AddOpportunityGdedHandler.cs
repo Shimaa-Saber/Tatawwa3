@@ -116,10 +116,12 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunities.Handlers
                 using var stream = new FileStream(fullPath, FileMode.Create);
                 await dto.Image.CopyToAsync(stream, cancellationToken);
 
-                savedImagePath = Path.Combine("uploads", fileName);
+                //savedImagePath = Path.Combine("uploads", fileName);
+                savedImagePath = fileName;
+
             }
 
-           
+
             var opportunity = _mapper.Map<VolunteerOpportunity>(dto);
             opportunity.Id = Guid.NewGuid().ToString();
             opportunity.CategoryID = category.Id;

@@ -16,5 +16,7 @@ namespace Tatawwa3.Domain.Interfaces
         Task<VolunteerProfile?> GetByUserIdAsync(string userId);
         Task Remove(VolunteerProfile volunteer);
 
+        public Task<float> GetTotalVolunteerHoursAsync();
+
     }
 }

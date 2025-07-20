@@ -43,5 +43,15 @@ namespace Tatawwa3.Infrastructure.Repositorirs
             await _context.SaveChangesAsync();
 
         }
+
+        public async Task<float> GetTotalVolunteerHoursAsync()
+        {
+            var totalHours = await _context.VolunteerProfiles
+          //.Where(v => !v.IsDeleted)
+          .SumAsync(v => v.TotalHours);
+
+            return totalHours;
+        }
+
     }
 }

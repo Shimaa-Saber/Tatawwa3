@@ -37,11 +37,11 @@ namespace Tatawwa3.Application.CQRS.DashBord_Admin.Handler
         {
             var users = await _userRepo.CountAsync();
             var volunteers = await _userRepo.CountByRoleAsync(UserType.Volunteer);
-            var organizations = await _organizationRepo.CountAsync();
+            var organizations = await _organizationRepo.CountttAsync();
             var opportunities = await _opportunityRepo.CountActiveOpportunitiesAsync();
-            var totalHours = await _volunteerRepo.GetTotalHoursAsync();
+            var totalHours = await _volunteerRepo.GetTotalVolunteerHoursAsync();
             var reviews = await _reviewRepo.CountAsync();
-            var certificates = await _volunteerRepo.CountCertificatesAsync(); // Assuming you have this
+            var certificates = await _volunteerRepo.CountCertificatesAsync(); 
 
             return new StatisticsDto
             {

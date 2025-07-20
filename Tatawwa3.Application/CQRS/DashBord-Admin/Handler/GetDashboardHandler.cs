@@ -33,14 +33,22 @@ namespace Tatawwa3.Application.CQRS.DashBord_Admin.Handler
         public async Task<DashboardDto> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
         {
             var volunteerCount = await _userRepo.CountByRoleAsync(UserType.Volunteer);
-            var organizationCount = await _orgRepo.CountAsync();
+            var organizationCount = await _orgRepo.CountttAsync();
             var opportunityCount = await _opportunityRepo.CountActiveOpportunitiesAsync();
-            var totalHours = await _volunteerRepo.GetTotalHoursAsync();
+    //        var totalHours =
+    //             ( _volunteerRepo.GetAll())
+    //.Where(v => !v.IsDeleted)
+    //.Sum(v => v.TotalHours);/*await _volunteerRepo.GetTotalVolunteerHoursAsync();*/
+            var totalUsers = await _userRepo.CountAsync();
 
             var growthData = await _userRepo.GetUserGrowthByMonthAsync();
 
+            var totalHours = _volunteerRepo.GetAll()
+            .Sum(v => v.TotalHours);
 
-            
+
+
+
 
             var userGrowth = growthData.Select(g => new UserGrowthDto
             {
@@ -50,6 +58,7 @@ namespace Tatawwa3.Application.CQRS.DashBord_Admin.Handler
 
             return new DashboardDto
             {
+                TotalUsers = totalUsers,
                 TotalVolunteers = volunteerCount,
                 TotalOrganizations = organizationCount,
                 ActiveOpportunities = opportunityCount,
