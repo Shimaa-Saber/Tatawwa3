@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tatawwa3.Application.CQRS.AdminVolunteer.Commit;
@@ -18,6 +19,7 @@ namespace Tatawwa3.API.Controllers
             _mediator = mediator;
         }
         [HttpGet("admin/volunteers")]
+        
         public async Task<IActionResult> GetAllVolunteers([FromQuery] GetAllVolunteersForAdminQuery query)
         {
             var result = await _mediator.Send(query);
@@ -25,6 +27,7 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpGet("by-name")]
+       
         public async Task<IActionResult> GetByName([FromQuery] string name)
         => Ok(await _mediator.Send(new GetAllVolunteersForAdminQuery { Name = name }));
 
@@ -34,6 +37,7 @@ namespace Tatawwa3.API.Controllers
 
     
         [HttpGet("by-status")]
+       
         public async Task<IActionResult> GetByStatus(string status)
         {
             VolunteerStatus? parsedStatus = null;
@@ -53,11 +57,13 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpGet("by-hours")]
+       
         public async Task<IActionResult> GetByHours([FromQuery] float hours)
             => Ok(await _mediator.Send(new GetAllVolunteersForAdminQuery { Hours = hours }));
 
 
         [HttpPut("ban/{volunteerId}")]
+      
         public async Task<IActionResult> BanVolunteer(string volunteerId)
         {
             var command = new BanVolunteerCommand { VolunteerId = volunteerId };

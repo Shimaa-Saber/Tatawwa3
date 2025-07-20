@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tatawwa3.Application.CQRS.DashBord_Admin.Queries;
@@ -18,6 +19,7 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpGet]
+
         public async Task<ActionResult<DashboardDto>> GetDashboard()
         {
             var dashboardData = await _mediator.Send(new GetDashboardQuery());
@@ -25,6 +27,7 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpGet("nzra sare3a")]
+       
         public async Task<ActionResult<StatisticsDto>> GetStatistics()
         {
             try
