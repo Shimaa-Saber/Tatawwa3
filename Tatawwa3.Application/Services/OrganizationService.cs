@@ -32,7 +32,7 @@ namespace Tatawwa3.Application.Services
         public async Task<List<OrganizationbasedFilterationDTO>> GetOrganizationByCityAsync(string city)
         {
             var organizations = await _organizationRepository.GetAll()
-                .Where(o => o.City == city)
+                .Where(o => o.City == city && !o.IsDeleted)
                 .Include(o => o.VolunteerOpportunities) // ✅ لازم ده علشان نعرف نعد الفرص
                .Include(o => o.Teams)
                 .ToListAsync();
@@ -44,7 +44,7 @@ namespace Tatawwa3.Application.Services
         {
             var organizationNames = await _organizationRepository
                 .GetAll()
-                .Where(o => o.OrganizationName == name)
+                .Where(o => o.OrganizationName == name && !o.IsDeleted)
                 .Include(o => o.VolunteerOpportunities) // ✅ علشان OpportunitiesCount ما يكونش دايمًا 0
                .Include(o => o.Teams)
                 .ToListAsync();
@@ -55,9 +55,9 @@ namespace Tatawwa3.Application.Services
         public async Task<OrganizationsStatisticsDTO> GetStatisticsAsync()
         {
             var total = await _OrgRepo.CountAsync(o => !o.IsDeleted);
-            var active = await _OrgRepo.CountAsync(a => a.Status== OrganizationStatus.Approved);
-            var pending = await _OrgRepo.CountAsync(p=>p.Status== OrganizationStatus.Pending);
-            var rejected = await _OrgRepo.CountAsync(r=>r.Status== OrganizationStatus.Rejected);
+            var active = await _OrgRepo.CountAsync(a => a.Status == OrganizationStatus.Approved && !a.IsDeleted);
+            var pending = await _OrgRepo.CountAsync(p => p.Status == OrganizationStatus.Pending && !p.IsDeleted);
+            var rejected = await _OrgRepo.CountAsync(r => r.Status == OrganizationStatus.Rejected && !r.IsDeleted);
 
 
 
@@ -76,7 +76,7 @@ namespace Tatawwa3.Application.Services
         {
             var organizations = await _organizationRepository
                 .GetAll()
-                .Where(o => o.Status == status)
+              .Where(o => o.Status == status && !o.IsDeleted)
                 .Include(o => o.VolunteerOpportunities)
                .Include(o => o.Teams)
                 .ToListAsync();
