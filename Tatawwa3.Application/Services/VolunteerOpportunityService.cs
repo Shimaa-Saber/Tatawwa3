@@ -10,6 +10,7 @@ using Tatawwa3.Application.Interfaces;
 using Tatawwa3.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
+using Tatawwa3.Domain.Enums;
 namespace Tatawwa3.Application.Services
 {
     public class VolunteerOpportunityService : IVolunteerOpportunityService
@@ -25,10 +26,16 @@ namespace Tatawwa3.Application.Services
 
         public async Task<List<OpportunityHomeDto>> GetAllOpportunitiesAsync()
         {
+            //return await _repository
+            //    .GetAllOpportunity()
+            //    .ProjectTo<OpportunityHomeDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+
             return await _repository
-                .GetAllOpportunity()
-                .ProjectTo<OpportunityHomeDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+       .GetAllOpportunity()
+       .Where(o => o.Status == OpportunityStatus.Published)
+       .ProjectTo<OpportunityHomeDto>(_mapper.ConfigurationProvider)
+       .ToListAsync();
         }
 
 

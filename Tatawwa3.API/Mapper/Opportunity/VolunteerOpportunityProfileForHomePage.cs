@@ -12,11 +12,16 @@ namespace Tatawwa3.Application.MappingProfiles
 {
     public class VolunteerOpportunityProfileForHomePage:Profile
     {
+        //public VolunteerOpportunityProfileForHomePage()
+        //{
+        //    CreateMap<VolunteerOpportunity, OpportunityHomeDto>();
+
+        //}
         public VolunteerOpportunityProfileForHomePage()
         {
-            CreateMap<VolunteerOpportunity, OpportunityHomeDto>();
-               
+            CreateMap<VolunteerOpportunity, OpportunityHomeDto>()
+                .ForMember(dest => dest.RatingCount, opt => opt.MapFrom(src => src.Reviews.Count));
         }
-    
+
     }
 }

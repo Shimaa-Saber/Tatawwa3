@@ -22,9 +22,12 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunitiesss.Handlers
 
         public async Task<int> Handle(GetTotalVolunteerHoursQuery request, CancellationToken cancellationToken)
         {
-            var total = await _context.VolunteerOpportunities
-           .Where(v => v.TotalHours.HasValue)
-           .SumAsync(v => v.TotalHours.Value, cancellationToken);
+            // var total = await _context.VolunteerOpportunities
+            //.Where(v => v.TotalHours.HasValue)
+            //.SumAsync(v => v.TotalHours.Value, cancellationToken);
+
+            var total = await _context.Participations
+           .SumAsync(p => (int)p.TotalAttendedHours, cancellationToken);
 
             return total;
         }
