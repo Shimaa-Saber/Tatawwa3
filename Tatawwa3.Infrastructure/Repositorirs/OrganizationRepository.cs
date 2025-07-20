@@ -67,5 +67,13 @@ public class OrganizationRepository:GenericRepository<OrganizationProfile>, IOrg
             return await _context.OrganizationProfiles
                                  .FirstOrDefaultAsync(o => o.Id == id);
         }
+
+        public async Task<int> CountttAsync()
+        {
+            return await _context.OrganizationProfiles
+                .Where(o => !o.IsDeleted)
+                .CountAsync();
+        }
+
     }
 }

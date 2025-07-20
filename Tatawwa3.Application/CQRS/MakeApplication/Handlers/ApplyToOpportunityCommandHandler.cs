@@ -62,7 +62,9 @@ namespace Tatawwa3.Application.CQRS.MakeApplication.Handlers
                 using var stream = new FileStream(fullPath, FileMode.Create);
                 await dto.Attachment.CopyToAsync(stream, cancellationToken);
 
-                savedFilePath = Path.Combine("uploads", fileName);
+                //savedFilePath = Path.Combine("uploads", fileName);
+                savedFilePath = fileName;
+
             }
 
             var application = mapper.Map<Tatawwa3.Domain.Entities.Application>(dto);

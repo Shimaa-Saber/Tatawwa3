@@ -18,5 +18,7 @@ namespace Tatawwa3.Domain.Interfaces
 
         Task<OrganizationProfile> GetByIdAsync(string id);
 
+        public Task<int> CountttAsync();
+
     }
 }
