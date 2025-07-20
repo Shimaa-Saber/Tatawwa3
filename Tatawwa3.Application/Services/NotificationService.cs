@@ -45,7 +45,7 @@ namespace Tatawwa3.Application.Services
                     UserId = userId,
                     Title = title,
                     Message = message,
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedAt = DateTime.Now,
                     IsRead = false,
                     InvitationId = invitationId,
                     JoinRecuestId=joinRecuestId

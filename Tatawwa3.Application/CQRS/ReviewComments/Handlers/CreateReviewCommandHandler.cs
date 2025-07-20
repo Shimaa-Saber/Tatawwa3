@@ -79,26 +79,6 @@ namespace Tatawwa3.Application.CQRS.ReviewComments.Handlers
             _reviewRepository.Add(review);
             await _reviewRepository.SaveChangesAsync();
 
-            var opportunity = await _opportunityRepository.FirstOrDefaultAsync(o => o.Id == request.OpportunityId);
-
-            var volunteer = await _volunteerRepo.FirstOrDefaultAsync(v => v.Id == request.UserId);
-            var volunteerName = volunteer?.User?.FullName ?? "متطوع";
-
-            string message = $"قام {volunteerName} بكتابة تعليق جديد على الفرصة: {opportunity?.Title}";
-
-            if (opportunity != null && opportunity.OrganizationID != null)
-            {
-                await _notificationService.SendNotificationAsync(
-                    userId: opportunity.OrganizationID,
-                    title: "💬 تعليق جديد",
-                    message: message
-                );
-            }
-
-
-
-
-
             return "تمت إضافة التعليق بنجاح";
         }
     }

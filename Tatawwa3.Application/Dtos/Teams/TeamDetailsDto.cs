@@ -17,6 +17,8 @@ namespace Tatawwa3.Application.Dtos.Teams
         public string CategoryName { get; set; }
         public string OrganizationName { get; set; }
 
+        public string? InternalNotes { get; set; }
+
         public string? TeamGoals { get; set; }
 
         public List<MemberDto> Members { get; set; }

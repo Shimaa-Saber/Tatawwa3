@@ -23,8 +23,8 @@ namespace Tatawwa3.Application.CQRS.VolunteerOpportunitiesss.Handlers
 
         public async Task<int> Handle(GetActiveVolunteersCountQuery request, CancellationToken cancellationToken)
         {
-            return await _context.VolunteerProfiles
-                .Where(v => v.Status == VolunteerStatus.Active)
+            return await _context.Participations
+                
                 .CountAsync();
         }
     

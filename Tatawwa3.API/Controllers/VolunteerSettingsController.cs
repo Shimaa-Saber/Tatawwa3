@@ -29,7 +29,7 @@ namespace Tatawwa3.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVolunteerSettings(string id, [FromBody] VolunteerSettingsDto dto)
+        public async Task<IActionResult> UpdateVolunteerSettings(string id, [FromForm] VolunteerSettingsDto dto)
         {
             var result = await _mediator.Send(new UpdateVolunteerSettingsCommand
             {
