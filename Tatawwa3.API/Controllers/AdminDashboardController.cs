@@ -8,6 +8,7 @@ namespace Tatawwa3.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class AdminDashboardController : ControllerBase
     {
         private readonly IMediator _mediator;

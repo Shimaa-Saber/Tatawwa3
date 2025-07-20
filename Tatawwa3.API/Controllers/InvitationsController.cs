@@ -9,6 +9,7 @@ namespace Tatawwa3.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class InvitationsController : ControllerBase
     {
         private readonly IMediator _mediator;

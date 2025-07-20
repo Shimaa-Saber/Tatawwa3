@@ -11,6 +11,7 @@ namespace Tatawwa3.API.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
+
     public class OrganizationManagement : ControllerBase
     {
         private readonly IMediator _mediator;

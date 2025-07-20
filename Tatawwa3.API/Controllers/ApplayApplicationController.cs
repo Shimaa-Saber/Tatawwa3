@@ -8,6 +8,8 @@ namespace Tatawwa3.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize
+
     public class ApplayApplicationController : ControllerBase
     {
         private readonly IMediator mediator;
