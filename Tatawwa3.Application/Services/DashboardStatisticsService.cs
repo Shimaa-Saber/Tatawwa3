@@ -23,8 +23,10 @@ namespace Tatawwa3.Application.Services
         public async Task<DashboardStatisticsDTO> GetStatisticsAsync()
         {
             var grantedCertificates= await _Context.Certificates.CountAsync();
-            var totalHours = await _Context.Achievements.Where(a => a.RequiredHours != null)
-            .SumAsync(a => a.RequiredHours);
+            //var totalHours = await _Context.Achievements.Where(a => a.RequiredHours != null)
+            //.SumAsync(a => a.RequiredHours);
+            var totalHours = await _Context.Participations
+           .SumAsync(a => a.TotalAttendedHours);
             var activeOpportunities = await _Context.VolunteerOpportunities.Where(o => o.Status == OpportunityStatus.Completed).CountAsync();
             var volunteers=await _Context.VolunteerProfiles.CountAsync();
 

@@ -33,7 +33,7 @@ namespace Tatawwa3.Application.Services
 
             return await _repository
        .GetAllOpportunity()
-       .Where(o => o.Status == OpportunityStatus.Published)
+       .Where(o => o.Status == OpportunityStatus.Completed)
        .ProjectTo<OpportunityHomeDto>(_mapper.ConfigurationProvider)
        .ToListAsync();
         }
