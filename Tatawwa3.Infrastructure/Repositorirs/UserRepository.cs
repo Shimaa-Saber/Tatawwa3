@@ -44,6 +44,10 @@ namespace Tatawwa3.Infrastructure.Repositorirs
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
+        //public async Task<int> CountActiveUsersAsync()
+        //{
+        //    return await _context.Users.CountAsync(u => !u.IsDeleted);
+        //}
 
 
     }

@@ -111,6 +111,9 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .Include(v => v.Applications)
                 .Include(v => v.Reviews)
                 .Where(v => !v.IsDeleted && v.OrganizationID == organizationId)
+                .Where(v => !v.IsDeleted
+                 && v.OrganizationID == organizationId
+                 && (v.Status == OpportunityStatus.Published || v.Status == OpportunityStatus.Completed))
                 .AsNoTracking()
                 .ToListAsync();
         }

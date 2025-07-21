@@ -12,6 +12,8 @@ namespace Tatawwa3.Domain.Interfaces
         Task<int> CountAsync();
         Task<List<Review>> GetReviewsWithUserByOpportunityIdAsync(string opportunityId);
         Task<List<Review>> GetAllReviewsWithUserAndOpportunityAsync();
+        Task<int> CountDeletedReviewsAsync();
+
 
 
     }

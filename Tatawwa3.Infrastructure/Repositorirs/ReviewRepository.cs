@@ -48,6 +48,14 @@ namespace Tatawwa3.Infrastructure.Repositorirs
                 .ToListAsync();
         }
 
+        public async Task<int> CountDeletedReviewsAsync()
+        {
+            return await _context.Reviews
+                .IgnoreQueryFilters()
+                .CountAsync(r => r.IsDeleted);
+        }
+
+
 
 
 

@@ -27,7 +27,7 @@ namespace Tatawwa3.Application.CQRS.ReviewComments.Handlers
             var averageRating = allReviews.Where(r => !r.IsDeleted).Any()
                 ? allReviews.Where(r => !r.IsDeleted).Average(r => r.Rating)
                 : 0;
-            var deletedReviews = allReviews.Count(r => r.IsDeleted);
+            var deletedReviews = await _repository.CountDeletedReviewsAsync(); /*allReviews.Count(r => r.IsDeleted);*/
 
             return new ReviewStatsDto
             {

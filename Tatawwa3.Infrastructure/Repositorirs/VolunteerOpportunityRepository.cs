@@ -23,7 +23,11 @@ namespace Tatawwa3.Infrastructure.Repositorirs
 
         public async Task<int> CountActiveOpportunitiesAsync()
         {
-            return await _context.VolunteerOpportunities.CountAsync(v => v.Status == OpportunityStatus.Published);
+            return await _context.VolunteerOpportunities.CountAsync(v =>
+            (v.Status == OpportunityStatus.Published || v.Status == OpportunityStatus.Completed)
+            && !v.IsDeleted);
+
+            /*.CountAsync(v => v.Status == OpportunityStatus.Published && !v.IsDeleted);*/
         }
        
 
