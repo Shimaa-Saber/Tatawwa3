@@ -50,13 +50,16 @@ namespace Tatawwa3.Application.Services
         public async Task<List<GetTeamaDto>> GetAllTeamsAsync()
         {
             var teams = await _tatawwa3DbContext.Teams
+                .Include(t => t.Category)
+                .Include(t => t.Organization)
                 .Select(team => new GetTeamaDto
                 {
                     Id = team.Id,
                     Name = team.Name,
                     Description = team.Description,
                     City = team.City,
-
+                    CategoryName = team.Category != null ? team.Category.Name : null,
+                    OrganizationName = team.Organization != null ? team.Organization.OrganizationName : null,
                     CurrentMembersCount = _tatawwa3DbContext.JoinRequests
                         .Count(j => j.TeamId == team.Id
                                     && j.Status == RequestStatus.Accepted
@@ -66,6 +69,7 @@ namespace Tatawwa3.Application.Services
 
             return teams;
         }
+
 
 
 
