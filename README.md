@@ -26,9 +26,13 @@ Basma is a scalable and modular **volunteering platform** developed as an ITI gr
 ## 📂 Project Structure
 Tatawwa3/
 │
+
 ├── Tatawwa3.API/ # Web API project (controllers, middlewares, etc.)
+
 ├── Tatawwa3.Application/ # CQRS handlers, Dtos, interfaces
+
 ├── Tatawwa3.Domain/ # Entities, enums, shared models
+
 ├── Tatawwa3.Infrastructure/ # DBContext, repositories, email, notification, Hangfire
 
 
