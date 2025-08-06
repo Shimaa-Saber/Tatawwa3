@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 using Tatawwa3.API.Mapper.AuthMapper;
 using Tatawwa3.API.Mapper.Categoryy;
 using Tatawwa3.API.Mapper.Comments;
@@ -81,6 +82,21 @@ builder.Services.AddScoped<INotificationPreferenceService, NotificationPreferenc
 
 
 builder.Services.AddScoped<IParticipationRepository, ParticipationRepository>();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("FixedPolicy", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            key => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromSeconds(10),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            }));
+});
+
 
 
 
@@ -288,6 +304,7 @@ app.UseMiddleware<RequestResponseLoggingMiddleware>();
 app.UseMiddleware<ValidationExceptionMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseRateLimiter();
 
 app.UseAuthentication();
 

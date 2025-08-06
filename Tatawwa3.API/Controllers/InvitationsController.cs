@@ -1,12 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Tatawwa3.Application.CQRS.Invitations.Commands;
 using Tatawwa3.Application.CQRS.Invitations.Queries;
 using Tatawwa3.Application.Dtos.InvitationDtos;
 
 namespace Tatawwa3.API.Controllers
 {
+    [EnableRateLimiting("FixedPolicy")]
     [Route("api/[controller]")]
     [ApiController]
 

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 using Tatawwa3.Application.CQRS.Certificates.Commands;
 using Tatawwa3.Application.CQRS.Certificates.Queries;
@@ -8,6 +9,7 @@ using Tatawwa3.Application.Dtos.Certificats;
 
 namespace Tatawwa3.API.Controllers
 {
+    [EnableRateLimiting("FixedPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     

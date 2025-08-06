@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 using Tatawwa3.Application.CQRS.Auth.Commands;
 using Tatawwa3.Application.Dtos.AuthDtos;
 
 namespace Tatawwa3.API.Controllers
 {
+    [EnableRateLimiting("FixedPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase

@@ -68,10 +68,11 @@ namespace Tatawwa3.API.Controllers
             var query = new GetReviewsTableQuery { OpportunityId = opportunityId };
             var result = await _mediator.Send(query);
 
-            if (result == null || result.Count == 0)
-                return NotFound("No reviews found for this opportunity.");
+            //if (result == null || result.Count == 0)
+            //    return NotFound("No reviews found for this opportunity.");
 
-            return Ok(result);
+            //return Ok(result);
+            return Ok(result ?? new List<ReviewTableDto>());
         }
 
 
